@@ -207,17 +207,26 @@ Setelah draf Markdown disetujui pengguna, **OUTPUT UTAMA YANG WAJIB DIHASILKAN A
 ### 4.2 Spesifikasi Tata Letak & Tipografi Baku
 1. **Batas Tepi (Margin):**
    - Artikel Jurnal SINTA / Scopus: Normal simetris **2,54 cm (1 inci)** di seluruh sisi (Top, Bottom, Left, Right).
-   - Skripsi / Tesis Standar Indonesia: Format **4-4-3-3 cm** (Left 4 cm ruang jilid, Top 4 cm, Bottom 3 cm, Right 3 cm).
+   - Skripsi / Tesis / Tugas Akhir: Format **4-4-3-3 cm** (Left 4 cm ruang jilid, Top 4 cm, Bottom 3 cm, Right 3 cm) atau variasi teknik **4-3-3-3 cm** (Top 4 cm, Left 3 cm, Bottom 3 cm, Right 3 cm).
 2. **Font & Spasi:**
-   - Teks Utama: *Times New Roman* 11–12 pt, spasi 1.15x (Jurnal) atau 1.5x (Skripsi), perataan *Justified*, indentasi alinea 1,27 cm.
-   - Spasi Tunggal (1.0x): Khusus untuk Abstrak, isi sel tabel, judul tabel/gambar, dan Daftar Pustaka.
-3. **Abstrak Ilmiah & Aturan Mutlak Halaman Pertama (*Page 1 Fit*):**
-   - Format: 1 paragraf padat (150–200 kata), memuat formula IMRaD mini (Masalah, Metode, Hasil Kuantitatif Riil dengan Angka Metrik, dan Kesimpulan).
-   - Wajib mencantumkan 3–6 Kata Kunci (*Keywords*). Bebas sitasi dan bebas sintaks LaTeX.
-   - **Aturan Mutlak Halaman Pertama (*Page 1 Fit*):** Seluruh elemen *front matter* (Judul bilingual, Penulis, Afiliasi, Email, Abstrak Indonesia, Kata Kunci, Abstract Inggris, dan Keywords) **WAJIB TUNTAS SEPENUHNYA DI HALAMAN 1**. Dilarang membiarkan teks abstrak terpotong ke Halaman 2.
-4. **Perbedaan Mendasar Struktur Artikel Jurnal vs. Skripsi:**
+   - Teks Utama: *Times New Roman* 11–12 pt, spasi 1.15x (Jurnal) atau 1.25x / 1.5x (Skripsi/Tugas Akhir), perataan *Justified*, indentasi alinea 1,0 – 1,27 cm.
+   - Spasi Tunggal (1.0x): Khusus untuk Abstrak/Intisari, isi sel tabel, judul tabel/gambar, dan Daftar Pustaka.
+3. **Kaidah Abstrak & Intisari:**
+   - **Abstrak Jurnal (Aturan Mutlak *Page 1 Fit*):** 1 paragraf padat (150–200 kata), memuat formula IMRaD mini (Masalah, Metode, Hasil Kuantitatif Riil dengan Angka Metrik, dan Kesimpulan). Wajib 3–6 Kata Kunci. Seluruh front matter wajib tuntas di Halaman 1.
+   - **Intisari Skripsi / Tugas Akhir (Format Baku 3 Alinea):** Font *Times New Roman* 10 pt, spasi 1.0x, terdiri tepat 3 Alinea:
+     - *Alinea I:* Latar belakang urgensi dan tujuan utama penelitian.
+     - *Alinea II:* Metodologi, arsitektur perancangan, instrumen, dan skenario pengujian.
+     - *Alinea III:* Temuan hasil pengujian empiris terukur dan kesimpulan akhir.
+     - Disertai 3–5 Kata Kunci.
+4. **Hierarki Judul (Headings) & Penomoran Naskah:**
+   - **Tingkat 1 - Judul Bab (`Heading 1`):** *ALL CAPS*, cetak tebal (*bold*), ukuran 12–14 pt, posisi tengah (*center*), wajib *Page Break* baru (`BAB 1. PENDAHULUAN` atau `BAB I PENDAHULUAN`).
+   - **Tingkat 2 - Judul Sub Bab (`Heading 2`):** *Capitalize Each Word*, cetak tebal (*bold*), ukuran 12 pt, rata kiri (`1.1. Latar Belakang Masalah`).
+   - **Tingkat 3 - Judul Sub-Sub Bab (`Heading 3`):** *Sentence case*, cetak tebal (*bold*), ukuran 12 pt, rata kiri (`1.1.1. Identifikasi tantangan operasional`).
+   - **Hierarki Penomoran Rincian:** `1.` -> `a.` -> `1)` -> `a)`.
+   - **Penomoran Tabel & Gambar:** `Tabel [Bab].[No]` di atas tabel; `Gambar [Bab].[No]` di bawah gambar (center).
+5. **Perbedaan Mendasar Struktur Artikel Jurnal vs. Skripsi:**
    - **Artikel Jurnal (SINTA & Scopus):** Menggunakan angka Arab kapital (`1. PENDAHULUAN`, `2. METODE PENELITIAN`, `3. HASIL DAN PEMBAHASAN`, `4. KESIMPULAN`). **DILARANG MENGGUNAKAN KATA 'BAB'**. Alur naskah mengalir kontinu (*Continuous Flow*) **tanpa Page Break antar-seksi**.
-   - **Skripsi / Tesis:** **WAJIB MENGGUNAKAN KATA 'BAB'** (`BAB I PENDAHULUAN`, `BAB II TINJAUAN PUSTAKA`, dst.), dan setiap bab baru **MUTLAK MENGGUNAKAN PAGE BREAK** (`pageBreakBefore: true`).
+   - **Skripsi / Tesis / Tugas Akhir:** **WAJIB MENGGUNAKAN KATA 'BAB'**, dan setiap bab baru **MUTLAK MENGGUNAKAN PAGE BREAK** (`pageBreakBefore: true`). Penomoran halaman terbagi menjadi 2 seksi (Seksi 1: Romawi kecil `i, ii, iii...` di bawah tengah; Seksi 2: Angka Arab `1, 2, 3...` di kanan atas, kecuali awal bab di bawah tengah).
 
 ### 4.3 Adaptasi Elemen Semantik Cerdas (Smart Structural Conversion: Tabel & Tree)
 Ketika mentransformasikan konten draf ke dalam dokumen Word, agen harus adaptif dan peka terhadap representasi data:
@@ -268,11 +277,18 @@ Saat menangani penyusunan dokumen mendalam, agen dapat berkonsultasi pada dokume
 ## 7. TEMPLATE DOKUMEN ILMIAH RESMI SIAP PAKAI (REUSABLE TEMPLATES)
 
 Untuk memastikan konsistensi tata letak tanpa mengotori workspace aktif pengguna:
-- **Lokasi Master Template Jurnal SINTA:**  
+- **Master Template Jurnal SINTA:**  
   `templates/template_jurnal_sinta.docx` (relatif terhadap direktori root skill)
-- **Karakteristik Master Template:**
-  1. Format resmi Jurnal OJS SINTA (A4, Margin Normal Simetris 2,54 cm / 1 Inci).
-  2. Garansi *Page 1 Fit* untuk judul dwibahasa, afiliasi, email, dan abstrak bilingual (Indonesia & Inggris).
-  3. Alur IMRaD kontinu tanpa jeda halaman (*no page break*).
-  4. Contoh tabel format APA 3 garis horizontal.
-  5. 100% bebas mojibake dan bebas dari elemen ekonomi non-relevan (seperti kode JEL).
+  - Format resmi Jurnal OJS SINTA (A4, Margin Normal Simetris 2,54 cm / 1 Inci).
+  - Garansi *Page 1 Fit* untuk judul dwibahasa, afiliasi, email, dan abstrak bilingual (Indonesia & Inggris).
+  - Alur IMRaD kontinu tanpa jeda halaman (*no page break*).
+  - Contoh tabel format APA 3 garis horizontal.
+
+- **Master Template Laporan Tugas Akhir / Skripsi (5 Bab Monograf):**  
+  `templates/template_laporan_tugas_akhir.docx` (relatif terhadap direktori root skill)
+  - Standar A4, Margin 4-3-3-3 cm (Top 4 cm, Left 3 cm, Bottom 3 cm, Right 3 cm), Font Times New Roman 12 pt, Spasi 1.25x.
+  - Heading bertingkat baku (Heading 1 ALL CAPS, Heading 2 Capitalize Each Word, Heading 3 Sentence Case).
+  - Bagian Awal lengkap (Halaman Judul, Pengesahan, Pernyataan Keaslian Bermaterai, Kata Pengantar, Daftar Isi, Daftar Tabel, Daftar Gambar, Daftar Singkatan, Intisari 3 Alinea) dengan penomoran Romawi kecil (`i, ii, iii...`).
+  - Bagian Utama 5 Bab (Pendahuluan, Tinjauan Pustaka, Landasan Teori, Hasil dan Pembahasan, Kesimpulan dan Saran) dengan penomoran Arab (`1, 2, 3...`).
+  - Menggunakan placeholder anonim terstandar (`[NAMA PERGURUAN TINGGI]`, `[FAKULTAS]`, `[PROGRAM STUDI]`, `[KOTA]`, `[LOGO INSTITUSI]`) sehingga 100% netral dan dapat diadopsi oleh mahasiswa dari perguruan tinggi manapun.
+

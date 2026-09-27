@@ -474,4 +474,153 @@ def extract_images_from_pdf(pdf_path: str, output_folder: str) -> list[str]:
 > **Catatan Berkas Format Lawas (`.doc`, `.ppt`, `.xls`):**
 > Berkas biner era lama (Office 97–2003) belum berbasis zip container. Konversikan terlebih dahulu ke format modern OpenXML (`.docx`, `.pptx`, `.xlsx`) melalui perintah LibreOffice headless (`soffice --headless --convert-to docx file.doc`) atau buka dan simpan ulang di Word/PowerPoint, lalu jalankan fungsi `extract_images_from_office` di atas.
 
+---
+
+## 12. RESEP 11: BLUEPRINT BATCH OFFICECLI FORMAT DOKUMEN TUGAS AKHIR / SKRIPSI (MONOGRAF 5 BAB)
+
+Blueprint konfigurasi `officecli batch` untuk memformat laporan Tugas Akhir / Skripsi standar perguruan tinggi (Margin 4-3-3-3 cm, Times New Roman 12 pt, 1,25 spasi, Heading bertingkat, dan Intisari 3 alinea):
+
+```json
+[
+  {
+    "command": "set",
+    "path": "/section[1]",
+    "props": {
+      "marginTop": "4.0cm",
+      "marginBottom": "3.0cm",
+      "marginLeft": "3.0cm",
+      "marginRight": "3.0cm",
+      "pageWidth": "21.0cm",
+      "pageHeight": "29.7cm"
+    }
+  },
+  {
+    "command": "add",
+    "path": "/body",
+    "type": "paragraph",
+    "props": {
+      "style": "Heading1",
+      "text": "BAB 1. PENDAHULUAN",
+      "align": "center",
+      "bold": "true",
+      "spaceBefore": "0pt",
+      "spaceAfter": "12pt"
+    }
+  },
+  {
+    "command": "add",
+    "path": "/body",
+    "type": "paragraph",
+    "props": {
+      "style": "Heading2",
+      "text": "1.1. Latar Belakang Masalah",
+      "align": "left",
+      "bold": "true",
+      "spaceBefore": "12pt",
+      "spaceAfter": "6pt"
+    }
+  },
+  {
+    "command": "add",
+    "path": "/body",
+    "type": "paragraph",
+    "props": {
+      "style": "Normal",
+      "text": "Perkembangan teknologi komputasi dan kecerdasan artifisial telah mendorong transformasi di berbagai sektor...",
+      "lineSpacing": "1.25x",
+      "indent": "1.27cm",
+      "align": "both",
+      "spaceAfter": "6pt"
+    }
+  },
+  {
+    "command": "add",
+    "path": "/body",
+    "type": "paragraph",
+    "props": {
+      "style": "Heading3",
+      "text": "1.1.1. Identifikasi tantangan operasional",
+      "align": "left",
+      "bold": "true",
+      "spaceBefore": "6pt",
+      "spaceAfter": "4pt"
+    }
+  }
+]
+```
+
+Blueprint untuk menyusun Intisari / Abstrak 3 Alinea presisi:
+```json
+[
+  {
+    "command": "add",
+    "path": "/body",
+    "type": "paragraph",
+    "props": {
+      "style": "Heading1",
+      "text": "INTISARI",
+      "align": "center",
+      "bold": "true",
+      "spaceAfter": "12pt"
+    }
+  },
+  {
+    "command": "add",
+    "path": "/body",
+    "type": "paragraph",
+    "props": {
+      "style": "Normal",
+      "text": "Alinea I: Berisi uraian ringkas mengenai latar belakang permasalahan, urgensi penelitian, dan tujuan utama yang ingin dicapai dalam pengembangan sistem ini...",
+      "size": "10pt",
+      "lineSpacing": "1.0x",
+      "align": "both",
+      "indent": "1.0cm",
+      "spaceAfter": "6pt"
+    }
+  },
+  {
+    "command": "add",
+    "path": "/body",
+    "type": "paragraph",
+    "props": {
+      "style": "Normal",
+      "text": "Alinea II: Menjelaskan metodologi penelitian, arsitektur perancangan, tahapan implementasi, alat dan bahan, serta skenario pengujian yang diterapkan...",
+      "size": "10pt",
+      "lineSpacing": "1.0x",
+      "align": "both",
+      "indent": "1.0cm",
+      "spaceAfter": "6pt"
+    }
+  },
+  {
+    "command": "add",
+    "path": "/body",
+    "type": "paragraph",
+    "props": {
+      "style": "Normal",
+      "text": "Alinea III: Menyajikan hasil pengujian performa secara terukur serta kesimpulan kualitatif maupun kuantitatif yang diperoleh dari hasil evaluasi...",
+      "size": "10pt",
+      "lineSpacing": "1.0x",
+      "align": "both",
+      "indent": "1.0cm",
+      "spaceAfter": "8pt"
+    }
+  },
+  {
+    "command": "add",
+    "path": "/body",
+    "type": "paragraph",
+    "props": {
+      "style": "Normal",
+      "text": "Kata kunci: Kecerdasan Artifisial, Pengolahan Dokumen, Evaluasi Kinerja, OpenXML.",
+      "size": "10pt",
+      "lineSpacing": "1.0x",
+      "bold": "false",
+      "spaceAfter": "18pt"
+    }
+  }
+]
+```
+
+
 

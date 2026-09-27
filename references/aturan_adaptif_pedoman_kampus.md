@@ -63,3 +63,68 @@ Agen AI tidak boleh hanya bertindak sebagai "tukang salin teks mentah", melainka
 2. **Verifikasi Persetujuan Pengguna:**
    Susun draf rencana struktur naskah dalam format Markdown terlebih dahulu. Paparkan usulan judul, kerangka bab, dan poin inti ke pengguna untuk disetujui. Setelah pengguna memberikan persetujuan (*"Oke"*, *"Setuju"*), barulah file `.docx` resmi dibuat.
 
+---
+
+## 6. STANDAR UNIVERSAL LAPORAN TUGAS AKHIR / SKRIPSI (MONOGRAF 5 BAB)
+
+Dokumen laporan Tugas Akhir / Skripsi di lingkungan perguruan tinggi memiliki kaidah baku yang diadaptasi secara universal sebagai berikut:
+
+### 6.1 Tata Letak Halaman & Spasi
+- **Ukuran Kertas:** A4 (21,0 cm x 29,7 cm).
+- **Variasi Batas Tepi (Margin):**
+  - Standar Teknik / Kampus A: Atas = 4 cm, Kiri = 3 cm (atau 4 cm), Bawah = 3 cm, Kanan = 3 cm (`4-3-3-3` atau `4-4-3-3`).
+- **Jarak Antar Baris (Line Spacing):**
+  - Teks Utama: 1,25 spasi (`lineSpacing="1.25x"`) atau 1,5 spasi (`lineSpacing="1.5x"`).
+  - Intisari / Abstrak, Kutipan Langsung > 4 baris, Tabel, Judul Gambar/Tabel, dan Daftar Pustaka: 1,0 spasi (`lineSpacing="1.0x"`).
+
+### 6.2 Kaidah Tipografi & Tingkat Judul (Headings)
+- **Jenis Huruf:** *Times New Roman* (ukuran 12 pt untuk teks utama).
+- **Tingkat 1 - Judul Bab (`Heading 1`):**
+  - Huruf kapital penuh (*ALL CAPS*), cetak tebal (*bold*), ukuran 12–14 pt, posisi tengah (*center*).
+  - Format penomoran: `BAB 1. PENDAHULUAN` atau `BAB I PENDAHULUAN`.
+- **Tingkat 2 - Judul Sub Bab (`Heading 2`):**
+  - Huruf besar pada awal setiap kata (*Capitalize Each Word*), cetak tebal (*bold*), ukuran 12 pt, rata kiri.
+  - Format penomoran: `1.1. Latar Belakang` atau `1.1 Latar Belakang`.
+- **Tingkat 3 - Judul Sub-Sub Bab (`Heading 3`):**
+  - Huruf besar hanya di awal kalimat (*Sentence case*), cetak tebal (*bold*), ukuran 12 pt, rata kiri.
+  - Format penomoran: `1.1.1. Identifikasi masalah operasional`.
+
+### 6.3 Kaidah Intisari / Abstrak Standar
+- Ditulis menggunakan font *Times New Roman* ukuran 10 pt dengan spasi tunggal (1,0 spasi).
+- **Wajib terdiri dari tepat 3 Alinea:**
+  - **Alinea I:** Latar belakang permasalahan dan tujuan utama penelitian.
+  - **Alinea II:** Metode penelitian, tahapan perancangan, instrumen, dan skenario pengujian yang dilakukan.
+  - **Alinea III:** Hasil temuan penelitian dan kesimpulan akhir (disajikan secara kuantitatif/kualitatif yang terukur).
+- **Kata Kunci (*Keywords*):** 3 hingga 5 kata kunci yang merepresentasikan domain dan metode penelitian.
+
+### 6.4 Urutan Penomoran Rincian (Numbering Hierarchy)
+Jika di dalam satu sub bab terdapat daftar butir bertingkat, gunakan urutan hierarki baku berikut:
+1. Angka Arab diakhiri titik: `1.`, `2.`, `3.`
+2. Huruf kecil diakhiri titik: `a.`, `b.`, `c.`
+3. Angka Arab diakhiri kurung tutup: `1)`, `2)`, `3)`
+4. Huruf kecil diakhiri kurung tutup: `a)`, `b)`, `c)`
+
+### 6.5 Penomoran Tabel, Gambar, dan Rumus
+- **Tabel:** Judul diletakkan di **ATAS** tabel. Format nomor: `Tabel [Bab].[Nomor]` (contoh: `Tabel 1.1`, `Tabel 4.2`). Isi tabel berukuran 11 pt dengan garis 3 horizontal standar APA.
+- **Gambar:** Judul diletakkan di **BAWAH** gambar, posisi tengah (*center*). Format nomor: `Gambar [Bab].[Nomor]` (contoh: `Gambar 2.1`, `Gambar 4.1`).
+- **Persamaan / Rumus:** Rata tengah dengan nomor persamaan rata kanan: `(3.1)`.
+
+### 6.6 Struktur Monograf 5 Bab Lengkap
+1. **Bagian Awal (Section 1 - Penomoran Romawi Kecil `i, ii, iii...` di bawah tengah):**
+   - Halaman Judul (Maks. 20 kata, ALL CAPS, Nama Mahasiswa, NIM, [PROGRAM STUDI], [FAKULTAS], [NAMA PERGURUAN TINGGI], [KOTA], [TAHUN], placeholder logo instansi).
+   - Halaman Pengesahan (Pembimbing Utama, Pembimbing Pendamping, Penguji, Kaprodi, Dekan).
+   - Surat Pernyataan Keaslian Karya (Bermaterai).
+   - Kata Pengantar (Ucapan syukur & terima kasih terstruktur).
+   - Daftar Isi, Daftar Tabel, Daftar Gambar, Daftar Singkatan.
+   - Intisari (Bahasa Indonesia) & *Abstract* (Bahasa Inggris).
+2. **Bagian Utama (Section 2 - Penomoran Angka Arab `1, 2, 3...` di kanan atas, halaman pertama bab di bawah tengah):**
+   - **BAB 1. PENDAHULUAN** (Latar Belakang, Rumusan Masalah, Batasan Masalah, Tujuan Penelitian, Manfaat Penelitian, Sistematika Penulisan).
+   - **BAB 2. TINJAUAN PUSTAKA** (Tinjauan penelitian terdahulu yang relevan & perbandingan kontribusi).
+   - **BAB 3. LANDASAN TEORI** (Teori fundamental, perumusan matematis, dan arsitektur/metode pengembangan).
+   - **BAB 4. HASIL DAN PEMBAHASAN** (Hasil eksperimen, pengujian performa, analisis komparatif, dan pembahasan).
+   - **BAB 5. KESIMPULAN DAN SARAN** (5.1 Kesimpulan berbasis butir temuan, 5.2 Saran penelitian lanjutan).
+3. **Bagian Akhir:**
+   - **DAFTAR PUSTAKA** (Standar APA / IEEE, hanging indent 1,27 cm, spasi tunggal).
+   - **LAMPIRAN** (Kode sumber, lembar pengujian, instrumen penelitian, data mentah).
+
+

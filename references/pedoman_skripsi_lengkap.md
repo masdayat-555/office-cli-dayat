@@ -8,31 +8,42 @@ Dokumen ini merupakan referensi resmi untuk pembuatan, penataan tata letak (*for
 
 ### 1.1 Kertas dan Batas Tepi (Margin)
 - **Ukuran Kertas:** A4 (21,0 cm x 29,7 cm), berat standar 80 gram.
-- **Standar Margin Baku Skripsi (4-4-3-3):**
-  - **Batas Kiri (Left):** 4,0 cm (1,57 inci) — *ruang penjilidan*
-  - **Batas Atas (Top):** 4,0 cm (1,57 inci)
-  - **Batas Bawah (Bottom):** 3,0 cm (1,18 inci)
-  - **Batas Kanan (Right):** 3,0 cm (1,18 inci)
+- **Standar Margin Baku Skripsi / Tugas Akhir:**
+  - **Format 4-4-3-3 cm (Standar Umum Nasional):**
+    - Batas Kiri (Left): 4,0 cm — *ruang penjilidan*
+    - Batas Atas (Top): 4,0 cm
+    - Batas Bawah (Bottom): 3,0 cm
+    - Batas Kanan (Right): 3,0 cm
+  - **Format 4-3-3-3 cm (Standar Umum Fakultas Teknik / Sains):**
+    - Batas Kiri (Left): 3,0 cm (atau 4,0 cm)
+    - Batas Atas (Top): 4,0 cm
+    - Batas Bawah (Bottom): 3,0 cm
+    - Batas Kanan (Right): 3,0 cm
 
 ### 1.2 Tipografi dan Spasi
-- **Jenis Huruf (Font):** *Times New Roman* (standar umum mayoritas kampus Indonesia) atau *Arial/Calibri* (jika disyaratkan pedoman kampus).
-- **Ukuran Huruf:**
-  - Judul Dokumen/Cover: 14–16 pt, Dicetak Tebal (Bold), Kapital.
-  - Judul Bab (Heading 1): 14 pt, Dicetak Tebal (Bold), Kapital.
-  - Judul Sub-bab (Heading 2, Heading 3): 12 pt, Dicetak Tebal (Bold), Title Case.
-  - Teks Utama (Body Text): 12 pt, Regular.
-  - Teks Tabel & Sumber: 10–11 pt, Regular.
-  - Keterangan Gambar & Catatan Kaki: 10 pt.
+- **Jenis Huruf (Font):** *Times New Roman* (standar umum mayoritas perguruan tinggi Indonesia) atau *Arial/Calibri* (jika disyaratkan pedoman kampus).
+- **Kaidah Tingkat Judul (Headings):**
+  - **Tingkat 1 - Judul Bab (`Heading 1`):** 12–14 pt, Dicetak Tebal (*Bold*), Huruf Kapital Penuh (*ALL CAPS*), Rata Tengah (*Center*), Wajib *Page Break* baru (`BAB 1. PENDAHULUAN` atau `BAB I PENDAHULUAN`).
+  - **Tingkat 2 - Judul Sub-bab (`Heading 2`):** 12 pt, Dicetak Tebal (*Bold*), Huruf Besar di Setiap Awal Kata (*Capitalize Each Word*), Rata Kiri (`1.1. Latar Belakang Masalah`).
+  - **Tingkat 3 - Judul Sub-Sub-bab (`Heading 3`):** 12 pt, Dicetak Tebal (*Bold*), Huruf Besar Hanya di Awal Kalimat (*Sentence case*), Rata Kiri (`1.1.1. Identifikasi tantangan operasional`).
+- **Teks Utama (Body Text):** 12 pt, Regular, *Justified*.
+- **Teks Tabel & Sumber:** 10–11 pt, Regular.
+- **Keterangan Gambar & Catatan Kaki:** 10 pt.
 - **Spasi Baris (Line Spacing):**
-  - **Teks Utama:** 1,5 atau 2,0 spasi (menyesuaikan pedoman kampus; default skripsi: 1,5 spasi).
+  - **Teks Utama:** 1,25 atau 1,5 spasi (menyesuaikan pedoman kampus; default skripsi monograf: 1,25x atau 1,5x).
   - **Spasi Tunggal (1,0 spasi):** Berlaku mutlak untuk:
-    1. Abstrak (Bahasa Indonesia & Bahasa Inggris)
+    1. Intisari / Abstrak (Bahasa Indonesia & Bahasa Inggris)
     2. Kutipan langsung panjang (lebih dari 4 baris)
     3. Judul tabel, isi sel tabel, dan judul gambar
     4. Setiap entri dalam Daftar Pustaka
-    5. Riwayat Hidup / Lembar Pengesahan
-- **Indentasi Paragraf:** Baris pertama setiap alinea menjorok ke dalam sejauh **1,27 cm** (0,5 inci / 5–7 ketukan).
-- **Perataan Teks (Alignment):** Rata Kanan-Kiri (*Justified / Both*) untuk seluruh teks utama narasi.
+    5. Halaman Pengesahan dan Surat Pernyataan
+- **Indentasi Paragraf:** Baris pertama setiap alinea menjorok ke dalam sejauh **1,0 – 1,27 cm**.
+- **Urutan Penomoran Rincian (Numbering Hierarchy):**
+  1. Angka Arab titik (`1.`)
+  2. Huruf kecil titik (`a.`)
+  3. Angka Arab kurung (`1)`)
+  4. Huruf kecil kurung (`a)`)
+
 
 ---
 
@@ -47,17 +58,19 @@ Menggunakan penomoran halaman **Angka Romawi Kecil (i, ii, iii, iv, ...)** yang 
 4. **Halaman Pengesahan Penguji:** Memuat tanda tangan Dewan Penguji dan Dekan/Ketua Jurusan.
 5. **Halaman Pernyataan Orisinalitas / Bebas Plagiarisme:** Pernyataan bermaterai mengenai keaslian karya.
 6. **Halaman Persembahan & Motto (Opsional):** Sesuai tradisi akademik masing-masing prodi.
-7. **Abstrak (Bahasa Indonesia):**
-   - Panjang: 150 – 250 kata dalam **1 paragraf utuh** (atau maksimal 2 paragraf).
-   - Spasi: 1,0 (tunggal).
-   - Memuat 4 pilar inti: (1) Latar belakang ringkas & urgensi, (2) Metode/arsitektur yang digunakan, (3) Temuan empiris/hasil utama, (4) Kesimpulan/implikasi praktis.
-   - Kata Kunci: 3 – 5 kata/frasa spesifik, dipisahkan koma atau titik-koma.
-8. **Abstract (Bahasa Inggris):** Terjemahan formal dari abstrak Indonesia, dicetak miring (*italic*).
-9. **Kata Pengantar:** Memuat puji syukur, ringkasan singkat proses penyusunan, ucapan terima kasih secara hierarkis (Rektor, Dekan, Kaprodi, Dosen Pembimbing, Dosen Penguji, Orang Tua, Rekan), kota dan tanggal penulisan.
+7. **Intisari / Abstrak (Bahasa Indonesia):**
+   - Ditulis menggunakan font *Times New Roman* 10 pt dengan spasi tunggal (1,0 spasi).
+   - Format standar monograf akademik terdiri dari **tepat 3 Alinea**:
+     - **Alinea I:** Latar belakang masalah, urgensi riset, dan tujuan utama penelitian.
+     - **Alinea II:** Metode penelitian, arsitektur perancangan, tahapan implementasi, alat dan bahan, serta skenario pengujian.
+     - **Alinea III:** Hasil temuan empiris secara terukur dan kesimpulan akhir (kualitatif / kuantitatif).
+   - **Kata Kunci (*Keywords*):** 3 – 5 kata/frasa spesifik.
+8. **Abstract (Bahasa Inggris):** Terjemahan formal dari Intisari Indonesia, dicetak miring (*italic*).
+9. **Kata Pengantar:** Memuat puji syukur, ringkasan singkat proses penyusunan, ucapan terima kasih secara hierarkis (Pimpinan Kampus, Dekan, Kaprodi, Dosen Pembimbing, Dosen Penguji, Orang Tua, Rekan), kota dan tanggal penulisan.
 10. **Daftar Isi:** Memuat struktur dokumen yang terhubung secara dinamis (*automated TOC field*).
-11. **Daftar Tabel:** Memuat nomor dan judul seluruh tabel dalam naskah beserta nomor halamannya.
-12. **Daftar Gambar:** Memuat nomor dan judul seluruh gambar/bagan/grafik beserta nomor halamannya.
-13. **Daftar Lampiran & Singkatan (Jika Ada):** Memuat daftar dokumen pelengkap.
+11. **Daftar Tabel:** Memuat nomor dan judul seluruh tabel dalam naskah beserta nomor halamannya (`Tabel [Bab].[No]`).
+12. **Daftar Gambar:** Memuat nomor dan judul seluruh gambar/bagan/grafik beserta nomor halamannya (`Gambar [Bab].[No]`).
+13. **Daftar Lampiran & Singkatan (Jika Ada):** Memuat daftar dokumen pelengkap dan tabel glosarium singkatan.
 
 ---
 
@@ -66,14 +79,20 @@ Menggunakan penomoran **Angka Arab (1, 2, 3, ...)**.
 - **Halaman Pertama Bab Baru:** Nomor halaman diletakkan di **Tengah Bagian Bawah**.
 - **Halaman Lanjutan Bab:** Nomor halaman diletakkan di **Sudut Kanan Atas**.
 
-#### BAB I: PENDAHULUAN
+> **Variasi Struktur 5 Bab di Perguruan Tinggi:**
+> - **Model Monograf Teknik/Sains:** Bab 1 Pendahuluan, Bab 2 Tinjauan Pustaka, Bab 3 Landasan Teori, Bab 4 Hasil dan Pembahasan, Bab 5 Kesimpulan dan Saran.
+> - **Model Standar Komputasi/Sosial:** Bab 1 Pendahuluan, Bab 2 Tinjauan Pustaka dan Landasan Teori, Bab 3 Metodologi Penelitian, Bab 4 Hasil dan Pembahasan, Bab 5 Kesimpulan dan Saran.
+> *Agen AI mendukung kedua model ini secara adaptif sesuai preferensi pengguna.*
+
+#### BAB 1: PENDAHULUAN
 - **1.1 Latar Belakang Masalah:** Uraian mengerucut (*deductive pattern*) dari konteks makro, fenomena lapangan, bukti empiris, identifikasi masalah, kesenjangan riset (*research gap*), hingga justifikasi pemilihan metode.
 - **1.2 Identifikasi Masalah:** Poin-poin spesifik permasalahan yang ditemukan di lapangan.
 - **1.3 Batasan Masalah (Ruang Lingkup):** Parameter pembatas agar penelitian fokus (sumber data, periode data, algoritma, batasan platform).
 - **1.4 Rumusan Masalah:** Pertanyaan penelitian spesifik, terukur, dan akademis (menggunakan kalimat tanya).
 - **1.5 Tujuan Penelitian:** Pernyataan deklaratif yang menjawab langsung setiap poin pada rumusan masalah.
-- **1.6 Manfaat Penelitian:** Manfaat teoretis (pengembangan ilmu/ilmu komputer) dan praktis (manfaat bagi pengguna/industri/pemerintah).
+- **1.6 Manfaat Penelitian:** Manfaat teoretis (pengembangan ilmu pengetahuan) dan praktis (manfaat bagi pengguna/industri/pemerintah).
 - **1.7 Sistematika Penulisan:** Penjelasan ringkas susunan bab demi bab.
+
 
 #### BAB II: TINJAUAN PUSTAKA DAN LANDASAN TEORI
 - **2.1 Penelitian Terdahulu (*State-of-the-Art*):** Komparasi 5–10 artikel jurnal bereputasi terkait topik yang sama, disajikan dalam bentuk narasi komprehensif dan **Tabel Matriks Penelitian Terdahulu** (memuat: Peneliti/Tahun, Metode, Objek/Dataset, Hasil, dan Celah Penelitian/Pembeda dengan penelitian saat ini).
