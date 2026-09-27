@@ -30,16 +30,36 @@ This skill equips your AI coding agent (Antigravity, Cursor, Claude Code, VS Cod
 
 ## 🚀 Installation
 
-Clone this skill into your project's agent skills directory:
+You can install this skill easily using either your AI Agent prompt or via standard terminal command:
 
-```bash
+### 💬 Option 1: Copy-Paste Prompt to Your AI Agent (Easiest)
+Simply copy and paste one of the prompts below directly into your AI Assistant (Antigravity, Cursor, Claude Code, Windsurf, dll.):
+
+**For Current Project / Workspace:**
+```text
+Tolong pasang skill office-cli ke proyek ini dengan menjalankan perintah:
 git clone https://github.com/masdayat-555/office-cli-dayat.git .agents/skills/office-cli
 ```
 
-*(Or install globally in your AI assistant's configuration):*
-```bash
+**For Global Installation (Available across all your projects):**
+```text
+Tolong pasang skill office-cli secara global agar bisa digunakan di seluruh proyek saya:
 git clone https://github.com/masdayat-555/office-cli-dayat.git ~/.gemini/config/skills/office-cli
 ```
+
+---
+
+### 💻 Option 2: Manual Terminal Command
+If you prefer running commands in your terminal directly:
+
+```bash
+# Project-level (Current workspace):
+git clone https://github.com/masdayat-555/office-cli-dayat.git .agents/skills/office-cli
+
+# Global-level:
+git clone https://github.com/masdayat-555/office-cli-dayat.git ~/.gemini/config/skills/office-cli
+```
+
 
 ---
 
