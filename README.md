@@ -31,18 +31,18 @@ This skill equips your AI coding agent (Antigravity, Cursor, Claude Code, VS Cod
 ## 🚀 Installation
 
 ### 💬 Copy & Paste to Your AI Agent (Easiest)
-Copy and paste this prompt directly into your AI Assistant (Antigravity, Cursor, Claude Code, Windsurf, dll.):
+Copy and paste this prompt directly into your AI Assistant (Antigravity, Cursor, Claude Code, Windsurf, etc.):
 
 ```text
-Tolong pasang skill office-cli dengan menjalankan perintah:
-git clone https://github.com/masdayat-555/office-cli-dayat.git ~/.gemini/config/skills/office-cli
+Tolong pasang skill office-cli ini ke folder skills kamu:
+git clone https://github.com/masdayat-555/office-cli-dayat.git ~/.agents/skills/office-cli
 ```
 
 ---
 
 ### 💻 Or Run Directly in Terminal
 ```bash
-git clone https://github.com/masdayat-555/office-cli-dayat.git ~/.gemini/config/skills/office-cli
+git clone https://github.com/masdayat-555/office-cli-dayat.git ~/.agents/skills/office-cli
 ```
 
 
