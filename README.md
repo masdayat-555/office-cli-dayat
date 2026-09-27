@@ -209,7 +209,17 @@ Contributions to improve formatting recipes, add new journal templates (IEEE, Sp
 
 ---
 
-## 📄 License
+## 📄 License & Third-Party Notices
 
 This skill is open-sourced under the [MIT License](LICENSE).
-Feel free to use, adapt, and integrate it into your AI workflows.
+
+### Third-Party Software & Acknowledgments
+This skill orchestrates and interfaces with external open-source engines:
+* **[Microsoft MarkItDown](https://github.com/microsoft/markitdown):** Released under the **MIT License** by Microsoft Corporation. Copyright (c) Microsoft Corporation.
+* **[OfficeCLI](https://officecli.ai):** OpenXML CLI manipulation engine. Copyright (c) OfficeCLI Contributors.
+* **[python-docx](https://github.com/python-openxml/python-docx):** OpenXML manipulation library for Python, released under the **MIT License**. Copyright (c) 2013 Steve Canny.
+
+### Disclaimer & Trademarks
+*Microsoft, Microsoft Office, Word, Excel, PowerPoint, and MarkItDown are trademarks or registered trademarks of Microsoft Corporation in the United States and/or other countries.*  
+*This project is an independent community skill and is not affiliated with, sponsored by, or endorsed by Microsoft Corporation.*
+

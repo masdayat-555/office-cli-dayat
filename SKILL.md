@@ -46,6 +46,7 @@ Untuk mencegah benturan fungsional dan degradasi format file:
 Sebelum menjalankan tugas dokumen, agen juga **WAJIB** memverifikasi ketersediaan perangkat lunak pendukung di terminal:
 
 ### 1.1 Tool 1: Microsoft MarkItDown (Reading Engine)
+- **Pengembang:** Microsoft Corporation (Lisensi MIT)
 - **Repositori Resmi:** [GitHub - microsoft/markitdown](https://github.com/microsoft/markitdown)
 - **Perintah Pengecekan:**
   ```powershell
@@ -62,6 +63,7 @@ Sebelum menjalankan tugas dokumen, agen juga **WAJIB** memverifikasi ketersediaa
   ```
 
 ### 1.2 Tool 2: OfficeCLI (Manipulation Engine)
+- **Pengembang:** OfficeCLI Contributors
 - **Situs Resmi & Repositori:** [officecli.ai](https://officecli.ai) / [GitHub - officecli](https://github.com/officecli)
 - **Perintah Pengecekan:**
   ```powershell
