@@ -417,34 +417,42 @@ def audit_cleanliness(docx_path: str) -> bool:
 
 ---
 
-## 11. RESEP 10: AUTOMATED ASSET EXTRACTION (EKSTRAKSI GAMBAR DARI DOCX & PDF)
+## 11. RESEP 10: AUTOMATED ASSET EXTRACTION (EKSTRAKSI GAMBAR DARI DOCX, PPTX, XLSX, & PDF)
 
-Resep Python untuk mengekstrak seluruh gambar biner asli dari dokumen sumber tanpa kompresi atau degradasi kualitas:
+Resep Python untuk mengekstrak seluruh gambar biner asli beresolusi penuh dari dokumen sumber tanpa kompresi atau degradasi kualitas:
 
 ```python
 import zipfile
 from pathlib import Path
 
 
-def extract_images_from_docx(docx_path: str, output_folder: str) -> list[str]:
-  """Mengekstrak seluruh gambar biner asli dari berkas DOCX menggunakan zipfile bawaan."""
+def extract_images_from_office(office_path: str, output_folder: str) -> list[str]:
+  """Mengekstrak seluruh gambar biner asli dari berkas modern Office (.docx, .pptx, .xlsx)
+
+  menggunakan library standar bawaan Python (zipfile) tanpa dependensi luar.
+  """
   out = Path(output_folder)
   out.mkdir(parents=True, exist_ok=True)
   extracted = []
 
-  with zipfile.ZipFile(docx_path, "r") as z:
+  # Format OpenXML (.docx, .pptx, .xlsx) menyimpan aset media di word/media/, ppt/media/, xl/media/
+  with zipfile.ZipFile(office_path, "r") as z:
     for item in z.namelist():
-      if item.startswith("word/media/"):
-        target = out / Path(item).name
+      if "/media/" in item and not item.endswith("/"):
+        target_name = Path(item).name
+        target = out / target_name
         target.write_bytes(z.read(item))
         extracted.append(str(target))
 
-  print(f"Ekstraksi DOCX selesai: {len(extracted)} gambar tersimpan di {out}")
+  print(
+      f"Ekstraksi Office selesai: {len(extracted)} aset media tersimpan di"
+      f" {out}"
+  )
   return extracted
 
 
 def extract_images_from_pdf(pdf_path: str, output_folder: str) -> list[str]:
-  """Mengekstrak seluruh gambar biner dari berkas PDF menggunakan pypdf."""
+  """Mengekstrak seluruh gambar biner asli dari berkas PDF menggunakan pypdf."""
   from pypdf import PdfReader
 
   out = Path(output_folder)
@@ -462,4 +470,8 @@ def extract_images_from_pdf(pdf_path: str, output_folder: str) -> list[str]:
   print(f"Ekstraksi PDF selesai: {len(extracted)} gambar tersimpan di {out}")
   return extracted
 ```
+
+> **Catatan Berkas Format Lawas (`.doc`, `.ppt`, `.xls`):**
+> Berkas biner era lama (Office 97–2003) belum berbasis zip container. Konversikan terlebih dahulu ke format modern OpenXML (`.docx`, `.pptx`, `.xlsx`) melalui perintah LibreOffice headless (`soffice --headless --convert-to docx file.doc`) atau buka dan simpan ulang di Word/PowerPoint, lalu jalankan fungsi `extract_images_from_office` di atas.
+
 

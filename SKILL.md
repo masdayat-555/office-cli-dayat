@@ -117,11 +117,11 @@ Jika tugas membutuhkan ekstraksi gambar biner (PNG/JPEG) dari berkas PDF:
    officecli close "dokumen.docx"
    ```
 
-### 2.3 Ekstraksi Aset Gambar dari Dokumen (DOCX & PDF)
+### 2.3 Ekstraksi Aset Gambar dari Dokumen (DOCX, PPTX, XLSX, & PDF)
 Ketika pengguna meminta mengambil, mengekstrak, atau menyalin gambar/bagan dari dokumen:
 
-1. **Dari Dokumen Word (`.docx`):**
-   Gunakan library standar bawaan Python `zipfile` (tanpa dependensi luar). Seluruh gambar beresolusi asli tersimpan utuh di dalam arsip `word/media/`:
+1. **Dari Dokumen Microsoft Office (Word `.docx`, PowerPoint `.pptx`, Excel `.xlsx`):**
+   Gunakan library standar bawaan Python `zipfile` (100% tanpa dependensi luar). Semua berkas OpenXML menyimpan gambar beresolusi asli di dalam subfolder media internal (`word/media/`, `ppt/media/`, `xl/media/`):
    ```python
    import zipfile
    from pathlib import Path
@@ -129,11 +129,12 @@ Ketika pengguna meminta mengambil, mengekstrak, atau menyalin gambar/bagan dari 
    output_dir = Path("scratch/extracted_images")
    output_dir.mkdir(parents=True, exist_ok=True)
 
-   with zipfile.ZipFile("dokumen.docx", "r") as docx:
-       for item in docx.namelist():
-           if item.startswith("word/media/"):
+   # Bekerja otomatis untuk .docx, .pptx, maupun .xlsx:
+   with zipfile.ZipFile("dokumen_atau_slide.pptx", "r") as archive:
+       for item in archive.namelist():
+           if "/media/" in item and not item.endswith("/"):
                filename = Path(item).name
-               (output_dir / filename).write_bytes(docx.read(item))
+               (output_dir / filename).write_bytes(archive.read(item))
    ```
 
 2. **Dari Dokumen PDF (`.pdf`):**
