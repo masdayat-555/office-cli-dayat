@@ -11,11 +11,13 @@ Skill ini merupakan ekosistem terpadu untuk penanganan dokumen digital bagi AI c
 
 ## 0. STRATEGI PEMBAGIAN TUGAS (ARSITEKTUR KERJA)
 
-Untuk mencegah benturan fungsional dan degradasi format file:
+Untuk mencegah benturan fungsional dan degradasi format file, skill ini hanya berfokus pada dua engine utama:
 *   **Gunakan `markitdown` (Reading & Extraction Engine):**
     MUTLAK digunakan untuk tugas **MEMBACA CEPAT, EKSTRAKSI TEKS, TABEL, DAN METADATA** dari format biner kompleks (`.pdf`, `.docx`, `.xlsx`, `.pptx`, `.zip`, gambar/audio) menjadi teks Markdown bersih.
-*   **Gunakan `officecli` (Creation & Editing Engine):**
-    MUTLAK digunakan untuk tugas **MENGEDIT, MEMODIFIKASI, ATAU MEMBUAT DOKUMEN BARU** (`.docx`, `.xlsx`, `.pptx`). Mempertahankan struktur DOM OpenXML asli, nomor halaman, TOC, dan formatting visual.
+*   **Gunakan `officecli` (Creation & Editing Engine - WAJIB & MUTLAK):**
+    MUTLAK digunakan untuk tugas **MENGEDIT, MEMODIFIKASI, ATAU MEMBUAT DOKUMEN BARU** (`.docx`, `.xlsx`, `.pptx`). `officecli` menjamin pemeliharaan struktur DOM OpenXML asli, nomor halaman, TOC, header/footer, dan styling visual template secara presisi.
+*   **PANTANGAN MUTLAK: DILARANG MENGGUNAKAN `python-docx`:**
+    Library `python-docx` **DILARANG DIGUNAKAN** untuk memanipulasi dokumen naskah karena berisiko tinggi merusak format bawaan template OpenXML, menghilangkan field codes dinamis, dan merusak tata letak section. Seluruh proses authoring dan mutasi dokumen Word wajib dijalankan melalui `officecli`.
 
 ---
 
@@ -24,7 +26,7 @@ Untuk mencegah benturan fungsional dan degradasi format file:
 ### 1.0 Sinkronisasi Pembaruan Otomatis Bulanan (Monthly Auto-Update from GitHub)
 > [!IMPORTANT]
 > **Instruksi Mutlak bagi Agen AI (Untuk Seluruh Pengguna Publik):**  
-> Repositori ini didistribusikan untuk publik agar setiap pengguna selalu mendapatkan perbaikan bug, pemutakhiran standar SINTA/Scopus, dan template resmi terbaru langsung dari repositori GitHub pengembang.
+> Repositori ini didistribusikan untuk publik agar setiap pengguna selalu mendapatkan perbaikan bug, pemutakhiran standar SINTA/Scopus, dan template resmi terbaru langsung dari repositori GitHub resmi pengembang: [`masdayat-555/office-cli-dayat`](https://github.com/masdayat-555/office-cli-dayat).
 >
 > 1. **Pemeriksaan Rutin Setiap 30 Hari (1 Bulan):**  
 >    Setiap kali skill ini aktif untuk menangani tugas dokumen, agen **WAJIB** memeriksa kapan sinkronisasi terakhir dilakukan (via file `.last_update_check` di direktori skill).
@@ -36,9 +38,9 @@ Untuk mencegah benturan fungsional dan degradasi format file:
 >      ```
 >    - Atau lakukan penarikan git secara langsung:
 >      ```powershell
->      git -C "<path_ke_folder_skill>" pull origin main
+>      git -C "<path_ke_folder_skill>" pull --rebase --autostash origin main
 >      ```
->      *(Upstream GitHub: `https://github.com/<OWNER>/<REPO>.git` — detail URL repositori resmi menyusul).*
+>      *(Upstream GitHub: `https://github.com/masdayat-555/office-cli-dayat.git`).*
 > 3. **Non-Blocking Fallback:**  
 >    Jika pengguna berada dalam kondisi offline atau remote git belum terhubung, lewati pembaruan dan jangan sampai menggagalkan pekerjaan dokumen pengguna.
 > 4. **Pelaporan Singkat:** Jika terdapat file yang diperbarui (misalnya template atau resep baru), informasikan secara ringkas kepada pengguna.
@@ -76,11 +78,15 @@ Sebelum menjalankan tugas dokumen, agen juga **WAJIB** memverifikasi ketersediaa
     ```
   - **Linux / macOS (Bash):**
     ```bash
-    curl -fsSL https://d.officecli.ai/install.sh | bash
-    ```
+### 1.3 Tool Pendukung Ekstraksi Gambar PDF: pypdf (On-Demand)
+Jika tugas membutuhkan ekstraksi gambar biner (PNG/JPEG) dari berkas PDF:
+- **Perintah Instalasi (Jika Belum Terpasang):**
+  ```powershell
+  pip install pypdf
+  ```
 
 > [!IMPORTANT]
-> Jika salah satu atau kedua tool di atas belum terpasang di sistem pengguna, agen **WAJIB** menghentikan langkah sementara, menginformasikan status ketersediaan alat, dan menyajikan perintah instalasi di atas beserta tautan repositori resminya.
+> Jika salah satu atau kedua tool utama (MarkItDown / OfficeCLI) belum terpasang di sistem pengguna, agen **WAJIB** menghentikan langkah sementara, menginformasikan status ketersediaan alat, dan menyajikan perintah instalasi di atas beserta tautan repositori resminya.
 
 ---
 
@@ -109,6 +115,42 @@ Sebelum menjalankan tugas dokumen, agen juga **WAJIB** memverifikasi ketersediaa
    ```powershell
    officecli refresh "dokumen.docx"
    officecli close "dokumen.docx"
+   ```
+
+### 2.3 Ekstraksi Aset Gambar dari Dokumen (DOCX & PDF)
+Ketika pengguna meminta mengambil, mengekstrak, atau menyalin gambar/bagan dari dokumen:
+
+1. **Dari Dokumen Word (`.docx`):**
+   Gunakan library standar bawaan Python `zipfile` (tanpa dependensi luar). Seluruh gambar beresolusi asli tersimpan utuh di dalam arsip `word/media/`:
+   ```python
+   import zipfile
+   from pathlib import Path
+
+   output_dir = Path("scratch/extracted_images")
+   output_dir.mkdir(parents=True, exist_ok=True)
+
+   with zipfile.ZipFile("dokumen.docx", "r") as docx:
+       for item in docx.namelist():
+           if item.startswith("word/media/"):
+               filename = Path(item).name
+               (output_dir / filename).write_bytes(docx.read(item))
+   ```
+
+2. **Dari Dokumen PDF (`.pdf`):**
+   Gunakan library `pypdf` (jalankan `pip install pypdf` jika belum terpasang):
+   ```python
+   from pathlib import Path
+   from pypdf import PdfReader
+
+   output_dir = Path("scratch/extracted_images")
+   output_dir.mkdir(parents=True, exist_ok=True)
+
+   reader = PdfReader("dokumen.pdf")
+   for page_idx, page in enumerate(reader.pages):
+       for img_idx, img in enumerate(page.images):
+           ext = Path(img.name).suffix or ".png"
+           target_file = output_dir / f"page_{page_idx+1}_img_{img_idx+1}{ext}"
+           target_file.write_bytes(img.data)
    ```
 
 ---
@@ -141,10 +183,27 @@ Patuhi aturan mutlak berikut berdasarkan evaluasi komprehensif kesalahan masa la
 
 ## 4. STANDAR PENULISAN KARYA ILMIAH & DOKUMEN RESMI
 
-### 4.0 Kewajiban Deliverable File Akhir (.DOCX)
-Ketika pengguna meminta penulisan karya ilmiah, tugas akhir, atau artikel jurnal, **OUTPUT UTAMA YANG WAJIB DIBERIKAN ADALAH FILE WORD BERFORMAT `.DOCX` MENGGUNAKAN `officecli` / `python-docx`**. Agen DILARANG KERAS hanya berhenti pada file Markdown (`.md`)!
+### 4.0 Protokol Wajib: Peka Konteks Proyek & Persetujuan Draf Markdown (Proposal-First Protocol)
+Sebelum membuat atau mengubah dokumen resmi, agen **WAJIB** mematuhi alur kerja dua tahap berikut:
 
-### 4.1 Spesifikasi Tata Letak & Tipografi Baku
+1. **Peka Konteks Proyek (Mandatory Context Ingestion):**
+   - Sebelum menyusun naskah ilmiah/dokumen, agen **WAJIB membaca berkas Markdown penting di repositori proyek pengguna**, seperti: `README.md`, `doc.md`, `docs/*.md`, `PLAN.md`, `TODO.md`, atau berkas rencana penulisan lokal.
+   - Pahami secara mendalam: domain masalah, arsitektur sistem, dataset, tujuan penelitian, dan terminologi yang sudah ditetapkan oleh pengguna di proyek lokal agar isi naskah selaras dan tidak berhalusinasi.
+
+2. **Wajib Ajukan Draf Markdown Dahulu (Draft Plan in Markdown First):**
+   - **DILARANG KERAS** langsung melompat membuat berkas `.docx` biner tanpa kesepakatan struktur dengan pengguna!
+   - Agen **WAJIB menyusun draf outline / rencana struktur naskah dalam format Markdown terlebih dahulu** (bisa berupa draf file `.md` atau sajian terstruktur di chat) yang memuat:
+     - Judul usulan dwibahasa (ID & EN).
+     - Struktur bab/seksi (IMRaD atau Bab I–V).
+     - Poin-poin narasi inti setiap seksi.
+     - Rancangan tabel dan bagan visual.
+   - **Minta Persetujuan Pengguna:** Tanyakan kepada pengguna: *"Berikut adalah draf rancangan struktur dan poin-poin naskah. Apakah susunan ini sudah sesuai? Jika Anda setuju, saya akan segera mengompilasinya menjadi berkas Word .docx resmi."*
+   - Hanya setelah pengguna memberikan persetujuan (*approval*), agen mengeksekusi konversi ke format `.docx`.
+
+### 4.1 Kewajiban Deliverable File Akhir (.DOCX via OfficeCLI)
+Setelah draf Markdown disetujui pengguna, **OUTPUT UTAMA YANG WAJIB DIHASILKAN ADALAH FILE WORD BERFORMAT `.DOCX` MENGGUNAKAN `officecli` SECARA EKSKLUSIF**. Agen DILARANG KERAS menggunakan `python-docx` untuk menyusun naskah dan DILARANG KERAS hanya berhenti pada file Markdown (`.md`)! Seluruh operasi penulisan, perataan heading, dan pembuatan tabel wajib dieksekusi via `officecli` (batch DOM patch / set / add).
+
+### 4.2 Spesifikasi Tata Letak & Tipografi Baku
 1. **Batas Tepi (Margin):**
    - Artikel Jurnal SINTA / Scopus: Normal simetris **2,54 cm (1 inci)** di seluruh sisi (Top, Bottom, Left, Right).
    - Skripsi / Tesis Standar Indonesia: Format **4-4-3-3 cm** (Left 4 cm ruang jilid, Top 4 cm, Bottom 3 cm, Right 3 cm).
@@ -159,10 +218,25 @@ Ketika pengguna meminta penulisan karya ilmiah, tugas akhir, atau artikel jurnal
    - **Artikel Jurnal (SINTA & Scopus):** Menggunakan angka Arab kapital (`1. PENDAHULUAN`, `2. METODE PENELITIAN`, `3. HASIL DAN PEMBAHASAN`, `4. KESIMPULAN`). **DILARANG MENGGUNAKAN KATA 'BAB'**. Alur naskah mengalir kontinu (*Continuous Flow*) **tanpa Page Break antar-seksi**.
    - **Skripsi / Tesis:** **WAJIB MENGGUNAKAN KATA 'BAB'** (`BAB I PENDAHULUAN`, `BAB II TINJAUAN PUSTAKA`, dst.), dan setiap bab baru **MUTLAK MENGGUNAKAN PAGE BREAK** (`pageBreakBefore: true`).
 
-### 4.2 Format Elemen Khusus
-1. **Tabel Format APA:** Wajib menggunakan **3 garis horizontal tebal** (garis atas tabel, garis pemisah header, dan garis penutup bawah) dan **DILARANG menggunakan garis vertikal**. Judul diletakkan di **ATAS TABEL**.
-2. **Gambar:** Judul diletakkan di **BAWAH GAMBAR**, rata tengah, resolusi minimal 300 DPI.
-3. **Daftar Pustaka APA 7th Edition:**
+### 4.3 Adaptasi Elemen Semantik Cerdas (Smart Structural Conversion: Tabel & Tree)
+Ketika mentransformasikan konten draf ke dalam dokumen Word, agen harus adaptif dan peka terhadap representasi data:
+
+1. **Konversi Tabel Semantik (Anti-Raw Copy):**
+   - Jika pada draf terdapat representasi tabel (baik berupa tabel markdown `| col1 | col2 |`, tabel ASCII bergaris putus-putus `+---+---+`, atau baris data bergaris pemisah `--|--` yang memuat field/kolom dan record/baris):
+   - **DILARANG KERAS menyalinnya mentah sebagai teks biasa atau blok kode (````code````) di dokumen Word!**
+   - Agen **WAJIB** mengenalinya sebagai tabel semantik dan menyusunnya menjadi **Native Word Table (`w:tbl`)** berstandar APA:
+     - Tiga garis horizontal utama (garis pembuka atas, garis bawah header, dan garis penutup bawah; tanpa garis vertikal).
+     - Header dicetak tebal dengan latar abu-abu tipis (*#F2F2F2*).
+     - Ukuran font isi sel 10–11 pt, spasi tunggal (1.0x).
+2. **Konversi Struktur Pohon / Hierarki / Tree (Anti-Raw Copy):**
+   - Jika draf memuat diagram pohon (seperti pohon direktori `├── folder/`, pohon keputusan, bagan organisasi, atau taksonomi hierarkis):
+   - **DILARANG KERAS menyalin karakter ASCII `├──`, `└──` secara mentah ke dalam paragraf dokumen formal!**
+   - Agen **WAJIB** menyusunnya secara adaptif:
+     - Mengubahnya menjadi **Nested Indented Bullet List** (daftar butir bertingkat terindentasi rapi), ATAU
+     - Menyusunnya ke dalam **Tabel Hierarkis Terstruktur** (dengan kolom Tingkat/Modul, Sub-Komponen, dan Deskripsi Fungsi), ATAU
+     - Jika dibutuhkan representasi grafis, agen dapat merekomendasikan/mewajibkan library visual diagram (seperti Graphviz atau Pillow).
+3. **Gambar:** Judul diletakkan di **BAWAH GAMBAR**, rata tengah, resolusi minimal 300 DPI.
+4. **Daftar Pustaka APA 7th Edition:**
    - Diurutkan secara alfabetis (A–Z), menggunakan paragraf gantung (*hanging indent* 1,27 cm), spasi tunggal, dan wajib memuat tautan DOI aktif (`https://doi.org/...`).
    - Minimal 80% berasal dari jurnal bereputasi 5–10 tahun terakhir.
 

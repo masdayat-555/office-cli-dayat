@@ -312,110 +312,154 @@ Untuk menghasilkan halaman awal Romawi (i, ii, iii) di tengah bawah, dan halaman
 
 ---
 
-## 9. RESEP 8: BUILDER DOKUMEN ILMIAH PRESISI (PYTHON-DOCX + APA TABLE + SUPERSCRIPT)
+## 9. RESEP 8: BUILDER DOKUMEN ILMIAH PRESISI MENGGUNAKAN OFFICECLI BATCH DOM
 
-Skrip acuan berikut menyusun naskah ilmiah dengan pemisahan metadata terpusat, superskrip asli, dan tabel APA 3 garis horizontal:
+Seluruh manipulasi naskah dan penyisipan tabel/elemen wajib dieksekusi melalui `officecli batch` untuk menjamin struktur OpenXML asli dan field codes tidak rusak:
 
-```python
-import sys
-import docx
-from docx.enum.text import WD_ALIGN_PARAGRAPH
-from docx.oxml import parse_xml
-from docx.oxml.ns import nsdecls
-from docx.shared import Inches, Pt, RGBColor
-
-# Wajib untuk Windows: cegah error cp1252 pada simbol Yunani
-sys.stdout.reconfigure(encoding="utf-8")
-
-
-def set_apa_table_borders(table):
-  """Menerapkan format APA 3 garis horizontal (Top, Header Bottom, Table Bottom)."""
-  tblPr = table._tbl.tblPr
-  for child in list(tblPr):
-    if child.tag.endswith("tblBorders"):
-      tblPr.remove(child)
-  borders_xml = parse_xml(
-      '<w:tblBorders %s><w:top w:val="single" w:sz="12" w:space="0"'
-      ' w:color="000000"/><w:left w:val="none"/><w:bottom w:val="single"'
-      ' w:sz="12" w:space="0" w:color="000000"/><w:right w:val="none"/><w:insideH'
-      ' w:val="none"/><w:insideV w:val="none"/></w:tblBorders>'
-      % nsdecls("w")
-  )
-  tblPr.append(borders_xml)
-
-  # Beri garis bawah pada baris header (row 0)
-  for cell in table.rows[0].cells:
-    tcPr = cell._tc.get_or_add_tcPr()
-    tcBorders = parse_xml(
-        '<w:tcBorders %s><w:bottom w:val="single" w:sz="8" w:space="0"'
-        ' w:color="000000"/></w:tcBorders>'
-        % nsdecls("w")
-    )
-    tcPr.append(tcBorders)
-
-
-def add_author_metadata(doc, authors_data):
-  """Menambahkan identitas penulis dengan superskrip run asli tanpa kebocoran LaTeX."""
-  # authors_data: [("Nama Penulis", "1*"), ("Nama Penulis 2", "2")]
-  p = doc.add_paragraph()
-  p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-  p.paragraph_format.space_before = Pt(6)
-  p.paragraph_format.space_after = Pt(2)
-  for i, (name, sup) in enumerate(authors_data):
-    r_name = p.add_run(name)
-    r_name.font.name = "Times New Roman"
-    r_name.font.bold = True
-    r_name.font.size = Pt(11)
-    if sup:
-      r_sup = p.add_run(sup)
-      r_sup.font.name = "Times New Roman"
-      r_sup.font.superscript = True
-      r_sup.font.bold = True
-    if i < len(authors_data) - 1:
-      r_comma = p.add_run(", ")
-      r_comma.font.name = "Times New Roman"
+```json
+[
+  {
+    "command": "add",
+    "path": "/body",
+    "type": "paragraph",
+    "props": {
+      "style": "Heading1",
+      "text": "1. PENDAHULUAN"
+    }
+  },
+  {
+    "command": "add",
+    "path": "/body",
+    "type": "paragraph",
+    "props": {
+      "style": "Normal",
+      "text": "Penelitian ini menyajikan evaluasi empiris terhadap adaptasi model berbasis transformer pada domain spesifik naskah ilmiah..."
+    }
+  },
+  {
+    "command": "add",
+    "path": "/body",
+    "type": "table",
+    "props": {
+      "rows": 4,
+      "cols": 4,
+      "style": "TableGrid",
+      "alignment": "center"
+    }
+  },
+  {
+    "command": "set",
+    "path": "/body/table[1]",
+    "props": {
+      "borderTop": "single 1.5pt 000000",
+      "borderBottom": "single 1.5pt 000000",
+      "borderLeft": "none",
+      "borderRight": "none",
+      "borderInsideH": "none",
+      "borderInsideV": "none"
+    }
+  },
+  {
+    "command": "set",
+    "path": "/body/table[1]/row[1]",
+    "props": {
+      "borderBottom": "single 1.0pt 000000",
+      "shading": "F2F2F2"
+    }
+  }
+]
 ```
 
 ---
 
-## 10. RESEP 9: QUALITY GATE AUDIT SCRIPT (VERIFIKASI ANTI-KONFLIK PENGKODEAN)
+## 10. RESEP 9: QUALITY GATE AUDIT SCRIPT (INSPEKSI XML RAW TANPA DEPENDENSI)
 
-Jalankan script audit ini untuk memastikan dokumen bebas dari kesalahan pengkodean:
+Jalankan script audit ini menggunakan library bawaan Python `zipfile` untuk menginspeksi berkas `word/document.xml` langsung tanpa membutuhkan `python-docx`:
 
 ```python
 import sys
-import docx
+import zipfile
+import re
 
 
-def audit_cleanliness(docx_path: str):
-  doc = docx.Document(docx_path)
+def audit_cleanliness(docx_path: str) -> bool:
+  """Memeriksa kebersihan naskah Word dari kebocoran sintaks LaTeX dan format mentah langsung dari XML."""
   violations = []
-  dollar_char = chr(36)  # '$'
+  dollar_pattern = re.compile(r'\$[^<>$]+\$')
+  latex_command_pattern = re.compile(r'\\(kappa|Delta|times|approx|sum|frac|begin|end)')
 
-  for idx, p in enumerate(doc.paragraphs):
-    t = p.text
-    if dollar_char in t:
-      violations.append(f"Paragraf {idx} memuat karakter dollar: {t[:60]}")
-    if "^{" in t or "_{" in t:
-      violations.append(f"Paragraf {idx} memuat tag kurung LaTeX: {t[:60]}")
-    if "\\kappa" in t or "\\Delta" in t or "\\frac" in t:
-      violations.append(f"Paragraf {idx} memuat perintah LaTeX mentah: {t[:60]}")
+  with zipfile.ZipFile(docx_path, "r") as docx:
+    if "word/document.xml" not in docx.namelist():
+      print("ERROR: Berkas bukan dokumen Word OpenXML yang valid!")
+      return False
+    xml_content = docx.read("word/document.xml").decode("utf-8")
 
-  for t_idx, table in enumerate(doc.tables):
-    for r_idx, row in enumerate(table.rows):
-      for c_idx, cell in enumerate(row.cells):
-        t = cell.text
-        if dollar_char in t or "^{" in t:
-          violations.append(
-              f"Tabel {t_idx}[{r_idx},{c_idx}] memuat sintaks bocor: {t[:40]}"
-          )
+  # Ekstrak seluruh teks dalam tag w:t
+  texts = re.findall(r'<w:t[^>]*>(.*?)</w:t>', xml_content)
+  full_body_text = " ".join(texts)
+
+  if "$" in full_body_text:
+    violations.append("Ditemukan karakter dollar ($) yang mengindikasikan kebocoran LaTeX!")
+  if "^{" in full_body_text or "_{" in full_body_text:
+    violations.append("Ditemukan tag kurung kurawal LaTeX (^{ atau _{})!")
+  if latex_command_pattern.search(full_body_text):
+    violations.append("Ditemukan perintah backslash LaTeX mentah (seperti \\Delta atau \\kappa)!")
 
   if violations:
-    print(f"AUDIT FAILED: Ditemukan {len(violations)} pelanggaran!")
+    print(f"AUDIT GAGAL: Ditemukan {len(violations)} pelanggaran!")
     for v in violations:
       print(" -", v)
-      return False
+    return False
   else:
-    print("AUDIT PASSED: Dokumen 100% bersih dari konflik pengkodean & LaTeX.")
+    print("AUDIT BERHASIL: Dokumen 100% bersih, valid, dan bebas dari kebocoran sintaks LaTeX.")
     return True
 ```
+
+---
+
+## 11. RESEP 10: AUTOMATED ASSET EXTRACTION (EKSTRAKSI GAMBAR DARI DOCX & PDF)
+
+Resep Python untuk mengekstrak seluruh gambar biner asli dari dokumen sumber tanpa kompresi atau degradasi kualitas:
+
+```python
+import zipfile
+from pathlib import Path
+
+
+def extract_images_from_docx(docx_path: str, output_folder: str) -> list[str]:
+  """Mengekstrak seluruh gambar biner asli dari berkas DOCX menggunakan zipfile bawaan."""
+  out = Path(output_folder)
+  out.mkdir(parents=True, exist_ok=True)
+  extracted = []
+
+  with zipfile.ZipFile(docx_path, "r") as z:
+    for item in z.namelist():
+      if item.startswith("word/media/"):
+        target = out / Path(item).name
+        target.write_bytes(z.read(item))
+        extracted.append(str(target))
+
+  print(f"Ekstraksi DOCX selesai: {len(extracted)} gambar tersimpan di {out}")
+  return extracted
+
+
+def extract_images_from_pdf(pdf_path: str, output_folder: str) -> list[str]:
+  """Mengekstrak seluruh gambar biner dari berkas PDF menggunakan pypdf."""
+  from pypdf import PdfReader
+
+  out = Path(output_folder)
+  out.mkdir(parents=True, exist_ok=True)
+  extracted = []
+
+  reader = PdfReader(pdf_path)
+  for page_idx, page in enumerate(reader.pages):
+    for img_idx, img in enumerate(page.images):
+      ext = Path(img.name).suffix or ".png"
+      target = out / f"page_{page_idx+1}_img_{img_idx+1}{ext}"
+      target.write_bytes(img.data)
+      extracted.append(str(target))
+
+  print(f"Ekstraksi PDF selesai: {len(extracted)} gambar tersimpan di {out}")
+  return extracted
+```
+

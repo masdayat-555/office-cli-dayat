@@ -32,6 +32,9 @@ def save_check_date(date: datetime):
         print(f"[WARN] Gagal mencatat tanggal pembaruan: {e}")
 
 
+OFFICIAL_REPO_URL = "https://github.com/masdayat-555/office-cli-dayat.git"
+
+
 def is_git_repo(path: Path) -> bool:
     return (path / ".git").exists()
 
@@ -47,11 +50,11 @@ def check_and_update(force: bool = False) -> bool:
             print(f"[INFO] Skill 'office-cli' up-to-date (pemeriksaan terakhir: {last_check.date()}, cek berikutnya dalam ~{days_left} hari).")
             return True
 
-    print(f"[SYNC] Memeriksa pembaruan bulanan untuk skill 'office-cli' dari GitHub...")
+    print(f"[SYNC] Memeriksa pembaruan bulanan untuk skill 'office-cli' dari GitHub ({OFFICIAL_REPO_URL})...")
 
     if not is_git_repo(SKILL_DIR):
-        print("[NOTICE] Direktori skill belum diinisialisasi sebagai repositori git lokal.")
-        print("         Saat URL GitHub siap, hubungkan remote dengan: git remote add origin <URL-GITHUB>")
+        print(f"[NOTICE] Direktori skill belum diinisialisasi sebagai repositori git lokal.")
+        print(f"         Menghubungkan ke: {OFFICIAL_REPO_URL}")
         save_check_date(now)
         return False
 
@@ -64,15 +67,19 @@ def check_and_update(force: bool = False) -> bool:
         encoding="utf-8"
     )
     if remote_check.returncode != 0 or not remote_check.stdout.strip():
-        print("[NOTICE] Git remote belum disetel (detail repositori GitHub menyusul).")
-        print("         Untuk menghubungkan nanti: git remote add origin https://github.com/<USERNAME>/<REPO>.git")
-        save_check_date(now)
-        return False
+        print(f"[NOTICE] Git remote belum ada. Menambahkan remote origin...")
+        subprocess.run(
+            ["git", "remote", "add", "origin", OFFICIAL_REPO_URL],
+            cwd=SKILL_DIR,
+            capture_output=True,
+            text=True,
+            encoding="utf-8"
+        )
 
-    # Tarik update terbaru
-    print("[SYNC] Menjalankan git pull origin main...")
+    # Tarik update terbaru dengan rebase & autostash agar bebas konflik
+    print("[SYNC] Menjalankan git pull --rebase --autostash origin main...")
     pull = subprocess.run(
-        ["git", "pull", "--ff-only"],
+        ["git", "pull", "--rebase", "--autostash", "origin", "main"],
         cwd=SKILL_DIR,
         capture_output=True,
         text=True,
