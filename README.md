@@ -2,36 +2,39 @@
 
 # 📄 Unified Office & Document Suite for AI Agents
 
-**The definitive document authoring & intelligence skill for AI coding assistants.**  
-*Generate publication-ready Word documents (SINTA, Scopus, Skripsi) and extract multi-format documents (PDF, Excel, Word, PPT) with zero formatting defects.*
+**Skill Pembuatan & Kecerdasan Dokumen Terlengkap untuk AI Coding Assistant.**  
+*Menyusun dokumen Word siap publikasi (SINTA, Scopus, Skripsi, Kerja Praktik) dan mengekstrak dokumen multi-format (PDF, Excel, Word, PPT) dengan format 100% presisi.*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/masdayat-555/office-cli-dayat)
 [![Standard](https://img.shields.io/badge/Standard-SINTA%201--6%20%7C%20Scopus%20Q1--Q4%20%7C%20APA%207th-purple.svg)]()
 
+[🇮🇩 Bahasa Indonesia](#-bahasa-indonesia) • [🇬🇧 English](#-english-version)
+
 ---
 
 </div>
 
-## ✨ What This Skill Does
+<a name="-bahasa-indonesia"></a>
+## 🇮🇩 Bahasa Indonesia
 
-This skill equips your AI coding agent (Antigravity, Cursor, Claude Code, VS Code, Windsurf) with native capabilities to **read**, **author**, and **format** professional office documents:
+### ✨ Fitur Utama
+Skill ini membekali asisten koding AI Anda (Antigravity, Cursor, Claude Code, Windsurf, VS Code, Roo Code, dll.) dengan kapabilitas native untuk **membaca**, **mengekstrak**, dan **menyusun** dokumen perkantoran profesional:
 
-* 🎓 **SINTA 1–6 Accredited Journals:** Strict IMRaD structure, Page 1 Fit abstract layout, bilingual front matter, continuous flow (no artificial page breaks), and APA 3-line tables.
-* 🌐 **Scopus & WoS International Standards:** Extended IMRaD, related work matrices, statistical validation, and academic ethics declarations.
-* 📚 **Indonesian Standard Thesis & Skripsi:** 4-4-3-3 cm and 4-3-3-3 cm margins, formal Chapter/BAB structure, dynamic Table of Contents (TOC), and hanging indent APA bibliographies.
-* 💼 **Internship & Industrial Reports (Kerja Praktik / PKL / MBKM):** Company profile, organizational hierarchy, project implementation, quality control evaluations, and weekly logbooks.
-* 📑 **Deep Multi-Format Document Ingestion:** Extracts text, tables, and metadata from PDF, DOCX, XLSX, and PPTX into clean Markdown for AI reasoning.
-* 🖼️ **Image & Figure Asset Extraction:** Losslessly extracts embedded photos, diagrams, and charts from Word DOCX, PPTX, XLSX, and PDF documents.
-* 🎯 **Guaranteed Native Word Output (`.docx`):** Produces pristine Microsoft Word deliverables instead of stopping at plain Markdown.
-
+* 🎓 **Jurnal Terakreditasi SINTA 1–6:** Struktur IMRaD baku, garansi *Page 1 Fit* (seluruh abstrak bilingual tuntas di halaman 1), alur kontinu tanpa jeda halaman palsu, dan tabel ilmiah APA 3 garis horizontal.
+* 🌐 **Jurnal Internasional Bereputasi Scopus Q1–Q4 & WoS:** Extended IMRaD, matriks perbandingan penelitian terdahulu (*State-of-the-Art*), validasi statistik, integrasi ORCID, serta pernyataan etika data.
+* 📚 **Skripsi & Tugas Akhir Standar Perguruan Tinggi:** Format margin 4-4-3-3 cm dan variasi teknik 4-3-3-3 cm, spasi 1.25x / 1.5x, penomoran formal BAB (Heading 1-3), daftar isi otomatis (*dynamic TOC*), Intisari 3 alinea presisi, dan daftar pustaka *hanging indent*.
+* 💼 **Laporan Kerja Praktik (KP), PKL, & Magang Industri:** Profil & struktur organisasi mitra, uraian SOP kerja, pelaksanaan fitur sistem, pengendalian mutu (*quality control*), dan logbook mingguan.
+* 📑 **Ekstraksi Dokumen Multi-Format:** Mengonversi PDF, DOCX, XLSX, dan PPTX menjadi Markdown terstruktur untuk penalaran AI via Microsoft MarkItDown.
+* 🖼️ **Ekstraksi Aset Gambar & Bagan:** Mengambil seluruh gambar asli dari Word (DOCX), slide PowerPoint (PPTX), tabel Excel (XLSX), dan PDF dalam resolusi 100% asli tanpa kompresi.
+* 🎯 **Garansi Output Word Asli (`.docx`):** Menghasilkan deliverable berkas Word murni menggunakan OfficeCLI secara rapi, bukan sekadar file teks Markdown.
 
 ---
 
-## 🚀 Installation
+### 🚀 Cara Pemasangan (Instalasi)
 
-### 💬 Copy & Paste to Your AI Agent (Easiest)
-Copy and paste this prompt directly into your AI Assistant (Antigravity, Cursor, Claude Code, Windsurf, etc.):
+#### 💬 Opsi 1: Salin & Tempel Prompt ke AI Agent Anda (Paling Mudah)
+Cukup salin dan tempel prompt di bawah ini langsung ke obrolan AI Assistant Anda (Antigravity, Cursor, Claude Code, Windsurf, dll.):
 
 ```text
 Tolong pasang skill office-cli ini ke folder skills kamu:
@@ -40,25 +43,28 @@ git clone https://github.com/masdayat-555/office-cli-dayat.git ~/.agents/skills/
 
 ---
 
-### 💻 Or Run Directly in Terminal
+#### 💻 Opsi 2: Jalankan Langsung di Terminal
+Jika Anda lebih suka menjalankan perintah terminal secara manual:
+
 ```bash
 git clone https://github.com/masdayat-555/office-cli-dayat.git ~/.agents/skills/office-cli
 ```
 
-
-
 ---
 
-## 💡 How to Use
-
-Once installed, you don't need to learn any complex commands. Just prompt your AI assistant naturally:
+### 💡 Cara Penggunaan
+Setelah terpasang, Anda tidak perlu menghafal perintah yang rumit. Cukup berikan instruksi dengan bahasa alami ke AI Agent Anda:
 
 ```text
-"Buatkan draf artikel jurnal ilmiah standar SINTA 2 dengan topik evaluasi IndoBERT..."
+"Buatkan draf artikel jurnal ilmiah standar SINTA 2 tentang analisis sentimen IndoBERT..."
 ```
 
 ```text
-"Format dokumen skripsi ini ke standar baku nasional (margin 4-4-3-3, font TNR 12 pt, 1.5 spasi)..."
+"Format dokumen skripsi ini ke standar baku (margin 4-3-3-3 cm, Times New Roman 12 pt, 1.25 spasi)..."
+```
+
+```text
+"Susun Laporan Kerja Praktik 5 bab berdasarkan catatan logbook dan profil perusahaan ini..."
 ```
 
 ```text
@@ -66,77 +72,115 @@ Once installed, you don't need to learn any complex commands. Just prompt your A
 ```
 
 ```text
-"Ekstrak dan analisis tabel data keuangan dari laporan.pdf ini..."
+"Ekstrak dan analisis tabel data dari laporan.pdf ini..."
 ```
 
-Your AI assistant will automatically activate this skill, orchestrate the document engines, and deliver a publication-ready `.docx` file.
+AI Agent akan otomatis mengaktifkan skill ini, mengonfirmasi preferensi template Anda, dan menghasilkan berkas `.docx` resmi.
 
 ---
 
-## ⚙️ Prerequisites
+### ⚙️ Kebutuhan Sistem (Prasyarat)
+Skill ini memanfaatkan dua mesin *open-source* yang terpasang di terminal sistem Anda:
 
-This skill leverages two open-source CLI engines installed on your system:
+1. **Microsoft MarkItDown (Mesin Pembaca Dokumen):**
+   ```bash
+   pip install markitdown
+   # Opsional: untuk dukungan OCR gambar & Audio Speech-to-Text:
+   pip install markitdown[all]
+   ```
 
-### 1. Microsoft MarkItDown (Document Ingestion Engine)
-```bash
-pip install markitdown
-# Optional: for OCR & Audio Speech-to-Text:
-pip install markitdown[all]
-```
-
-### 2. OfficeCLI (Document Authoring Engine)
-- **Windows (PowerShell):**
-  ```powershell
-  irm https://d.officecli.ai/install.ps1 | iex
-  ```
-- **Linux / macOS (Bash):**
-  ```bash
-  curl -fsSL https://d.officecli.ai/install.sh | bash
-  ```
+2. **OfficeCLI (Mesin Penyusun Dokumen Word):**
+   - **Windows (PowerShell):**
+     ```powershell
+     irm https://d.officecli.ai/install.ps1 | iex
+     ```
+   - **Linux / macOS (Bash):**
+     ```bash
+     curl -fsSL https://d.officecli.ai/install.sh | bash
+     ```
 
 ---
 
-## 🔄 Updates & Maintenance
-
-The skill automatically checks and updates itself every **30 days** via:
+### 🔄 Sinkronisasi Pembaruan Otomatis
+Skill ini dilengkapi skrip sinkronisasi otomatis setiap **30 hari** melalui:
 ```bash
 git pull --rebase --autostash origin main
 ```
-You can also trigger an update at any time by asking your agent (*"perbarui skill office-cli"*).
+Anda juga dapat memperbarui kapan saja dengan meminta ke agent (*"perbarui skill office-cli"*).
 
 ---
 
-## 📁 Repository Structure
+### 📁 Struktur Direktori Repositori
 
 ```text
 office-cli/
-├── SKILL.md                                 # Core agent instructions & guidelines
-├── README.md                                # Public overview & documentation
+├── SKILL.md                                 # Instruksi utama & pedoman agen AI
+├── README.md                                # Dokumentasi publik dwibahasa
 ├── scripts/
-│   └── check_update.py                      # 30-day automated update checker
+│   └── check_update.py                      # Skrip pemeriksaan pembaruan otomatis 30 hari
 ├── templates/
-│   ├── template_jurnal_sinta.docx           # Master universal SINTA OJS template
-│   ├── template_laporan_tugas_akhir.docx    # Master universal Thesis / Skripsi template
-│   └── template_laporan_kerja_praktik.docx  # Master universal Internship / KP template
+│   ├── template_jurnal_sinta.docx           # Master template universal Jurnal OJS SINTA
+│   ├── template_laporan_tugas_akhir.docx    # Master template universal Skripsi / Tugas Akhir
+│   └── template_laporan_kerja_praktik.docx  # Master template universal Kerja Praktik / Magang
 └── references/
-    ├── pedoman_jurnal_sinta.md              # SINTA 1-6 comprehensive publication guide
-    ├── pedoman_jurnal_scopus.md             # Scopus Q1-Q4 international journal guide
-    ├── pedoman_skripsi_lengkap.md           # Indonesian standard thesis & skripsi guide
-    ├── pedoman_kerja_praktik.md             # Internship & industrial report guide
-    ├── resep_officecli_dokumen_ilmiah.md    # Scientific document formatting recipes
-    └── aturan_adaptif_pedoman_kampus.md     # Dynamic override engine & routing hub
+    ├── pedoman_jurnal_sinta.md              # Panduan publikasi jurnal SINTA 1–6
+    ├── pedoman_jurnal_scopus.md             # Panduan publikasi jurnal Scopus Q1–Q4
+    ├── pedoman_skripsi_lengkap.md           # Panduan lengkap skripsi & tugas akhir 5 bab
+    ├── pedoman_kerja_praktik.md             # Panduan laporan kerja praktik & magang industri
+    ├── resep_officecli_dokumen_ilmiah.md    # Resep batch JSON teknis OfficeCLI (Resep 1–12)
+    └── aturan_adaptif_pedoman_kampus.md     # Mesin adaptasi & matriks komparatif dokumen
 ```
 
 ---
 
-## 📄 License & Third-Party Notices
+<a name="-english-version"></a>
+## 🇬🇧 English Version
 
-This skill is open-sourced under the [MIT License](LICENSE).
+### ✨ Overview
+**Unified Office & Document Suite** empowers your AI coding assistants (Antigravity, Cursor, Claude Code, Windsurf, VS Code, Roo Code, etc.) with native capabilities to **ingest**, **extract**, and **author** professional office documents:
 
-### Third-Party Software & Acknowledgments
-* **[Microsoft MarkItDown](https://github.com/microsoft/markitdown):** Released under the **MIT License** by Microsoft Corporation. Copyright (c) Microsoft Corporation.
-* **[OfficeCLI](https://officecli.ai):** OpenXML CLI manipulation engine. Copyright (c) OfficeCLI Contributors.
+* 🎓 **SINTA 1–6 & Scopus Journals:** Fully compliant IMRaD workflows, Page 1 Fit abstracts, continuous flow sections, and APA 3-line tables.
+* 📚 **Undergraduate Theses & Dissertations (Skripsi):** 4-4-3-3 cm and 4-3-3-3 cm margins, formal chapter hierarchy, automated Table of Contents (TOC), and hanging indent bibliographies.
+* 💼 **Internship & Industrial Reports (Kerja Praktik / PKL):** Organizational hierarchies, SOPs, system implementation, and weekly activity records.
+* 📑 **Deep Multi-Format Document Ingestion:** Extracts text, tables, and structure from PDF, DOCX, XLSX, and PPTX via Microsoft MarkItDown.
+* 🖼️ **Asset Extraction:** Losslessly extracts embedded images and diagrams from Word, PowerPoint, Excel, and PDF files.
+* 🎯 **Guaranteed Word (`.docx`) Deliverables:** Compiles pristine OpenXML Word documents directly without manual formatting overhead.
 
-### Disclaimer & Trademarks
-*Microsoft, Microsoft Office, Word, Excel, PowerPoint, and MarkItDown are trademarks or registered trademarks of Microsoft Corporation in the United States and/or other countries.*  
-*This project is an independent community skill and is not affiliated with, sponsored by, or endorsed by Microsoft Corporation.*
+---
+
+### 🚀 Installation
+
+#### 💬 Option 1: Copy-Paste Prompt to Your AI Agent (Easiest)
+Paste this prompt into your AI Assistant chat:
+
+```text
+Tolong pasang skill office-cli ini ke folder skills kamu:
+git clone https://github.com/masdayat-555/office-cli-dayat.git ~/.agents/skills/office-cli
+```
+
+#### 💻 Option 2: Terminal Command
+```bash
+git clone https://github.com/masdayat-555/office-cli-dayat.git ~/.agents/skills/office-cli
+```
+
+---
+
+### ⚙️ Prerequisites
+1. **Microsoft MarkItDown:** `pip install markitdown`
+2. **OfficeCLI:**
+   - Windows: `irm https://d.officecli.ai/install.ps1 | iex`
+   - Linux/macOS: `curl -fsSL https://d.officecli.ai/install.sh | bash`
+
+---
+
+## 📄 Lisensi & Hak Cipta (License)
+
+Skill ini dilisensikan di bawah [MIT License](LICENSE).
+
+### Perangkat Lunak Pihak Ketiga (Third-Party Notices)
+* **[Microsoft MarkItDown](https://github.com/microsoft/markitdown):** Dilisensikan di bawah **MIT License** oleh Microsoft Corporation. Hak Cipta (c) Microsoft Corporation.
+* **[OfficeCLI](https://officecli.ai):** OpenXML CLI engine. Hak Cipta (c) OfficeCLI Contributors.
+
+### Penafian Merek Dagang (Trademark Disclaimer)
+*Microsoft, Microsoft Office, Word, Excel, PowerPoint, dan MarkItDown adalah merek dagang atau merek dagang terdaftar milik Microsoft Corporation di Amerika Serikat dan/atau negara lainnya.*  
+*Proyek ini adalah skill komunitas independen dan tidak berafiliasi dengan, disponsori oleh, atau didukung oleh Microsoft Corporation.*
