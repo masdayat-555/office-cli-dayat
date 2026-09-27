@@ -127,4 +127,29 @@ Jika di dalam satu sub bab terdapat daftar butir bertingkat, gunakan urutan hier
    - **DAFTAR PUSTAKA** (Standar APA / IEEE, hanging indent 1,27 cm, spasi tunggal).
    - **LAMPIRAN** (Kode sumber, lembar pengujian, instrumen penelitian, data mentah).
 
+---
+
+## 7. STANDAR UNIVERSAL LAPORAN KERJA PRAKTIK (KP) / MAGANG INDUSTRI (4–5 BAB)
+
+Laporan Kerja Praktik (KP), Praktik Kerja Lapangan (PKL), atau Magang Industri memiliki orientasi implementasi praktis di dunia kerja:
+
+### 7.1 Tata Letak & Margin
+- **Kertas:** A4 (21,0 cm x 29,7 cm).
+- **Margin:** Format **4-3-3-3 cm** (Top: 4 cm, Left: 3 cm atau 4 cm, Bottom: 3 cm, Right: 3 cm) atau 4-4-3-3 cm.
+- **Tipografi & Spasi:** *Times New Roman* 12 pt, spasi **1,25x** atau **1,5x**, *Justified*, indentasi alinea 1,0 – 1,27 cm.
+
+### 7.2 Anatomi 5 Bab Laporan Kerja Praktik
+- **BAB 1. PENDAHULUAN:** Latar Belakang KP, Maksud & Tujuan, Manfaat bagi Mahasiswa/Kampus/Mitra Perusahaan, Waktu & Tempat Pelaksanaan, Batasan Penugasan, Sistematika Laporan.
+- **BAB 2. GAMBARAN UMUM PERUSAHAAN / MITRA:** Profil Singkat, Visi & Misi, Struktur Organisasi Perusahaan, Deskripsi Divisi/Unit Kerja Penempatan, Proses Bisnis Utama.
+- **BAB 3. PELAKSANAAN KERJA PRAKTIK:** Uraian Tugas & Tanggung Jawab Harian, Prosedur Kerja / SOP, Perangkat & Teknologi yang Digunakan, Tahapan Analisis/Perancangan/Implementasi Proyek.
+- **BAB 4. EVALUASI DAN PENGENDALIAN PEKERJAAN:** Pengendalian Mutu Kerja (*Quality Assurance*), Kendala Teknis Lapangan, Solusi Pemecahan Masalah (*Problem Solving*), Pembahasan Hasil Evaluasi Pekerjaan.
+- **BAB 5. PENUTUP:** 5.1 Kesimpulan Capaian KP, 5.2 Saran Perbaikan untuk Perusahaan Mitra & untuk Kurikulum Program Studi Kampus.
+
+### 7.3 Kelengkapan Lampiran Khusus KP
+- Wajib menyertakan Surat Keterangan / Sertifikat Selesai Magang dari Perusahaan.
+- Lembar Penilaian Pembimbing Lapangan.
+- Logbook Kegiatan Mingguan (*Weekly Activity Log*).
+- Foto Dokumentasi Kegiatan di Lingkungan Kerja.
+
+
 

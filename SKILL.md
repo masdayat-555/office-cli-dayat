@@ -269,6 +269,7 @@ Saat menangani penyusunan dokumen mendalam, agen dapat berkonsultasi pada dokume
 - [Pedoman Jurnal SINTA Lengkap (SINTA 1-6)](references/pedoman_jurnal_sinta.md): Standar resmi naskah jurnal nasional terakreditasi SINTA (IMRaD baku, Page 1 Fit, Byline, Tabel APA, tanpa kata BAB).
 - [Pedoman Jurnal Internasional Scopus (Q1-Q4)](references/pedoman_jurnal_scopus.md): Panduan penulisan jurnal bereputasi global Scopus/WoS, sistem kuartil Q1-Q4, extended IMRaD, pengujian statistik, etika data, dan jalur peningkatan (*upgrading pathway*) dari SINTA ke Scopus.
 - [Pedoman Skripsi Lengkap](references/pedoman_skripsi_lengkap.md): Anatomi lengkap Skripsi/Tesis dari Bab I sampai Bab V, preliminary pages, hingga lampiran.
+- [Pedoman Kerja Praktik Lengkap](references/pedoman_kerja_praktik.md): Panduan penyusunan Laporan Kerja Praktik (KP), PKL, dan Magang Industri (profil mitra, SOP, pelaksanaan proyek, evaluasi pengendalian mutu, logbook).
 - [Resep Teknis OfficeCLI Dokumen Ilmiah](references/resep_officecli_dokumen_ilmiah.md): Kumpulan batch JSON siap pakai untuk pembuatan margin, style heading 1-3, TOC otomatis, tabel APA, gambar, hanging indent, dan refresh.
 - [Aturan Adaptif Pedoman Kampus](references/aturan_adaptif_pedoman_kampus.md): Panduan penyesuaian dinamis terhadap variasi aturan kampus dan penulisan.
 
@@ -290,5 +291,12 @@ Untuk memastikan konsistensi tata letak tanpa mengotori workspace aktif pengguna
   - Heading bertingkat baku (Heading 1 ALL CAPS, Heading 2 Capitalize Each Word, Heading 3 Sentence Case).
   - Bagian Awal lengkap (Halaman Judul, Pengesahan, Pernyataan Keaslian Bermaterai, Kata Pengantar, Daftar Isi, Daftar Tabel, Daftar Gambar, Daftar Singkatan, Intisari 3 Alinea) dengan penomoran Romawi kecil (`i, ii, iii...`).
   - Bagian Utama 5 Bab (Pendahuluan, Tinjauan Pustaka, Landasan Teori, Hasil dan Pembahasan, Kesimpulan dan Saran) dengan penomoran Arab (`1, 2, 3...`).
-  - Menggunakan placeholder anonim terstandar (`[NAMA PERGURUAN TINGGI]`, `[FAKULTAS]`, `[PROGRAM STUDI]`, `[KOTA]`, `[LOGO INSTITUSI]`) sehingga 100% netral dan dapat diadopsi oleh mahasiswa dari perguruan tinggi manapun.
+  - Menggunakan placeholder anonim terstandar (`[NAMA PERGURUAN TINGGI]`, `[FAKULTAS]`, `[PROGRAM STUDI]`, `[KOTA]`, `[LOGO INSTITUSI]`).
+
+- **Master Template Laporan Kerja Praktik / Magang Industri:**  
+  `templates/template_laporan_kerja_praktik.docx` (relatif terhadap direktori root skill)
+  - Standar A4, Margin 4-3-3-3 cm (atau 3-4-3-3 cm di preliminary), Font Times New Roman 12 pt, Spasi 1.25x / 1.5x.
+  - Struktur khusus industri: Halaman Pengesahan Pembimbing Kampus & Lapangan Perusahaan, Bab Gambaran Umum & Struktur Organisasi Perusahaan Mitra, Bab Pelaksanaan Proyek/SOP, dan Bab Evaluasi Pengendalian Mutu.
+  - Menggunakan placeholder generik netral (`[NAMA PERGURUAN TINGGI]`, `[NAMA PERUSAHAAN MITRA]`, `[DIVISI/UNIT KERJA]`, `[KOTA]`, `[LOGO INSTITUSI]`).
+
 

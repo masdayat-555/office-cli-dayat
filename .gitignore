@@ -32,4 +32,6 @@ desktop.ini
 
 # Local raw campus templates (kept private on user machine)
 templates/Template_Laporan_TA_*.docx
+templates/Template_Laporan_KP_*.docx
+
 

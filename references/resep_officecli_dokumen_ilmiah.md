@@ -622,5 +622,108 @@ Blueprint untuk menyusun Intisari / Abstrak 3 Alinea presisi:
 ]
 ```
 
+---
+
+## 13. RESEP 12: BLUEPRINT BATCH OFFICECLI FORMAT LAPORAN KERJA PRAKTIK (KP) / MAGANG
+
+Blueprint struktur naskah Laporan Kerja Praktik / Magang Industri (Heading Organisasi, Pelaksanaan, dan Pengendalian Mutu Proyek):
+
+```json
+[
+  {
+    "command": "add",
+    "path": "/body",
+    "type": "paragraph",
+    "props": {
+      "style": "Heading1",
+      "text": "BAB 2. GAMBARAN UMUM PERUSAHAAN",
+      "align": "center",
+      "bold": "true",
+      "pageBreakBefore": "true",
+      "spaceAfter": "12pt"
+    }
+  },
+  {
+    "command": "add",
+    "path": "/body",
+    "type": "paragraph",
+    "props": {
+      "style": "Heading2",
+      "text": "2.1. Profil dan Struktur Organisasi",
+      "align": "left",
+      "bold": "true",
+      "spaceBefore": "12pt",
+      "spaceAfter": "6pt"
+    }
+  },
+  {
+    "command": "add",
+    "path": "/body",
+    "type": "paragraph",
+    "props": {
+      "style": "Normal",
+      "text": "PT Inovasi Teknologi Nusantara merupakan perseroan terbatas yang bergerak dalam penyediaan solusi perangkat lunak enterprise...",
+      "lineSpacing": "1.25x",
+      "indent": "1.0cm",
+      "align": "both",
+      "spaceAfter": "6pt"
+    }
+  },
+  {
+    "command": "add",
+    "path": "/body",
+    "type": "paragraph",
+    "props": {
+      "style": "Heading1",
+      "text": "BAB 3. PELAKSANAAN KERJA PRAKTIK",
+      "align": "center",
+      "bold": "true",
+      "pageBreakBefore": "true",
+      "spaceAfter": "12pt"
+    }
+  },
+  {
+    "command": "add",
+    "path": "/body",
+    "type": "paragraph",
+    "props": {
+      "style": "Heading2",
+      "text": "3.1. Prosedur Kerja dan Perancangan Fitur",
+      "align": "left",
+      "bold": "true",
+      "spaceBefore": "12pt",
+      "spaceAfter": "6pt"
+    }
+  },
+  {
+    "command": "add",
+    "path": "/body",
+    "type": "paragraph",
+    "props": {
+      "style": "Heading1",
+      "text": "BAB 4. EVALUASI DAN PENGENDALIAN PEKERJAAN",
+      "align": "center",
+      "bold": "true",
+      "pageBreakBefore": "true",
+      "spaceAfter": "12pt"
+    }
+  },
+  {
+    "command": "add",
+    "path": "/body",
+    "type": "paragraph",
+    "props": {
+      "style": "Heading2",
+      "text": "4.1. Kendala Teknis dan Solusi Lapangan",
+      "align": "left",
+      "bold": "true",
+      "spaceBefore": "12pt",
+      "spaceAfter": "6pt"
+    }
+  }
+]
+```
+
+
 
 
