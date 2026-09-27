@@ -5,303 +5,195 @@ description: Unified Document Suite for AI Agents. Fast multi-format extraction 
 
 # Unified Office & Document Suite (MarkItDown + OfficeCLI)
 
-Skill ini merupakan ekosistem terpadu untuk penanganan dokumen digital bagi AI coding agent. Mengintegrasikan kemampuan **ekstraksi cerdas multi-format ke Markdown** menggunakan **Microsoft MarkItDown** dan **pembuatan/manipulasi dokumen Office native** menggunakan **OfficeCLI**.
+Skill ini merupakan ekosistem terpadu untuk penanganan dokumen digital bagi AI coding agent. Mengintegrasikan kemampuan **ekstraksi cerdas multi-format ke Markdown** menggunakan **Microsoft MarkItDown** dan **pembuatan/manipulasi dokumen Office native** menggunakan **OfficeCLI**, dengan kepatuhan penuh terhadap standar publikasi ilmiah nasional terakreditasi **SINTA (SINTA 1–6)**, jurnal internasional **Scopus (Q1–Q4)**, serta laporan akademik formal (Skripsi, Tesis, Kerja Praktik).
 
 ---
 
-## 0. STRATEGI PEMBAGIAN TUGAS (ARSITEKTUR KERJA)
+## 0. STRUKTUR DIREKTORI SKILL (DIRECTORY TREE)
 
-Untuk mencegah benturan fungsional dan degradasi format file, skill ini hanya berfokus pada dua engine utama:
-*   **Gunakan `markitdown` (Reading & Extraction Engine):**
-    MUTLAK digunakan untuk tugas **MEMBACA CEPAT, EKSTRAKSI TEKS, TABEL, DAN METADATA** dari format biner kompleks (`.pdf`, `.docx`, `.xlsx`, `.pptx`, `.zip`, gambar/audio) menjadi teks Markdown bersih.
-*   **Gunakan `officecli` (Creation & Editing Engine - WAJIB & MUTLAK):**
-    MUTLAK digunakan untuk tugas **MENGEDIT, MEMODIFIKASI, ATAU MEMBUAT DOKUMEN BARU** (`.docx`, `.xlsx`, `.pptx`). `officecli` menjamin pemeliharaan struktur DOM OpenXML asli, nomor halaman, TOC, header/footer, dan styling visual template secara presisi.
-*   **PANTANGAN MUTLAK: DILARANG MENGGUNAKAN `python-docx`:**
-    Library `python-docx` **DILARANG DIGUNAKAN** untuk memanipulasi dokumen naskah karena berisiko tinggi merusak format bawaan template OpenXML, menghilangkan field codes dinamis, dan merusak tata letak section. Seluruh proses authoring dan mutasi dokumen Word wajib dijalankan melalui `officecli`.
+Struktur hierarki folder dan berkas pada skill ini dirancang secara modular agar mudah dipelihara dan dipublikasikan:
+
+```text
+office-cli/
+├── SKILL.md                                 # Panduan operasional utama & aturan agen (File ini)
+├── README.md                                # Dokumentasi publik repositori GitHub
+├── .last_update_check                       # Marker timestamp sinkronisasi pembaruan 30 hari
+├── scripts/
+│   └── check_update.py                      # Skrip auto-update berkala dari upstream GitHub
+├── templates/
+│   ├── template_jurnal_sinta.docx           # Master template OJS SINTA (A4, 1-inch, Page 1 Fit, APA Table)
+│   ├── template_laporan_tugas_akhir.docx    # Master template Skripsi / TA (A4, 4-3-3-3 cm, 5 Bab)
+│   └── template_laporan_kerja_praktik.docx  # Master template Laporan KP / Magang Industri
+└── references/
+    ├── pedoman_jurnal_sinta.md              # Panduan lengkap penulisan jurnal SINTA 1-6 (IMRaD baku)
+    ├── pedoman_jurnal_scopus.md             # Panduan jurnal internasional bereputasi Scopus Q1-Q4
+    ├── pedoman_skripsi_lengkap.md           # Pedoman penulisan Skripsi / Tesis 5 Bab standar nasional
+    ├── pedoman_kerja_praktik.md             # Pedoman penyusunan Laporan Kerja Praktik & Magang
+    ├── resep_officecli_dokumen_ilmiah.md    # Resep batch JSON OfficeCLI siap pakai
+    └── aturan_adaptif_pedoman_kampus.md     # Protokol adaptif penyesuaian aturan lokal institusi
+```
 
 ---
 
-## 1. PEMERIKSAAN KESIAPAN SISTEM & SINKRONISASI PEMBARUAN (PRE-FLIGHT CHECK)
+## 1. ARSITEKTUR DUA ENGINE & MATRIKS PEMBAGIAN TUGAS
 
-### 1.0 Sinkronisasi Pembaruan Otomatis Bulanan (Monthly Auto-Update from GitHub)
+Untuk mencegah degradasi tata letak dan konflik fungsional, skill ini membagi tanggung jawab penanganan dokumen ke dalam dua engine khusus:
+
+### Tabel 1. Matriks Peran dan Batasan Penggunaan Tool
+| Aspek | Microsoft MarkItDown (Reading Engine) | OfficeCLI (Authoring & Manipulation Engine) |
+| :--- | :--- | :--- |
+| **Fungsi Utama** | Ekstraksi cepat teks, tabel, dan metadata ke Markdown | Pembuatan, penyuntingan, dan mutasi struktur berkas Office |
+| **Format yang Didukung** | `.pdf`, `.docx`, `.xlsx`, `.pptx`, `.zip`, gambar (OCR), audio | `.docx`, `.xlsx`, `.pptx` (Format OpenXML Microsoft Office) |
+| **Tipe Eksekusi** | Pembacaan searah (*Read-Only Ingestion*) | Mutasi dua arah (*Read/Write DOM Batch Manipulation*) |
+| **Kekuatan Utama** | Cepat, parsing tabel markdown rapi, ekstraksi metadata EXIF | Presisi visual native, pemutakhiran nomor halaman TOC, field codes |
+| **Larangan Mutlak** | **DILARANG** digunakan untuk membuat/mengedit berkas biner | **DILARANG** digunakan untuk membaca cepat isi teks file non-Word |
+| **Library Terlarang** | `python-docx` **DILARANG KERAS** digunakan untuk menyusun naskah akhir karena berisiko merusak template OpenXML dan menghapus field codes. |
+
+---
+
+## 2. PEMERIKSAAN KESIAPAN SISTEM & SINKRONISASI (PRE-FLIGHT CHECK)
+
+### 2.0 Sinkronisasi Pembaruan Otomatis Bulanan (30-Day Auto-Update)
 > [!IMPORTANT]
-> **Instruksi Mutlak bagi Agen AI (Untuk Seluruh Pengguna Publik):**  
-> Repositori ini didistribusikan untuk publik agar setiap pengguna selalu mendapatkan perbaikan bug, pemutakhiran standar SINTA/Scopus, dan template resmi terbaru langsung dari repositori GitHub resmi pengembang: [`masdayat-555/office-cli-dayat`](https://github.com/masdayat-555/office-cli-dayat).
->
-> 1. **Pemeriksaan Rutin Setiap 30 Hari (1 Bulan):**  
->    Setiap kali skill ini aktif untuk menangani tugas dokumen, agen **WAJIB** memeriksa kapan sinkronisasi terakhir dilakukan (via file `.last_update_check` di direktori skill).
-> 2. **Prosedur Update Otomatis:**  
->    Jika waktu telah mencapai atau melampaui **30 hari** (atau pengguna meminta update/perbarui skill):
->    - Jalankan skrip pembaruan di direktori skill:
->      ```powershell
->      python scripts/check_update.py
->      ```
->    - Atau lakukan penarikan git secara langsung:
->      ```powershell
->      git -C "<path_ke_folder_skill>" pull --rebase --autostash origin main
->      ```
->      *(Upstream GitHub: `https://github.com/masdayat-555/office-cli-dayat.git`).*
-> 3. **Non-Blocking Fallback:**  
->    Jika pengguna berada dalam kondisi offline atau remote git belum terhubung, lewati pembaruan dan jangan sampai menggagalkan pekerjaan dokumen pengguna.
-> 4. **Pelaporan Singkat:** Jika terdapat file yang diperbarui (misalnya template atau resep baru), informasikan secara ringkas kepada pengguna.
+> **Instruksi Rutin Agen AI:**  
+> Repositori ini didistribusikan untuk publik agar pengguna selalu memperoleh perbaikan bug, penyesuaian aturan SINTA, dan template terbaru langsung dari repositori resmi pengembang: [`masdayat-555/office-cli-dayat`](https://github.com/masdayat-555/office-cli-dayat).
+> 1. Periksa file `.last_update_check` di direktori root skill. Jika telah mencapai atau melampaui **30 hari** (atau diminta pengguna):
+>    - Jalankan: `python scripts/check_update.py` atau `git -C "<path_skill>" pull --rebase --autostash origin main`.
+> 2. Bersifat *non-blocking*: Jika offline atau tidak ada remote git, lewati dan jangan gagalkan tugas utama pengguna.
 
-Sebelum menjalankan tugas dokumen, agen juga **WAJIB** memverifikasi ketersediaan perangkat lunak pendukung di terminal:
+### Tabel 2. Checklist Alat & Perintah Verifikasi / Instalasi
+| Tool | Pengembang & Repositori Resmi | Perintah Pengecekan | Perintah Instalasi (Jika Belum Ada) |
+| :--- | :--- | :--- | :--- |
+| **Microsoft MarkItDown** | [microsoft/markitdown](https://github.com/microsoft/markitdown) | `markitdown --version`<br>atau `python -m markitdown --version` | `pip install markitdown`<br>*(opsional: `pip install markitdown[all]`)* |
+| **OfficeCLI** | [officecli.ai](https://officecli.ai) / [github.com/officecli](https://github.com/officecli) | `officecli --version` | **Windows PowerShell:**<br>`irm https://d.officecli.ai/install.ps1 \| iex`<br>**Linux / macOS (Bash):**<br>`curl -fsSL https://d.officecli.ai/install.sh \| bash` |
+| **pypdf** *(On-Demand)* | [py-pdf/pypdf](https://github.com/py-pdf/pypdf) | `python -c "import pypdf; print(pypdf.__version__)"` | `pip install pypdf` *(khusus ekstraksi gambar PDF)* |
 
-### 1.1 Tool 1: Microsoft MarkItDown (Reading Engine)
-- **Pengembang:** Microsoft Corporation (Lisensi MIT)
-- **Repositori Resmi:** [GitHub - microsoft/markitdown](https://github.com/microsoft/markitdown)
-- **Perintah Pengecekan:**
-  ```powershell
-  # Cek perintah biner langsung atau via modul python
-  markitdown --version
-  # Alternatif jika PATH belum terdaftar:
-  python -m markitdown --version
-  ```
-- **Perintah Instalasi (Jika Belum Terpasang):**
-  ```powershell
-  pip install markitdown
-  # Untuk dukungan penuh (audio STT & OCR gambar):
-  pip install markitdown[all]
-  ```
-
-### 1.2 Tool 2: OfficeCLI (Manipulation Engine)
-- **Pengembang:** OfficeCLI Contributors
-- **Situs Resmi & Repositori:** [officecli.ai](https://officecli.ai) / [GitHub - officecli](https://github.com/officecli)
-- **Perintah Pengecekan:**
-  ```powershell
-  officecli --version
-  ```
-- **Perintah Instalasi (Jika Belum Terpasang):**
-  - **Windows (PowerShell Run as Admin/User):**
-    ```powershell
-    irm https://d.officecli.ai/install.ps1 | iex
-    ```
-  - **Linux / macOS (Bash):**
-    ```bash
-### 1.3 Tool Pendukung Ekstraksi Gambar PDF: pypdf (On-Demand)
-Jika tugas membutuhkan ekstraksi gambar biner (PNG/JPEG) dari berkas PDF:
-- **Perintah Instalasi (Jika Belum Terpasang):**
-  ```powershell
-  pip install pypdf
-  ```
-
-> [!IMPORTANT]
-> Jika salah satu atau kedua tool utama (MarkItDown / OfficeCLI) belum terpasang di sistem pengguna, agen **WAJIB** menghentikan langkah sementara, menginformasikan status ketersediaan alat, dan menyajikan perintah instalasi di atas beserta tautan repositori resminya.
+> [!WARNING]
+> Jika MarkItDown atau OfficeCLI belum terpasang, agen **WAJIB** menghentikan langkah sementara, melaporkan status kepada pengguna, dan menyajikan perintah instalasi di atas.
 
 ---
 
-## 2. CARA PENGGUNAAN ALAT
+## 3. PANDUAN PENGGUNAAN ALAT (OPERATIONAL SYNTAX)
 
-### 2.1 Ekstraksi Dokumen Menggunakan MarkItDown
-1. **Dilarang langsung membaca file biner:** Jangan memanggil `view_file` langsung pada file `.pdf`, `.docx`, `.xlsx`, atau `.pptx`.
-2. **Jalankan Perintah Ekstraksi:**
+### 3.1 Ekstraksi Dokumen Menggunakan MarkItDown
+1. Dilarang memanggil `view_file` langsung pada file biner kompleks (`.pdf`, `.docx`, `.xlsx`, `.pptx`).
+2. Jalankan perintah ekstraksi ke berkas Markdown sementara di direktori `scratch/`:
    ```powershell
-   # Ekstraksi ke file markdown sementara di scratch
-   python -m markitdown "path/ke/dokumen.pdf" > "output.md"
+   python -m markitdown "dokumen_sumber.pdf" > "scratch/hasil_ekstraksi.md"
    ```
-3. **Baca Hasilnya:** Buka file Markdown hasil ekstraksi menggunakan `view_file` untuk analisis teks dan tabel.
+3. Buka dan pelajari berkas Markdown tersebut menggunakan `view_file`.
 
-### 2.2 Manipulasi Dokumen Menggunakan OfficeCLI
-1. **Inspeksi Struktur DOM:**
+### 3.2 Manipulasi Dokumen Menggunakan OfficeCLI
+1. **Inspeksi Struktur DOM Dokumen:**
    ```powershell
-   officecli info "dokumen.docx"
-   officecli get "dokumen.docx" --path "body/p[0]"
+   officecli info "naskah.docx"
+   officecli get "naskah.docx" --path "body/p[0]"
    ```
-2. **Manipulasi Batch:** Susun berkas batch JSON yang memuat operasi atomik (`add`, `set`, `remove`) dan eksekusi:
+2. **Eksekusi Mutasi Batch JSON:**
    ```powershell
-   officecli batch "dokumen.docx" --batch "batch.json"
+   officecli batch "naskah.docx" --batch "scratch/batch_mutasi.json"
    ```
-3. **Refresh Field & Tutup Handle:**
+3. **Penyegaran Field & Pelepasan File Lock:**
    ```powershell
-   officecli refresh "dokumen.docx"
-   officecli close "dokumen.docx"
+   officecli refresh "naskah.docx"
+   officecli close "naskah.docx"
    ```
 
-### 2.3 Ekstraksi Aset Gambar dari Dokumen (DOCX, PPTX, XLSX, & PDF)
-Ketika pengguna meminta mengambil, mengekstrak, atau menyalin gambar/bagan dari dokumen:
-
-1. **Dari Dokumen Microsoft Office (Word `.docx`, PowerPoint `.pptx`, Excel `.xlsx`):**
-   Gunakan library standar bawaan Python `zipfile` (100% tanpa dependensi luar). Semua berkas OpenXML menyimpan gambar beresolusi asli di dalam subfolder media internal (`word/media/`, `ppt/media/`, `xl/media/`):
-   ```python
-   import zipfile
-   from pathlib import Path
-
-   output_dir = Path("scratch/extracted_images")
-   output_dir.mkdir(parents=True, exist_ok=True)
-
-   # Bekerja otomatis untuk .docx, .pptx, maupun .xlsx:
-   with zipfile.ZipFile("dokumen_atau_slide.pptx", "r") as archive:
-       for item in archive.namelist():
-           if "/media/" in item and not item.endswith("/"):
-               filename = Path(item).name
-               (output_dir / filename).write_bytes(archive.read(item))
-   ```
-
-2. **Dari Dokumen PDF (`.pdf`):**
-   Gunakan library `pypdf` (jalankan `pip install pypdf` jika belum terpasang):
-   ```python
-   from pathlib import Path
-   from pypdf import PdfReader
-
-   output_dir = Path("scratch/extracted_images")
-   output_dir.mkdir(parents=True, exist_ok=True)
-
-   reader = PdfReader("dokumen.pdf")
-   for page_idx, page in enumerate(reader.pages):
-       for img_idx, img in enumerate(page.images):
-           ext = Path(img.name).suffix or ".png"
-           target_file = output_dir / f"page_{page_idx+1}_img_{img_idx+1}{ext}"
-           target_file.write_bytes(img.data)
-   ```
+### 3.3 Ekstraksi Aset Gambar dari Dokumen
+- **Dari Dokumen Office (`.docx`, `.pptx`, `.xlsx`):** Gunakan modul bawaan Python `zipfile` untuk mengekstrak folder internal `word/media/` atau `ppt/media/` tanpa dependensi eksternal.
+- **Dari Dokumen PDF (`.pdf`):** Gunakan pustaka `pypdf` untuk membaca `page.images` dan menyimpannya ke folder keluaran resolusi asli.
 
 ---
 
-## 3. LESSONS LEARNED & ATURAN EMAS (ANTI-PATTERNS TO AVOID)
+## 4. STANDAR PENULISAN NASKAH ILMIAH (FOKUS UTAMA: JURNAL SINTA 1–6)
 
-Patuhi aturan mutlak berikut berdasarkan evaluasi komprehensif kesalahan masa lalu:
-
-### 3.1 Logika Dokumen & Mapping Template
-1. **DILARANG MEMALSUKAN DOKUMEN FISIK KE DALAM TEKS:** Jika dokumen (seperti Daftar Hadir/Presensi, Nota) aslinya harus ditandatangani/dibubuhi cap manual, **DILARANG KERAS** mengetik ulang nama-namanya menjadi tabel teks kosong di Word! Selalu masukkan/mapping foto/scan bukti aslinya (`.jpeg`, `.png`) ke slot template. Jaga keaslian bukti fisik.
-2. **DILARANG MEMBUAT LAMPIRAN/BAB BARU TANPA IZIN:** Jangan pernah menyisipkan gambar/paragraf baru di luar hirarki bab dokumen. Jika template memiliki slot gambar lama, ganti isi gambar di ID paragraf yang sama persis.
-3. **AWAS ROTASI TERSEMBUNYI SAAT REPLACE GAMBAR:** Jangan gunakan `set` untuk mengganti gambar jika orientasinya bermasalah (bisa mewarisi rotasi 90 derajat template lama). Gunakan `remove` pada *run* gambar lama (`r[x]`), dan gunakan `add` (type: picture) di ID paragraf yang sama untuk posisi tegak lurus sempurna.
-4. **AWAS TABRAKAN JABATAN (ROLES) AKIBAT GLOBAL REPLACE:** Jangan gunakan *Global String Replace* pada nama orang. Selalu petakan berdasarkan **JABATAN (Role)**, ubah teks nama beserta teks jabatannya secara berpasangan agar logika tidak rancu.
-5. **BAHAYA ILUSI MARKDOWN (FLATTENING):** File `.md` hasil ekstraksi sering meratakan tabel/elemen sejajar (kiri-kanan) menjadi susunan vertikal (atas-bawah). Jangan mengasumsikan layout fisik semata dari markdown. Untuk lembar pengesahan tanda tangan, pertahankan struktur grid sejajar 2x2.
-6. **AUTO-CORRECTION (OBLIGASI MEMPERBAIKI DIRI):** Jika pengguna mengoreksi kesalahan logika atau format, agen wajib memperbarui dokumentasi skill ini secara otomatis tanpa perlu disuruh berulang kali.
-7. **KEBERSIHAN WORKSPACE (ARTIFACT ONLY):** Dilarang membuat script manipulasi sementara (`fix_xxx.py`), dump teks, atau file batch di folder proyek pengguna. Gunakan folder `scratch/` di direktori artifact. Timpa (*overwrite*) file keluaran tunggal dan hindari membuat rentetan file versi berlebihan (`Final1`, `Final2`, dst).
-
-### 3.2 Kesalahan Teknis OfficeCLI & Python
-8. **HATI-HATI SHIFTING INDEX SAAT BATCH REMOVE:** Jika menghapus beberapa *child/run* di dalam satu elemen, **WAJIB MENGHAPUS DARI INDEKS TERBESAR KE TERKECIL (MUNDUR)**, misalnya `r[4]` lalu `r[3]` lalu `r[2]`. Menghapus maju akan memicu error `Path not found`.
-9. **AWAS MOJIBAKE KARENA POWERSHELL PIPING:** Dilarang menggunakan piping PowerShell (`officecli ... | Out-File`) tanpa penanganan encoding UTF-8 yang benar karena akan merusak tanda baca. Gunakan skrip Python dengan `encoding="utf-8"` untuk menjaga integritas Unicode 100%.
-10. **WASPADAI FILE LOCK (IO_ERROR):** Jangan menimpa file DOCX yang sedang dibuka oleh pengguna di Microsoft Word. Selalu panggil `officecli close <path>` setelah proses selesai.
-11. **MENGATASI ZOMBIE WINWORD PROCESS:** Jika muncul error `Permission denied`, periksa proses zombie di latar belakang via PowerShell: `Get-Process WINWORD | Where-Object { $_.MainWindowTitle -eq '' }` dan hentikan proses tersebut (`Stop-Process -Id <pid> -Force`) agar kunci berkas terlepas.
-12. **DILARANG MEMBIARKAN SINTAKS LATEX/MARKDOWN BOCOR KE DOKUMEN WORD:**
-    - Parser CommonMark pada OfficeCLI tidak mendukung matematika LaTeX (`$...$`, `$$...$$`).
-    - **Solusi Mutlak:** Seluruh simbol Yunani dan operator matematika wajib ditulis dalam karakter **Unicode murni**: `$\kappa$` $\rightarrow$ `κ` (U+03BA), `$\Delta$` $\rightarrow$ `Δ` (U+0394), `$\approx$` $\rightarrow$ `≈`, `$\sum$` $\rightarrow$ `∑`, `$\times$` $\rightarrow$ `×`. Dilarang menyisakan karakter `$` di dokumen Word!
-    - **Superskrip Bersih:** Gunakan run superskrip asli Word (`run.font.superscript = True`) atau karakter superskrip Unicode (`¹`, `²`, `³`, `*`). Dilarang meninggalkan tag `^{...}`.
-    - **Metadata Mandiri:** Judul, Penulis, Afiliasi, dan Email wajib menjadi paragraf-paragraf mandiri terpisah rata tengah (anti-collapsing).
+### Tabel 3. Matriks Perbandingan Format Naskah Ilmiah
+| Parameter Format | Jurnal SINTA 1–6 (Standar Utama) | Jurnal Internasional Scopus (Q1–Q4) | Skripsi / Tugas Akhir (Monograf) |
+| :--- | :--- | :--- | :--- |
+| **Batas Tepi (Margin)** | **2,54 cm (1 inci) Simetris** di seluruh sisi | **2,54 cm (1 inci)** atau format 2 kolom | **4-4-3-3 cm** (Left 4 cm ruang jilid) |
+| **Font & Spasi Isi** | Times New Roman 11–12 pt, spasi **1.15x**, Justified | Times New Roman / Arial 10–11 pt, spasi 1.0–1.15x | Times New Roman 12 pt, spasi **1.5x**, Justified |
+| **Struktur Bab / Seksi** | **DILARANG kata 'BAB'** (`1. PENDAHULUAN`, `2. METODE`) | **DILARANG kata 'BAB'** (`1. Introduction`, `2. Methods`) | **WAJIB kata 'BAB'** (`BAB I PENDAHULUAN`) |
+| **Aliran Halaman** | **Continuous Flow** (Dilarang *Page Break* antar-seksi) | Continuous Flow (1 kolom / 2 kolom) | **Wajib Page Break** di setiap bab baru |
+| **Abstrak & Identitas** | **Wajib Page 1 Fit**, bilingual, 150–200 kata, spasi 1.0x | Structured / Unstructured, 200–250 kata, Full English | Intisari 3 Alinea baku, TNR 10 pt spasi 1.0x |
+| **Standar Tabel** | **Format APA (3 Garis Horizontal)**, tanpa garis vertikal | Format APA murni, judul di atas tabel | Format APA / Boxed (sesuai pedoman kampus) |
+| **Gaya Sitasi** | **APA 7th Edition** (atau IEEE), 15–25 rujukan mutakhir | APA 7th / IEEE / Elsevier, 30–50 rujukan Scopus | APA 7th / IEEE, terbagi primer dan sekunder |
 
 ---
 
-## 4. STANDAR PENULISAN KARYA ILMIAH & DOKUMEN RESMI
-
-### 4.0 Protokol Wajib: Inquiry Template Pengguna & Persetujuan Draf Markdown (Proposal-First Protocol)
-Sebelum membuat atau mengubah dokumen resmi, agen **WAJIB** mematuhi alur kerja tiga tahap berikut:
-
-1. **Inquiry Template Pengguna di Awal (Pre-Generation Template Inquiry):**
-   - Sebelum menyusun berkas dokumen Word apa pun, agen **WAJIB MENANYAKAN KEPADA PENGGUNA TERLEBIH DAHULU**:
-     > *"Apakah Anda memiliki file template `.docx` resmi dari kampus/instansi atau pedoman penulisan khusus yang ingin digunakan? Jika ada, silakan lampirkan agar naskah 100% mengikuti template tersebut. Jika tidak ada, saya akan menggunakan template dan format standar nasional (general academic standard)."*
-   - **Kepatuhan Mutlak:** Jika pengguna melampirkan template `.docx`, agen **100% wajib patuh** pada gaya, margin, font, dan struktur template tersebut.
-   - **Aset & Identitas Dinamis:** Pengguna dipersilakan mengunggah logo institusi, nama kampus/perusahaan mitra, nama lengkap, dan NIM/NIP untuk disematkan langsung ke dalam naskah dokumen lokal.
-   - Jika pengguna memilih format standar, agen menggunakan master template resmi yang relevan di folder `templates/`.
-
-2. **Peka Konteks Proyek (Mandatory Context Ingestion):**
-   - Agen **WAJIB membaca berkas Markdown penting di repositori pengguna** (`README.md`, `doc.md`, `docs/*.md`, `PLAN.md`, draf naskah). Pahami arsitektur sistem, dataset, tujuan penelitian, dan terminologi lokal agar naskah akurat dan tidak berhalusinasi.
-
-3. **Wajib Ajukan Draf Markdown Dahulu (Draft Plan in Markdown First):**
-   - **DILARANG KERAS** langsung melompat membuat berkas `.docx` biner tanpa kesepakatan struktur dengan pengguna!
-   - Agen **WAJIB menyusun draf outline / rencana struktur naskah dalam format Markdown terlebih dahulu** (judul usulan dwibahasa, struktur bab/seksi, poin narasi inti, rancangan tabel/bagan).
-   - **Minta Persetujuan Pengguna:** Tanyakan kepada pengguna: *"Berikut adalah draf rancangan struktur dan poin-poin naskah. Apakah susunan ini sudah sesuai? Jika Anda setuju, saya akan segera mengompilasinya menjadi berkas Word .docx resmi."*
-   - Hanya setelah pengguna memberikan persetujuan (*approval*), agen mengeksekusi konversi ke format `.docx`.
-
-### 4.1 Kewajiban Deliverable File Akhir (.DOCX via OfficeCLI)
-Setelah draf Markdown disetujui pengguna, **OUTPUT UTAMA YANG WAJIB DIHASILKAN ADALAH FILE WORD BERFORMAT `.DOCX` MENGGUNAKAN `officecli` SECARA EKSKLUSIF**. Agen DILARANG KERAS menggunakan `python-docx` untuk menyusun naskah dan DILARANG KERAS hanya berhenti pada file Markdown (`.md`)! Seluruh operasi penulisan, perataan heading, dan pembuatan tabel wajib dieksekusi via `officecli` (batch DOM patch / set / add).
-
-
-### 4.2 Spesifikasi Tata Letak & Tipografi Baku
-1. **Batas Tepi (Margin):**
-   - Artikel Jurnal SINTA / Scopus: Normal simetris **2,54 cm (1 inci)** di seluruh sisi (Top, Bottom, Left, Right).
-   - Skripsi / Tesis / Tugas Akhir: Format **4-4-3-3 cm** (Left 4 cm ruang jilid, Top 4 cm, Bottom 3 cm, Right 3 cm) atau variasi teknik **4-3-3-3 cm** (Top 4 cm, Left 3 cm, Bottom 3 cm, Right 3 cm).
-2. **Font & Spasi:**
-   - Teks Utama: *Times New Roman* 11–12 pt, spasi 1.15x (Jurnal) atau 1.25x / 1.5x (Skripsi/Tugas Akhir), perataan *Justified*, indentasi alinea 1,0 – 1,27 cm.
-   - Spasi Tunggal (1.0x): Khusus untuk Abstrak/Intisari, isi sel tabel, judul tabel/gambar, dan Daftar Pustaka.
-3. **Kaidah Abstrak & Intisari:**
-   - **Abstrak Jurnal (Aturan Mutlak *Page 1 Fit*):** 1 paragraf padat (150–200 kata), memuat formula IMRaD mini (Masalah, Metode, Hasil Kuantitatif Riil dengan Angka Metrik, dan Kesimpulan). Wajib 3–6 Kata Kunci. Seluruh front matter wajib tuntas di Halaman 1.
-   - **Intisari Skripsi / Tugas Akhir (Format Baku 3 Alinea):** Font *Times New Roman* 10 pt, spasi 1.0x, terdiri tepat 3 Alinea:
-     - *Alinea I:* Latar belakang urgensi dan tujuan utama penelitian.
-     - *Alinea II:* Metodologi, arsitektur perancangan, instrumen, dan skenario pengujian.
-     - *Alinea III:* Temuan hasil pengujian empiris terukur dan kesimpulan akhir.
-     - Disertai 3–5 Kata Kunci.
-4. **Hierarki Judul (Headings) & Penomoran Naskah:**
-   - **Tingkat 1 - Judul Bab (`Heading 1`):** *ALL CAPS*, cetak tebal (*bold*), ukuran 12–14 pt, posisi tengah (*center*), wajib *Page Break* baru (`BAB 1. PENDAHULUAN` atau `BAB I PENDAHULUAN`).
-   - **Tingkat 2 - Judul Sub Bab (`Heading 2`):** *Capitalize Each Word*, cetak tebal (*bold*), ukuran 12 pt, rata kiri (`1.1. Latar Belakang Masalah`).
-   - **Tingkat 3 - Judul Sub-Sub Bab (`Heading 3`):** *Sentence case*, cetak tebal (*bold*), ukuran 12 pt, rata kiri (`1.1.1. Identifikasi tantangan operasional`).
-   - **Hierarki Penomoran Rincian:** `1.` -> `a.` -> `1)` -> `a)`.
-   - **Penomoran Tabel & Gambar:** `Tabel [Bab].[No]` di atas tabel; `Gambar [Bab].[No]` di bawah gambar (center).
-5. **Perbedaan Mendasar Struktur Artikel Jurnal vs. Skripsi:**
-   - **Artikel Jurnal (SINTA & Scopus):** Menggunakan angka Arab kapital (`1. PENDAHULUAN`, `2. METODE PENELITIAN`, `3. HASIL DAN PEMBAHASAN`, `4. KESIMPULAN`). **DILARANG MENGGUNAKAN KATA 'BAB'**. Alur naskah mengalir kontinu (*Continuous Flow*) **tanpa Page Break antar-seksi**.
-   - **Skripsi / Tesis / Tugas Akhir:** **WAJIB MENGGUNAKAN KATA 'BAB'**, dan setiap bab baru **MUTLAK MENGGUNAKAN PAGE BREAK** (`pageBreakBefore: true`). Penomoran halaman terbagi menjadi 2 seksi (Seksi 1: Romawi kecil `i, ii, iii...` di bawah tengah; Seksi 2: Angka Arab `1, 2, 3...` di kanan atas, kecuali awal bab di bawah tengah).
-
-### 4.3 Adaptasi Elemen Semantik Cerdas (Smart Structural Conversion: Tabel & Tree)
-Ketika mentransformasikan konten draf ke dalam dokumen Word, agen harus adaptif dan peka terhadap representasi data:
-
-1. **Konversi Tabel Semantik (Anti-Raw Copy):**
-   - Jika pada draf terdapat representasi tabel (baik berupa tabel markdown `| col1 | col2 |`, tabel ASCII bergaris putus-putus `+---+---+`, atau baris data bergaris pemisah `--|--` yang memuat field/kolom dan record/baris):
-   - **DILARANG KERAS menyalinnya mentah sebagai teks biasa atau blok kode (````code````) di dokumen Word!**
-   - Agen **WAJIB** mengenalinya sebagai tabel semantik dan menyusunnya menjadi **Native Word Table (`w:tbl`)** berstandar APA:
-     - Tiga garis horizontal utama (garis pembuka atas, garis bawah header, dan garis penutup bawah; tanpa garis vertikal).
-     - Header dicetak tebal dengan latar abu-abu tipis (*#F2F2F2*).
-     - Ukuran font isi sel 10–11 pt, spasi tunggal (1.0x).
-2. **Konversi Struktur Pohon / Hierarki / Tree (Anti-Raw Copy):**
-   - Jika draf memuat diagram pohon (seperti pohon direktori `├── folder/`, pohon keputusan, bagan organisasi, atau taksonomi hierarkis):
-   - **DILARANG KERAS menyalin karakter ASCII `├──`, `└──` secara mentah ke dalam paragraf dokumen formal!**
-   - Agen **WAJIB** menyusunnya secara adaptif:
-     - Mengubahnya menjadi **Nested Indented Bullet List** (daftar butir bertingkat terindentasi rapi), ATAU
-     - Menyusunnya ke dalam **Tabel Hierarkis Terstruktur** (dengan kolom Tingkat/Modul, Sub-Komponen, dan Deskripsi Fungsi), ATAU
-     - Jika dibutuhkan representasi grafis, agen dapat merekomendasikan/mewajibkan library visual diagram (seperti Graphviz atau Pillow).
-3. **Gambar:** Judul diletakkan di **BAWAH GAMBAR**, rata tengah, resolusi minimal 300 DPI.
-4. **Daftar Pustaka APA 7th Edition:**
-   - Diurutkan secara alfabetis (A–Z), menggunakan paragraf gantung (*hanging indent* 1,27 cm), spasi tunggal, dan wajib memuat tautan DOI aktif (`https://doi.org/...`).
-   - Minimal 80% berasal dari jurnal bereputasi 5–10 tahun terakhir.
+### Tabel 4. Checklist 10 Bagian Baku Naskah Jurnal SINTA
+| No | Bagian Naskah | Kaidah Penulisan Baku | Pantangan Mutlak |
+| :---: | :--- | :--- | :--- |
+| **1** | **Judul Artikel** | 10–15 kata, lugas, spesifik, memuat metode + objek, bilingual (ID Bold, EN Italic). | Hindari kata klise skripsi (*"Rancang Bangun..."*, *"Penerapan..."*). |
+| **2** | **Baris Penulis & Afiliasi** | Nama tanpa gelar, afiliasi lengkap (Prodi, Fakultas, Universitas, Kota, Negara), email bertanda `*`. | Dilarang gelar akademis (ST, MT, Ph.D) dan dilarang tumpuk paragraf rapat. |
+| **3** | **Abstrak & Keywords** | 150–200 kata, 1 paragraf, formula IMRaD mini (Masalah, Metode, Hasil Metrik Riil, Kesimpulan). | **Dilarang tumpah ke Halaman 2**, dilarang sitasi, dilarang formula mentah. |
+| **4** | **1. PENDAHULUAN** | Pola piramida terbalik: Urgensi riil $\rightarrow$ *State-of-the-Art* $\rightarrow$ *Research Gap* $\rightarrow$ Kebaruan (*Novelty*). | Dilarang menggunakan kata `BAB I` dan dilarang menyisipkan *Page Break*. |
+| **5** | **2. METODE PENELITIAN** | Replikatif: sumber data, pra-pemrosesan, arsitektur model, skenario pengujian, rumus matematis Unicode. | Dilarang menyalin diagram pohon terminal ASCII atau kode mentah ke isi teks. |
+| **6** | **3. HASIL DAN PEMBAHASAN** | Sajikan temuan kuantitatif via Tabel APA dan grafik tajam. Pembahasan menjawab *mengapa* fenomena terjadi. | Dilarang sekadar membaca ulang angka tabel tanpa konfrontasi literatur. |
+| **7** | **4. KESIMPULAN** | Sintesis ringkas jawaban rumusan masalah berdasarkan bukti empiris, implikasi, dan batasan riset. | Dilarang mengulang daftar persentase angka mentah atau membuat ringkasan bab. |
+| **8** | **UCAPAN TERIMA KASIH** | Ditujukan kepada penyandang dana hibah (sebutkan nomor kontrak) atau mitra penyedia data. | Opsional; hindari ucapan puitis atau personal non-akademik. |
+| **9** | **DAFTAR PUSTAKA** | Format APA 7th Edition, diurutkan A–Z, *hanging indent* 1,27 cm, spasi 1.0x, tautan DOI aktif. | Dilarang menggunakan penomoran numerik `[1]`, `[2]` jika gaya jurnal adalah APA. |
+| **10** | **Similaritas Turnitin** | Batas toleransi indeks kesamaan maksimal 15% – 20% (di luar daftar pustaka). | Dilarang plagiarisme teks mentah dari korpus rujukan. |
 
 ---
 
-## 5. MANAJEMEN PRIVASI DATA PENGGUNA & ZERO AI-TRAINING POLICY
+### 4.5 Transformasi Cerdas Elemen Non-Standar (Tree & Raw Code $\rightarrow$ Standar Publikasi SINTA)
 
-### 5.1 Larangan Mutlak Penggunaan Data Pribadi untuk Bahan Training AI (Zero AI-Training Policy)
+Ketika mentransformasikan draf ke dalam naskah jurnal Word resmi, agen **WAJIB** peka terhadap representasi visual dan struktur data:
+
+### Tabel 5. Matriks Konversi Representasi Data Non-Standar ke Format SINTA
+| Representasi Mentah di Draf | Kesalahan Fatal Jika Disalin Mentah | Solusi Transformasi Resmi SINTA (Wajib Pilih Salah Satu) |
+| :--- | :--- | :--- |
+| **Diagram Pohon / Alur Direktori**<br>(`├── folder/`, `└── file`, `│`) | Tampilan terlihat seperti terminal mentah, tidak formal, dan memicu penolakan editor. | **Metode A (Tabel Format APA):** Susun ke dalam tabel terstruktur dengan kolom: *Tahap*, *Modul / Entitas*, *Parameter / Spesifikasi*, dan *Luaran*.<br>**Metode B (Nested Indented List):** Susun ke dalam butir hierarkis bernomor ilmiah (`1.`, `a.`, `1)`).<br>**Metode C (Gambar Diagram Resmi):** Konversi menjadi diagram visual beresolusi tinggi (vektor / PNG 300 DPI) dengan keterangan `Gambar [No]. Judul` di bawah. |
+| **Tabel ASCII / Markdown Mentah**<br>(`+---+---+` atau `| col1 | col2 |`) | Huruf monospace Consolas merusak kerapian dokumen dan format tabel tidak dapat dibaca reader. | **Wajib Konversi ke Native Word Table (`w:tbl`):** Tiga garis horizontal tebal (tanpa garis vertikal pembatas kolom), header abu-abu tipis (*#F2F2F2*), teks Justified/Center, font 9.5–10 pt. |
+| **Formula Matematika LaTeX**<br>(`$\kappa$`, `\Delta`, `\approx`, `\times`) | Tanda dollar `$` dan tag LaTeX tercetak memalukan di naskah Word. | **Konversi ke Unicode Murni:** `κ` (U+03BA), `Δ` (U+0394), `≈` (U+2248), `×` (U+00D7), `∑` (U+2211). Gunakan run superskrip asli Word (`¹`, `²`, `*`). |
+| **Blok Kode Program (````code````)** | Kode terminal yang panjang memboroskan kuota halaman artikel jurnal. | Rangkum logika algoritma ke dalam **Kotak Algoritma / Pseudocode Formal** atau representasikan arsitekturnya dalam diagram pipeline. |
+
+---
+
+## 5. LESSONS LEARNED & ATURAN EMAS ANTI-DEFECT (ZERO-DEFECT MATRIX)
+
+### Tabel 6. Matriks Pelajaran Berharga dari Pengujian Nyata
+| Kategori Masalah | Anti-Pola Masa Lalu | Dampak Fatal | Solusi Mutlak (Aturan Emas) |
+| :--- | :--- | :--- | :--- |
+| **Struktur Gambar** | Mengganti gambar dengan `set src` pada slot yang memiliki rotasi bawaan. | Gambar baru mewarisi rotasi miring 90 derajat sehingga melar menyamping. | Gunakan `remove` pada *run* gambar lama (`r[x]`), lalu `add` (type: picture) di ID paragraf yang sama persis (rotasi 0). |
+| **Pemetaan Peran** | Menggunakan *Global String Replace* pada nama kepanitiaan/pengesahan. | Gelar jabatan (Role) tertukar dan menempel pada nama yang salah. | Petakan berdasarkan **JABATAN (Role)**, bukan nama! Ubah nama dan jabatannya secara berpasangan. |
+| **Ilusi Markdown** | Mengasumsikan layout visual dari perataan vertikal berkas `.md`. | Kolom tanda tangan sejajar 2x2 runtuh menjadi susunan atas-bawah yang salah. | Wajib merekonstruksi struktur *grid* tabel sejajar 2x2 asli untuk lembar pengesahan. |
+| **Batch Mutasi** | Melakukan `remove` beberapa child run secara berurutan maju (`r[2]`, `r[3]`). | Terjadi *index shifting*, memicu error fatal `Path not found`. | **Wajib menghapus dari indeks terbesar ke terkecil (mundur):** `r[4]` $\rightarrow$ `r[3]` $\rightarrow$ `r[2]`. |
+| **Encoding Piping** | Mengalirkan keluaran JSON via piping PowerShell (`officecli ... \| Out-File`). | Karakter kutip dan tanda baca rusak menjadi mojibake (`ÔÇ£`). | Gunakan script Python dengan `encoding="utf-8"` untuk seluruh interaksi I/O dokumen. |
+| **Kunci Berkas Word** | Menimpa berkas `.docx` saat masih dibuka atau saat ada proses *zombie* Word. | Muncul `PermissionError: [Errno 13] Permission denied`. | Deteksi proses headless: `Get-Process WINWORD \| Where-Object { $_.MainWindowTitle -eq '' }` lalu matikan (`Stop-Process -Force`). Panggil selalu `officecli close`. |
+| **Warna Heading Jurnal** | Membiarkan warna bawaan template Word (Steel Blue / Light Blue `#365F91`, `#4F81BD`). | Naskah ditolak editor jurnal karena tidak mematuhi standar monokrom/hitam resmi SINTA/Scopus. | Seluruh gaya *Heading 1–3* dan *Title* **WAJIB diatur ke warna Hitam Pekat** (`#000000` / `RGBColor(0, 0, 0)`). |
+| **Kebocoran AI Slop & Asterisk** | Membiarkan karakter markdown (`*`, `**`, `***`, `#`, `` ` ``) bocor ke teks Word (misal `*(Domain Shift)*` atau `**Judul *(Sub)***`). | Teks terlihat seperti salinan mentah bot AI (*AI slop*), memicu penolakan desk review editor jurnal. | **Wajib normalisasi multi-pass & pembersihan asterisk total:** Urai nested format (`**A *(B)***` $\rightarrow$ `**A** *(B)*`), hapus seluruh asterisk delimiter dari teks run, dan ubah murni menjadi properti OpenXML (`bold=True`, `italic=True`). |
+| **Audit Pasca-Kompilasi Otomatis** | Mengasumsikan kompilasi berhasil tanpa memvalidasi teks keluaran dokumen. | Asterisk terselubung atau kerusakan XML lolos ke pengguna tanpa terdeteksi. | **Wajib audit terprogram setelah kompilasi:** Jalankan skrip pemeriksa yang menyisir seluruh `paragraph.text` dan `cell.text` guna memastikan **0 kebocoran asterisk** (kecuali footnote penulis `¹*`), 0 tag markdown, dan 0 error skema. |
+| **Byline Multi-Penulis & Email** | Hanya mencantumkan email penulis pertama tanpa keterangan pada artikel multi-penulis. | Terjadi kebingungan hak kepengarangan (*authorship dispute*) dan ketidakjelasan korespondensi. | Cantumkan email seluruh penulis (`Email: ¹email1, ²email2`) serta tegaskan tanda bintang untuk penulis korespondensi (`*Penulis Korespondensi: email`). |
+| **Tabel Orphan Template** | Hanya membersihkan paragraf template saat inisialisasi tanpa menghapus tabel bawaan. | Tabel contoh dari template tertinggal sebagai tabel hantu (*orphan table*), merusak urutan tabel dan memicu validasi error. | **Wajib membersihkan paragraf DAN tabel bawaan:** `for t in list(doc.tables): t._element.getparent().remove(t._element)`. |
+| **Urutan Skema OpenXML tcPr** | Menambahkan `tcBorders`, `shd`, dan `tcMar` tanpa memperhatikan hierarki ketat skema WordML. | Dokumen gagal validasi skema OpenXML (`unexpected child element` atau `attribute val is missing`). | Urutan anak `<w:tcPr>` wajib: `w:tcW` $\rightarrow$ `w:tcBorders` (top, left, bottom, right) $\rightarrow$ `w:shd` (dengan `w:val="clear"`) $\rightarrow$ `w:tcMar` (top, left, bottom, right). |
+| **Pemberian Tugas Revisi Naskah** | Mengoreksi redaksional teks kritik/audit pengguna alih-alih merevisi naskah artikel di repositori. | Salah tafsir instruksi pengguna; dokumen jurnal riil tidak tersentuh perbaikan. | Ketika pengguna mengirimkan catatan audit dan meminta koreksi, **AGEN WAJIB LANGSUNG MERIVISI DOKUMEN ARTIKEL ASLI** di repositori (`.md` dan `.docx`). |
+| **Kebersihan Repo** | Membuat skrip `fix_xxx.py` atau `dump_xxx.txt` di folder proyek pengguna. | Workspace pengguna kotor oleh berkas sampah sementara. | Seluruh skrip eksekusi sementara **WAJIB** berada di direktori `scratch/` artifact. Timpa (*overwrite*) berkas keluaran tunggal. |
+
+---
+
+## 6. MANAJEMEN PRIVASI DATA PENGGUNA & ZERO AI-TRAINING POLICY
+
+### 6.1 Larangan Mutlak Penggunaan Data Pribadi untuk Bahan Training AI (Zero AI-Training Policy)
 - **DILARANG KERAS MENGGUNAKAN DATA PRIBADI PENGGUNA SEBAGAI BAHAN TRAINING MODEL AI:** Seluruh identitas pengguna (nama lengkap, NIM, NIP, nomor kontak, surel), data afiliasi kampus/perusahaan mitra, draf naskah karya ilmiah lokal, maupun file template dokumen internal yang dilampirkan pengguna **TIDAK BOLEH** digunakan, disimpan, diekstrak, atau dialirkan sebagai bahan latihan/pelatihan (*training / fine-tuning dataset*) model AI apa pun.
 - **Pemrosesan Bersifat Ephemeral & Sepenuhnya Lokal:** Data pribadi dan aset dokumen yang diserahkan pengguna hanya diproses sementara dalam memori sesi aktif (*in-memory*) di lingkungan lokal pengguna semata-mata untuk mengompilasi berkas dokumen Word `.docx`.
 - **Larangan Penyimpanan Permanen & Kebocoran Publik:** Dilarang menyimpan data pribadi pengguna ke dalam file kode skill, git commit, skrip publik, atau mengirimkannya ke layanan logging pihak ketiga. File template mentah lokal kampus (`Template_*.docx`) wajib otomatis diabaikan oleh `.gitignore`.
 
-### 5.2 Prinsip Adaptif Pedoman Kampus
+### 6.2 Prinsip Adaptif Pedoman Kampus
 Jika pengguna menyertakan pedoman khusus dari institusinya (misalnya format margin, jenis font, atau gaya sitasi kampus tertentu), **ATURAN KAMPUS PENGGUNA 100% MENGALAHKAN ATURAN STANDAR NASIONAL**. Agen wajib langsung menyesuaikan parameter dokumen dengan preferensi tersebut.
 
-
 ---
 
-## 6. DOKUMEN REFERENSI SPESIFIK
+## 7. DOKUMEN REFERENSI SPESIFIK & MASTER TEMPLATE
 
-Saat menangani penyusunan dokumen mendalam, agen dapat berkonsultasi pada dokumen referensi di folder `references/`:
-- [Pedoman Jurnal SINTA Lengkap (SINTA 1-6)](references/pedoman_jurnal_sinta.md): Standar resmi naskah jurnal nasional terakreditasi SINTA (IMRaD baku, Page 1 Fit, Byline, Tabel APA, tanpa kata BAB).
-- [Pedoman Jurnal Internasional Scopus (Q1-Q4)](references/pedoman_jurnal_scopus.md): Panduan penulisan jurnal bereputasi global Scopus/WoS, sistem kuartil Q1-Q4, extended IMRaD, pengujian statistik, etika data, dan jalur peningkatan (*upgrading pathway*) dari SINTA ke Scopus.
-- [Pedoman Skripsi Lengkap](references/pedoman_skripsi_lengkap.md): Anatomi lengkap Skripsi/Tesis dari Bab I sampai Bab V, preliminary pages, hingga lampiran.
-- [Pedoman Kerja Praktik Lengkap](references/pedoman_kerja_praktik.md): Panduan penyusunan Laporan Kerja Praktik (KP), PKL, dan Magang Industri (profil mitra, SOP, pelaksanaan proyek, evaluasi pengendalian mutu, logbook).
-- [Resep Teknis OfficeCLI Dokumen Ilmiah](references/resep_officecli_dokumen_ilmiah.md): Kumpulan batch JSON siap pakai untuk pembuatan margin, style heading 1-3, TOC otomatis, tabel APA, gambar, hanging indent, dan refresh.
-- [Aturan Adaptif Pedoman Kampus](references/aturan_adaptif_pedoman_kampus.md): Panduan penyesuaian dinamis terhadap variasi aturan kampus dan penulisan.
-
----
-
-## 7. TEMPLATE DOKUMEN ILMIAH RESMI SIAP PAKAI (REUSABLE TEMPLATES)
-
-Untuk memastikan konsistensi tata letak tanpa mengotori workspace aktif pengguna:
-- **Master Template Jurnal SINTA:**  
-  `templates/template_jurnal_sinta.docx` (relatif terhadap direktori root skill)
-  - Format resmi Jurnal OJS SINTA (A4, Margin Normal Simetris 2,54 cm / 1 Inci).
-  - Garansi *Page 1 Fit* untuk judul dwibahasa, afiliasi, email, dan abstrak bilingual (Indonesia & Inggris).
-  - Alur IMRaD kontinu tanpa jeda halaman (*no page break*).
-  - Contoh tabel format APA 3 garis horizontal.
-
-- **Master Template Laporan Tugas Akhir / Skripsi (5 Bab Monograf):**  
-  `templates/template_laporan_tugas_akhir.docx` (relatif terhadap direktori root skill)
-  - Standar A4, Margin 4-3-3-3 cm (Top 4 cm, Left 3 cm, Bottom 3 cm, Right 3 cm), Font Times New Roman 12 pt, Spasi 1.25x.
-  - Heading bertingkat baku (Heading 1 ALL CAPS, Heading 2 Capitalize Each Word, Heading 3 Sentence Case).
-  - Bagian Awal lengkap (Halaman Judul, Pengesahan, Pernyataan Keaslian Bermaterai, Kata Pengantar, Daftar Isi, Daftar Tabel, Daftar Gambar, Daftar Singkatan, Intisari 3 Alinea) dengan penomoran Romawi kecil (`i, ii, iii...`).
-  - Bagian Utama 5 Bab (Pendahuluan, Tinjauan Pustaka, Landasan Teori, Hasil dan Pembahasan, Kesimpulan dan Saran) dengan penomoran Arab (`1, 2, 3...`).
-  - Menggunakan placeholder anonim terstandar (`[NAMA PERGURUAN TINGGI]`, `[FAKULTAS]`, `[PROGRAM STUDI]`, `[KOTA]`, `[LOGO INSTITUSI]`).
-
-- **Master Template Laporan Kerja Praktik / Magang Industri:**  
-  `templates/template_laporan_kerja_praktik.docx` (relatif terhadap direktori root skill)
-  - Standar A4, Margin 4-3-3-3 cm (atau 3-4-3-3 cm di preliminary), Font Times New Roman 12 pt, Spasi 1.25x / 1.5x.
-  - Struktur khusus industri: Halaman Pengesahan Pembimbing Kampus & Lapangan Perusahaan, Bab Gambaran Umum & Struktur Organisasi Perusahaan Mitra, Bab Pelaksanaan Proyek/SOP, dan Bab Evaluasi Pengendalian Mutu.
-  - Menggunakan placeholder generik netral (`[NAMA PERGURUAN TINGGI]`, `[NAMA PERUSAHAAN MITRA]`, `[DIVISI/UNIT KERJA]`, `[KOTA]`, `[LOGO INSTITUSI]`).
-
-
+### Tabel 7. Katalog Referensi Dokumen & Template Resmi
+| Berkas Referensi / Template | Deskripsi & Cakupan Standar | Lokasi Berkas |
+| :--- | :--- | :--- |
+| **Pedoman Jurnal SINTA** | Panduan lengkap IMRaD baku, kaidah Page 1 Fit, byline afiliasi, dan tabel APA 3 garis. | [`references/pedoman_jurnal_sinta.md`](references/pedoman_jurnal_sinta.md) |
+| **Pedoman Jurnal Scopus** | Panduan jurnal internasional Q1–Q4, *Extended IMRaD*, *Ablation Study*, ORCID, dan *Upgrading Pathway*. | [`references/pedoman_jurnal_scopus.md`](references/pedoman_jurnal_scopus.md) |
+| **Pedoman Skripsi Lengkap** | Panduan penyusunan Skripsi/Tesis 5 Bab standar nasional, preliminary pages, hingga lampiran. | [`references/pedoman_skripsi_lengkap.md`](references/pedoman_skripsi_lengkap.md) |
+| **Pedoman Kerja Praktik** | Panduan penyusunan Laporan KP/Magang Industri (profil mitra, SOP, proyek, evaluasi mutu). | [`references/pedoman_kerja_praktik.md`](references/pedoman_kerja_praktik.md) |
+| **Resep Batch OfficeCLI** | Koleksi batch JSON siap pakai untuk heading 1-3, TOC otomatis, tabel APA, gambar, dan hanging indent. | [`references/resep_officecli_dokumen_ilmiah.md`](references/resep_officecli_dokumen_ilmiah.md) |
+| **Master Template Jurnal SINTA** | Berkas Word DOCX resmi OJS SINTA (A4, 2,54 cm simetris, Page 1 Fit, tabel APA, bebas mojibake/JEL). | [`templates/template_jurnal_sinta.docx`](templates/template_jurnal_sinta.docx) |
+| **Master Template Skripsi 5 Bab** | Berkas Word DOCX resmi Skripsi/TA (A4, 4-3-3-3 cm, TNR 12 pt spasi 1.25x, preliminary Romawi). | [`templates/template_laporan_tugas_akhir.docx`](templates/template_laporan_tugas_akhir.docx) |
+| **Master Template Laporan KP** | Berkas Word DOCX resmi Laporan Kerja Praktik/Magang Industri struktur perusahaan lengkap. | [`templates/template_laporan_kerja_praktik.docx`](templates/template_laporan_kerja_praktik.docx) |
