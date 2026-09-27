@@ -19,10 +19,12 @@ This skill equips your AI coding agent (Antigravity, Cursor, Claude Code, VS Cod
 
 * 🎓 **SINTA 1–6 Accredited Journals:** Strict IMRaD structure, Page 1 Fit abstract layout, bilingual front matter, continuous flow (no artificial page breaks), and APA 3-line tables.
 * 🌐 **Scopus & WoS International Standards:** Extended IMRaD, related work matrices, statistical validation, and academic ethics declarations.
-* 📚 **Indonesian Standard Thesis & Skripsi:** 4-4-3-3 cm margin, formal Chapter/BAB structure, dynamic Table of Contents (TOC), and hanging indent APA bibliographies.
+* 📚 **Indonesian Standard Thesis & Skripsi:** 4-4-3-3 cm and 4-3-3-3 cm margins, formal Chapter/BAB structure, dynamic Table of Contents (TOC), and hanging indent APA bibliographies.
+* 💼 **Internship & Industrial Reports (Kerja Praktik / PKL / MBKM):** Company profile, organizational hierarchy, project implementation, quality control evaluations, and weekly logbooks.
 * 📑 **Deep Multi-Format Document Ingestion:** Extracts text, tables, and metadata from PDF, DOCX, XLSX, and PPTX into clean Markdown for AI reasoning.
-* 🖼️ **Image & Figure Asset Extraction:** Losslessly extracts embedded photos, diagrams, and charts from Word DOCX and PDF documents.
+* 🖼️ **Image & Figure Asset Extraction:** Losslessly extracts embedded photos, diagrams, and charts from Word DOCX, PPTX, XLSX, and PDF documents.
 * 🎯 **Guaranteed Native Word Output (`.docx`):** Produces pristine Microsoft Word deliverables instead of stopping at plain Markdown.
+
 
 ---
 
@@ -103,17 +105,20 @@ You can also trigger an update at any time by asking your agent (*"perbarui skil
 ```text
 office-cli/
 ├── SKILL.md                                 # Core agent instructions & guidelines
-├── README.md                                # Documentation
+├── README.md                                # Public overview & documentation
 ├── scripts/
 │   └── check_update.py                      # 30-day automated update checker
 ├── templates/
-│   └── template_jurnal_sinta.docx           # Master universal SINTA OJS template
+│   ├── template_jurnal_sinta.docx           # Master universal SINTA OJS template
+│   ├── template_laporan_tugas_akhir.docx    # Master universal Thesis / Skripsi template
+│   └── template_laporan_kerja_praktik.docx  # Master universal Internship / KP template
 └── references/
     ├── pedoman_jurnal_sinta.md              # SINTA 1-6 comprehensive publication guide
     ├── pedoman_jurnal_scopus.md             # Scopus Q1-Q4 international journal guide
     ├── pedoman_skripsi_lengkap.md           # Indonesian standard thesis & skripsi guide
+    ├── pedoman_kerja_praktik.md             # Internship & industrial report guide
     ├── resep_officecli_dokumen_ilmiah.md    # Scientific document formatting recipes
-    └── aturan_adaptif_pedoman_kampus.md     # Campus guideline override rules
+    └── aturan_adaptif_pedoman_kampus.md     # Dynamic override engine & routing hub
 ```
 
 ---

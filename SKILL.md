@@ -184,25 +184,28 @@ Patuhi aturan mutlak berikut berdasarkan evaluasi komprehensif kesalahan masa la
 
 ## 4. STANDAR PENULISAN KARYA ILMIAH & DOKUMEN RESMI
 
-### 4.0 Protokol Wajib: Peka Konteks Proyek & Persetujuan Draf Markdown (Proposal-First Protocol)
-Sebelum membuat atau mengubah dokumen resmi, agen **WAJIB** mematuhi alur kerja dua tahap berikut:
+### 4.0 Protokol Wajib: Inquiry Template Pengguna & Persetujuan Draf Markdown (Proposal-First Protocol)
+Sebelum membuat atau mengubah dokumen resmi, agen **WAJIB** mematuhi alur kerja tiga tahap berikut:
 
-1. **Peka Konteks Proyek (Mandatory Context Ingestion):**
-   - Sebelum menyusun naskah ilmiah/dokumen, agen **WAJIB membaca berkas Markdown penting di repositori proyek pengguna**, seperti: `README.md`, `doc.md`, `docs/*.md`, `PLAN.md`, `TODO.md`, atau berkas rencana penulisan lokal.
-   - Pahami secara mendalam: domain masalah, arsitektur sistem, dataset, tujuan penelitian, dan terminologi yang sudah ditetapkan oleh pengguna di proyek lokal agar isi naskah selaras dan tidak berhalusinasi.
+1. **Inquiry Template Pengguna di Awal (Pre-Generation Template Inquiry):**
+   - Sebelum menyusun berkas dokumen Word apa pun, agen **WAJIB MENANYAKAN KEPADA PENGGUNA TERLEBIH DAHULU**:
+     > *"Apakah Anda memiliki file template `.docx` resmi dari kampus/instansi atau pedoman penulisan khusus yang ingin digunakan? Jika ada, silakan lampirkan agar naskah 100% mengikuti template tersebut. Jika tidak ada, saya akan menggunakan template dan format standar nasional (general academic standard)."*
+   - **Kepatuhan Mutlak:** Jika pengguna melampirkan template `.docx`, agen **100% wajib patuh** pada gaya, margin, font, dan struktur template tersebut.
+   - **Aset & Identitas Dinamis:** Pengguna dipersilakan mengunggah logo institusi, nama kampus/perusahaan mitra, nama lengkap, dan NIM/NIP untuk disematkan langsung ke dalam naskah dokumen lokal.
+   - Jika pengguna memilih format standar, agen menggunakan master template resmi yang relevan di folder `templates/`.
 
-2. **Wajib Ajukan Draf Markdown Dahulu (Draft Plan in Markdown First):**
+2. **Peka Konteks Proyek (Mandatory Context Ingestion):**
+   - Agen **WAJIB membaca berkas Markdown penting di repositori pengguna** (`README.md`, `doc.md`, `docs/*.md`, `PLAN.md`, draf naskah). Pahami arsitektur sistem, dataset, tujuan penelitian, dan terminologi lokal agar naskah akurat dan tidak berhalusinasi.
+
+3. **Wajib Ajukan Draf Markdown Dahulu (Draft Plan in Markdown First):**
    - **DILARANG KERAS** langsung melompat membuat berkas `.docx` biner tanpa kesepakatan struktur dengan pengguna!
-   - Agen **WAJIB menyusun draf outline / rencana struktur naskah dalam format Markdown terlebih dahulu** (bisa berupa draf file `.md` atau sajian terstruktur di chat) yang memuat:
-     - Judul usulan dwibahasa (ID & EN).
-     - Struktur bab/seksi (IMRaD atau Bab I–V).
-     - Poin-poin narasi inti setiap seksi.
-     - Rancangan tabel dan bagan visual.
+   - Agen **WAJIB menyusun draf outline / rencana struktur naskah dalam format Markdown terlebih dahulu** (judul usulan dwibahasa, struktur bab/seksi, poin narasi inti, rancangan tabel/bagan).
    - **Minta Persetujuan Pengguna:** Tanyakan kepada pengguna: *"Berikut adalah draf rancangan struktur dan poin-poin naskah. Apakah susunan ini sudah sesuai? Jika Anda setuju, saya akan segera mengompilasinya menjadi berkas Word .docx resmi."*
    - Hanya setelah pengguna memberikan persetujuan (*approval*), agen mengeksekusi konversi ke format `.docx`.
 
 ### 4.1 Kewajiban Deliverable File Akhir (.DOCX via OfficeCLI)
 Setelah draf Markdown disetujui pengguna, **OUTPUT UTAMA YANG WAJIB DIHASILKAN ADALAH FILE WORD BERFORMAT `.DOCX` MENGGUNAKAN `officecli` SECARA EKSKLUSIF**. Agen DILARANG KERAS menggunakan `python-docx` untuk menyusun naskah dan DILARANG KERAS hanya berhenti pada file Markdown (`.md`)! Seluruh operasi penulisan, perataan heading, dan pembuatan tabel wajib dieksekusi via `officecli` (batch DOM patch / set / add).
+
 
 ### 4.2 Spesifikasi Tata Letak & Tipografi Baku
 1. **Batas Tepi (Margin):**
@@ -252,14 +255,16 @@ Ketika mentransformasikan konten draf ke dalam dokumen Word, agen harus adaptif 
 
 ---
 
-## 5. MANAJEMEN PRIVASI DATA PENULIS & ADAPTASI PEDOMAN KAMPUS
+## 5. MANAJEMEN PRIVASI DATA PENGGUNA & ZERO AI-TRAINING POLICY
 
-### 5.1 Privasi Data Pribadi Penulis (Author Privacy Guidelines)
-- **Aturan Mutlak:** File skill ini ditujukan untuk dapat dipublikasikan secara umum (open-source / GitHub). Oleh karena itu, **DILARANG KERAS MENYIMPAN INFORMASI PRIBADI (PII - Personally Identifiable Information)** seperti nama lengkap pengguna, nomor kontak, NIK/NIM, atau alamat surel pribadi secara *hardcoded* di dalam berkas skill.
-- **Injeksi Data Dinamis:** Identitas penulis, afiliasi lembaga, dan email korespondensi wajib diambil secara dinamis dari konteks proyek yang sedang dikerjakan pengguna atau dari draf naskah lokal di workspace aktif.
+### 5.1 Larangan Mutlak Penggunaan Data Pribadi untuk Bahan Training AI (Zero AI-Training Policy)
+- **DILARANG KERAS MENGGUNAKAN DATA PRIBADI PENGGUNA SEBAGAI BAHAN TRAINING MODEL AI:** Seluruh identitas pengguna (nama lengkap, NIM, NIP, nomor kontak, surel), data afiliasi kampus/perusahaan mitra, draf naskah karya ilmiah lokal, maupun file template dokumen internal yang dilampirkan pengguna **TIDAK BOLEH** digunakan, disimpan, diekstrak, atau dialirkan sebagai bahan latihan/pelatihan (*training / fine-tuning dataset*) model AI apa pun.
+- **Pemrosesan Bersifat Ephemeral & Sepenuhnya Lokal:** Data pribadi dan aset dokumen yang diserahkan pengguna hanya diproses sementara dalam memori sesi aktif (*in-memory*) di lingkungan lokal pengguna semata-mata untuk mengompilasi berkas dokumen Word `.docx`.
+- **Larangan Penyimpanan Permanen & Kebocoran Publik:** Dilarang menyimpan data pribadi pengguna ke dalam file kode skill, git commit, skrip publik, atau mengirimkannya ke layanan logging pihak ketiga. File template mentah lokal kampus (`Template_*.docx`) wajib otomatis diabaikan oleh `.gitignore`.
 
 ### 5.2 Prinsip Adaptif Pedoman Kampus
 Jika pengguna menyertakan pedoman khusus dari institusinya (misalnya format margin, jenis font, atau gaya sitasi kampus tertentu), **ATURAN KAMPUS PENGGUNA 100% MENGALAHKAN ATURAN STANDAR NASIONAL**. Agen wajib langsung menyesuaikan parameter dokumen dengan preferensi tersebut.
+
 
 ---
 

@@ -1,155 +1,84 @@
 # MEKANISME ADAPTASI PEDOMAN KAMPUS & JURNAL (DYNAMIC OVERRIDE ENGINE)
 
-Dokumen ini memandu agen AI dalam mengadaptasi aturan penulisan secara fleksibel berdasarkan instruksi pengguna, buku pedoman skripsi perguruan tinggi tertentu, atau *Author Guidelines* jurnal yang dituju.
+Dokumen ini merupakan pusat routing dan mesin adaptasi dinamis bagi agen AI dalam menyesuaikan aturan penulisan dokumen ilmiah dan laporan profesional secara presisi.
 
 ---
 
-## 1. HIERARKI PRIORITAS ATURAN PENULISAN
+## 1. HIERARKI PRIORITAS & PROTOKOL INQUIRY TEMPLATE PENGGUNA
 
-Ketika memformat atau menyusun dokumen ilmiah, agen AI **WAJIB** menerapkan hierarki prioritas berikut (aturan di nomor lebih kecil mengalahkan aturan di nomor lebih besar):
+Ketika memulai tugas penulisan dokumen Word, agen **WAJIB** menerapkan hierarki prioritas berikut:
 
-1. **PRIORITAS 1: Instruksi Eksplisit Pengguna & Template Resmi Kampus / Jurnal**
-   - Jika pengguna memberikan *template* `.docx`, buku pedoman skripsi kampus (PDF/Docx), atau koreksi spesifik (contoh: *"Di kampusku marginnya 4-3-3-3 dan font-nya Arial"* atau *"Gunakan spasi 2.0 dan format sitasi IEEE"*), **aturan ini 100% MUTLAK mengesampingkan aturan standar default!**
-2. **PRIORITAS 2: Standar Baku Nasional / Internasional (Default Engine)**
-   - Jika pengguna TIDAK memberikan pedoman kampus khusus, agen secara otomatis menerapkan **Standar Baku Pendidikan Tinggi Indonesia** (Kertas A4, Margin 4-4-3-3, Font Times New Roman 12, Spasi 1,5, Indent 1,27 cm, Tabel APA 3 garis, Sitasi APA 7th).
-   - Untuk artikel jurnal: Menerapkan struktur internasional **IMRaD** dan template dua kolom atau satu kolom sesuai target SINTA.
+### 1.1 Protokol Tanya Pengguna di Awal (Pre-Generation Inquiry)
+Sebelum membuat berkas `.docx` apa pun, agen wajib mengajukan pertanyaan klarifikasi:
+> *"Apakah Anda memiliki file template `.docx` resmi dari kampus/instansi atau pedoman penulisan khusus yang ingin digunakan? Jika ada, silakan lampirkan agar naskah 100% mengikuti template tersebut. Jika tidak ada, saya akan menggunakan template dan format standar nasional (general academic standard)."*
+
+### 1.2 Hierarki Prioritas
+1. **PRIORITAS 1: Template Resmi & Instruksi Eksplisit Pengguna (100% Override)**
+   - Jika pengguna melampirkan template `.docx`, buku pedoman kampus, atau instruksi spesifik (misal: margin 4-3-3-3, font Arial 11 pt, spasi 2.0x, atau sitasi IEEE), **aturan pengguna MUTLAK mengesampingkan standar bawaan**. Agen wajib sepenuhnya patuh pada template tersebut.
+   - Pengguna berhak menyertakan logo institusi, nama kampus/mitra, nomor induk mahasiswa (NIM), dll., yang akan langsung diintegrasikan secara lokal ke dokumen.
+2. **PRIORITAS 2: Master Template Standar Nasional (Default Engine)**
+   - Jika pengguna tidak memiliki template khusus, agen secara otomatis menggunakan master template bawaan skill (`templates/template_jurnal_sinta.docx`, `templates/template_laporan_tugas_akhir.docx`, atau `templates/template_laporan_kerja_praktik.docx`).
 
 ---
 
-## 2. DAFTAR PARAMETER YANG DAPAT DI-OVERRIDE
+## 2. JAMINAN PRIVASI PENGGUNA: ZERO AI-TRAINING RETENTION
 
-Agen AI harus mampu menyesuaikan variabel-variabel berikut secara modular:
+Demi melindungi integritas data pengguna dan rahasia institusi:
+1. **DILARANG KERAS MENGGUNAKAN DATA PRIBADI UNTUK TRAINING MODEL AI:**
+   Seluruh data pribadi pengguna (nama lengkap, NIM, NIP, nomor kontak, surel, draf naskah penelitian, file template internal kampus, dan logo institusi) **TIDAK BOLEH** digunakan sebagai bahan latihan (*training/fine-tuning dataset*) model AI.
+2. **Pemrosesan Lokal & Ephemeral:**
+   Data yang diberikan pengguna hanya diproses sementara dalam memori sesi aktif untuk mengompilasi berkas `.docx` milik pengguna.
+3. **Pencegahan Kebocoran Git:**
+   Seluruh berkas mentah kampus (`Template_*.docx`) wajib otomatis diabaikan oleh `.gitignore` agar tidak pernah terunggah ke repositori publik GitHub.
 
-| Parameter | Nilai Baku Default (Skripsi) | Variasi Umum Kampus Lain | Cara Penyesuaian di `officecli` |
+---
+
+## 3. MATRIKS KOMPARATIF 4 ARKETIPE DOKUMEN ILMIAH & LAPORAN
+
+Tabel ini membantu agen mengenali secara cepat perbedaan mendasar antar jenis dokumen sehingga tidak terjadi kerancuan format:
+
+| Parameter | Artikel Jurnal SINTA | Artikel Jurnal Scopus | Laporan Tugas Akhir / Skripsi | Laporan Kerja Praktik (KP / Magang) |
+| :--- | :--- | :--- | :--- | :--- |
+| **Tujuan Utama** | Diseminasi riset nasional terakreditasi | Publikasi bereputasi global berdampak sitasi tinggi | Ujian kelulusan sarjana (monograf komprehensif) | Pelaporan pengalaman industri & solusi praktis |
+| **Struktur Inti** | IMRaD (Pendahuluan, Metode, Hasil & Pembahasan, Kesimpulan) | Extended IMRaD (+ Related Work, Ablation, Error Analysis, Validity) | Monograf 5 Bab (Pendahuluan, Pustaka, Teori/Metode, Hasil, Penutup) | 5 Bab Praktis (Pendahuluan, Profil Mitra, Pelaksanaan, Evaluasi Mutu, Penutup) |
+| **Penomoran Bab/Seksi** | Angka Arab (`1. PENDAHULUAN`). **Dilarang kata 'BAB'** | Angka Arab / Huruf Kapital. **Dilarang kata 'BAB'** | **Wajib kata 'BAB'** (`BAB 1. PENDAHULUAN` / `BAB I`) | **Wajib kata 'BAB'** (`BAB 1. PENDAHULUAN` / `BAB I`) |
+| **Aliran Halaman** | **Continuous Flow** (tanpa page break antar-seksi) | **Continuous Flow** (tanpa page break antar-seksi) | **Wajib Page Break** setiap bab baru (`pageBreakBefore: true`) | **Wajib Page Break** setiap bab baru (`pageBreakBefore: true`) |
+| **Aturan Abstrak** | Formula IMRaD mini (150-200 kata), **Wajib tuntas di Halaman 1** | Structured/Unstructured (200-250 kata), Full English | Intisari 3 Alinea presisi (Latar belakang, Metode, Hasil), 10 pt spasi 1.0x | Ringkasan Eksekutif (1-2 alinea ringkas profil mitra & kontribusi penugasan) |
+| **Pengesahan** | Tidak ada lembar pengesahan (cukup *Byline & Affiliations*) | Tidak ada lembar pengesahan (*Byline, Affiliations, ORCID iD*) | Pembimbing I/II, Penguji, Kaprodi, Dekan Fakultas | Pembimbing Kampus **DAN Pembimbing Lapangan Industri** |
+| **Lampiran Kunci** | Biasanya tidak ada lampiran (semua terintegrasi di naskah) | *Supplementary Materials* (repositori online / OSF / GitHub) | Bukti pengujian empiris, instrumen, data mentah | **Surat selesai magang, lembar nilai industri, logbook mingguan** |
+| **Panduan Detail** | [pedoman_jurnal_sinta.md](pedoman_jurnal_sinta.md) | [pedoman_jurnal_scopus.md](pedoman_jurnal_scopus.md) | [pedoman_skripsi_lengkap.md](pedoman_skripsi_lengkap.md) | [pedoman_kerja_praktik.md](pedoman_kerja_praktik.md) |
+
+---
+
+## 4. DAFTAR PARAMETER MODULAR YANG DAPAT DI-OVERRIDE
+
+| Parameter | Nilai Baku Bawaan (Skripsi/Laporan) | Variasi Pedoman Kampus Lain | Implementasi di `officecli` |
 | :--- | :--- | :--- | :--- |
-| **Batas Tepi (Margin)** | Kiri: 4cm, Atas: 4cm, Bawah: 3cm, Kanan: 3cm (4-4-3-3) | 4-3-3-3 cm, 3-3-3-3 cm, atau 1,5-1-1-1 inci | Mengubah nilai `marginTop`, `marginLeft`, dll. pada `/section[1]` |
-| **Jenis Huruf (Font)** | *Times New Roman* | *Arial*, *Calibri*, *Georgia*, *Book Antiqua* | Mengubah atribut `font` pada `/styles/Normal` dan `/styles/HeadingX` |
-| **Ukuran Font Isi** | 12 pt | 11 pt (biasa pada Arial/Calibri) | Mengubah atribut `size` pada `/styles/Normal` |
-| **Spasi Teks Utama** | 1,5 spasi (`lineSpacing="1.5x"`) | 2,0 spasi (`lineSpacing="2.0x"`) atau 1,15 spasi | Mengubah atribut `lineSpacing` pada `/styles/Normal` |
-| **Struktur Bab** | Bab I s.d. Bab V (Format Skripsi Monograf) | Format Makalah Kompilasi / Format Jurnal IMRaD | Menyesuaikan daftar Heading 1 dan nomor bab |
-| **Format Sitasi** | APA Style 7th Edition (Nama, Tahun) | IEEE Style `[1]`, Harvard, Vancouver | Menyesuaikan struktur kurung sitasi di teks dan urutan alfabetis vs numerik di Daftar Pustaka |
-| **Posisi Judul Tabel** | Di ATAS tabel, rata tengah/kiri | Ada kampus yang meminta cetak tebal huruf kapital | Menyesuaikan paragraf sebelum elemen `table` |
-| **Posisi Judul Gambar** | Di BAWAH gambar, rata tengah | Di bawah gambar, cetak miring | Menyesuaikan paragraf setelah elemen `picture` |
+| **Margin** | 4-4-3-3 cm (Umum) atau 4-3-3-3 cm (Teknik) | 3-3-3-3 cm atau 1,5-1-1-1 inci | Set atribut `marginTop`, `marginLeft`, `marginBottom`, `marginRight` |
+| **Jenis Font** | *Times New Roman* | *Arial*, *Calibri*, *Georgia*, *Book Antiqua* | Set properti `font` pada `/styles/Normal` dan Headings |
+| **Ukuran Font Isi** | 12 pt (Regular) | 11 pt (biasa pada font Arial/Calibri) | Set properti `size` pada `/styles/Normal` |
+| **Spasi Teks Utama** | 1,25x atau 1,5x | 2,0x atau 1,15x | Set atribut `lineSpacing` pada paragraf body |
+| **Format Sitasi** | APA Style 7th Edition (Nama, Tahun) | IEEE Style `[1]`, Harvard, Vancouver | Sesuaikan kurung sitasi di teks & format Daftar Pustaka |
+| **Garis Tabel** | 3 garis horizontal standar APA (tanpa garis vertikal) | Tabel bergaris kotak penuh (*Full Grid*) jika diminta | Atur properti `borderTop`, `borderBottom`, `borderInsideH/V` |
 
 ---
 
-## 3. PROTOKOL KOREKSI & CONTINUOUS IMPROVEMENT
-
-Jika pengguna menyampaikan koreksi atau pedoman baru:
-1. **Catat Perubahan:** Identifikasi parameter mana yang dikoreksi (misal margin, font, format daftar isi).
-2. **Revisi Langsung:** Terapkan koreksi tersebut pada dokumen yang sedang dikerjakan tanpa berdebat.
-3. **Konfirmasi Cakupan:** Pastikan apakah perubahan ini berlaku untuk dokumen saat ini saja atau untuk seluruh draf masa depan di proyek ini.
-4. **Perbarui Memori:** Jika perubahan ini adalah aturan institusional permanen bagi pengguna, catat aturan tersebut ke dalam dokumentasi proyek agar agen di sesi berikutnya tidak mengulangi kesalahan format yang sama.
-
----
-
-## 4. TRANSFORMASI ADAPTIF ELEMEN SEMANTIK (ANTI-RAW COPY)
-
-Agen AI tidak boleh hanya bertindak sebagai "tukang salin teks mentah", melainkan harus mampu mengenali maksud semantik dari draf Markdown:
+## 5. TRANSFORMASI ADAPTIF ELEMEN SEMANTIK (ANTI-RAW COPY)
 
 1. **Deteksi Tabel Semantik:**
-   - Bentuk masukan: tabel pipa markdown, tabel garis putus-putus ASCII (`+---+`, `--|--`), atau teks berkolom dengan field & record terstruktur.
-   - Perilaku adaptif: Wajib diubah menjadi **tabel native Word berformat APA** (3 garis horizontal: atas, pemisah header, dan penutup bawah). Dilarang menyalinnya sebagai blok teks monospace.
+   - Draf masukan: Tabel Markdown (`| col1 | col2 |`), tabel ASCII (`+---+---+`), atau teks data berkolom.
+   - Perilaku: Wajib diubah menjadi **Native Word Table (`w:tbl`)** berstandar APA 3 garis horizontal. Dilarang menyalinnya sebagai blok teks monospace.
 2. **Deteksi Struktur Pohon / Hierarki (Tree):**
-   - Bentuk masukan: ASCII tree folder (`├── src/`, `└── main.py`), pohon keputusan, atau taksonomi hierarkis.
-   - Perilaku adaptif: Wajib diubah menjadi **daftar butir bertingkat (nested indented bullet list)** formal Word atau **tabel hierarki multi-level**, bukan teks karakter ASCII `├──` mentah di paragraf ilmiah.
+   - Draf masukan: ASCII tree direktori (`├── folder/`, `└── file.py`), hierarki modul, atau struktur organisasi.
+   - Perilaku: Wajib diubah menjadi **Nested Indented Bullet List** resmi Word atau **Tabel Hierarkis Bertingkat**. Dilarang menyalin simbol ASCII `├──` secara mentah.
 
 ---
 
-## 5. PROTOKOL WAJIB: DRAF PROPOSAL MARKDOWN SEBELUM EKSEKUSI DOCX
+## 6. PROTOKOL WAJIB: DRAF PROPOSAL MARKDOWN SEBELUM EKSEKUSI DOCX
 
-1. **Peka Terhadap File Markdown Proyek:**
-   Sebelum menyusun dokumen, agen wajib membaca berkas `.md` kunci di repositori pengguna (`README.md`, `doc.md`, `PLAN.md`, draf naskah). Serap nama sistem, arsitektur, dan tujuan agar isi naskah akurat.
+1. **Peka Konteks Proyek Lokal:**
+   Baca berkas penting di workspace pengguna (`README.md`, `doc.md`, `PLAN.md`) untuk menyerap nama arsitektur, parameter riset, dan tujuan proyek.
 2. **Verifikasi Persetujuan Pengguna:**
-   Susun draf rencana struktur naskah dalam format Markdown terlebih dahulu. Paparkan usulan judul, kerangka bab, dan poin inti ke pengguna untuk disetujui. Setelah pengguna memberikan persetujuan (*"Oke"*, *"Setuju"*), barulah file `.docx` resmi dibuat.
-
----
-
-## 6. STANDAR UNIVERSAL LAPORAN TUGAS AKHIR / SKRIPSI (MONOGRAF 5 BAB)
-
-Dokumen laporan Tugas Akhir / Skripsi di lingkungan perguruan tinggi memiliki kaidah baku yang diadaptasi secara universal sebagai berikut:
-
-### 6.1 Tata Letak Halaman & Spasi
-- **Ukuran Kertas:** A4 (21,0 cm x 29,7 cm).
-- **Variasi Batas Tepi (Margin):**
-  - Standar Teknik / Kampus A: Atas = 4 cm, Kiri = 3 cm (atau 4 cm), Bawah = 3 cm, Kanan = 3 cm (`4-3-3-3` atau `4-4-3-3`).
-- **Jarak Antar Baris (Line Spacing):**
-  - Teks Utama: 1,25 spasi (`lineSpacing="1.25x"`) atau 1,5 spasi (`lineSpacing="1.5x"`).
-  - Intisari / Abstrak, Kutipan Langsung > 4 baris, Tabel, Judul Gambar/Tabel, dan Daftar Pustaka: 1,0 spasi (`lineSpacing="1.0x"`).
-
-### 6.2 Kaidah Tipografi & Tingkat Judul (Headings)
-- **Jenis Huruf:** *Times New Roman* (ukuran 12 pt untuk teks utama).
-- **Tingkat 1 - Judul Bab (`Heading 1`):**
-  - Huruf kapital penuh (*ALL CAPS*), cetak tebal (*bold*), ukuran 12–14 pt, posisi tengah (*center*).
-  - Format penomoran: `BAB 1. PENDAHULUAN` atau `BAB I PENDAHULUAN`.
-- **Tingkat 2 - Judul Sub Bab (`Heading 2`):**
-  - Huruf besar pada awal setiap kata (*Capitalize Each Word*), cetak tebal (*bold*), ukuran 12 pt, rata kiri.
-  - Format penomoran: `1.1. Latar Belakang` atau `1.1 Latar Belakang`.
-- **Tingkat 3 - Judul Sub-Sub Bab (`Heading 3`):**
-  - Huruf besar hanya di awal kalimat (*Sentence case*), cetak tebal (*bold*), ukuran 12 pt, rata kiri.
-  - Format penomoran: `1.1.1. Identifikasi masalah operasional`.
-
-### 6.3 Kaidah Intisari / Abstrak Standar
-- Ditulis menggunakan font *Times New Roman* ukuran 10 pt dengan spasi tunggal (1,0 spasi).
-- **Wajib terdiri dari tepat 3 Alinea:**
-  - **Alinea I:** Latar belakang permasalahan dan tujuan utama penelitian.
-  - **Alinea II:** Metode penelitian, tahapan perancangan, instrumen, dan skenario pengujian yang dilakukan.
-  - **Alinea III:** Hasil temuan penelitian dan kesimpulan akhir (disajikan secara kuantitatif/kualitatif yang terukur).
-- **Kata Kunci (*Keywords*):** 3 hingga 5 kata kunci yang merepresentasikan domain dan metode penelitian.
-
-### 6.4 Urutan Penomoran Rincian (Numbering Hierarchy)
-Jika di dalam satu sub bab terdapat daftar butir bertingkat, gunakan urutan hierarki baku berikut:
-1. Angka Arab diakhiri titik: `1.`, `2.`, `3.`
-2. Huruf kecil diakhiri titik: `a.`, `b.`, `c.`
-3. Angka Arab diakhiri kurung tutup: `1)`, `2)`, `3)`
-4. Huruf kecil diakhiri kurung tutup: `a)`, `b)`, `c)`
-
-### 6.5 Penomoran Tabel, Gambar, dan Rumus
-- **Tabel:** Judul diletakkan di **ATAS** tabel. Format nomor: `Tabel [Bab].[Nomor]` (contoh: `Tabel 1.1`, `Tabel 4.2`). Isi tabel berukuran 11 pt dengan garis 3 horizontal standar APA.
-- **Gambar:** Judul diletakkan di **BAWAH** gambar, posisi tengah (*center*). Format nomor: `Gambar [Bab].[Nomor]` (contoh: `Gambar 2.1`, `Gambar 4.1`).
-- **Persamaan / Rumus:** Rata tengah dengan nomor persamaan rata kanan: `(3.1)`.
-
-### 6.6 Struktur Monograf 5 Bab Lengkap
-1. **Bagian Awal (Section 1 - Penomoran Romawi Kecil `i, ii, iii...` di bawah tengah):**
-   - Halaman Judul (Maks. 20 kata, ALL CAPS, Nama Mahasiswa, NIM, [PROGRAM STUDI], [FAKULTAS], [NAMA PERGURUAN TINGGI], [KOTA], [TAHUN], placeholder logo instansi).
-   - Halaman Pengesahan (Pembimbing Utama, Pembimbing Pendamping, Penguji, Kaprodi, Dekan).
-   - Surat Pernyataan Keaslian Karya (Bermaterai).
-   - Kata Pengantar (Ucapan syukur & terima kasih terstruktur).
-   - Daftar Isi, Daftar Tabel, Daftar Gambar, Daftar Singkatan.
-   - Intisari (Bahasa Indonesia) & *Abstract* (Bahasa Inggris).
-2. **Bagian Utama (Section 2 - Penomoran Angka Arab `1, 2, 3...` di kanan atas, halaman pertama bab di bawah tengah):**
-   - **BAB 1. PENDAHULUAN** (Latar Belakang, Rumusan Masalah, Batasan Masalah, Tujuan Penelitian, Manfaat Penelitian, Sistematika Penulisan).
-   - **BAB 2. TINJAUAN PUSTAKA** (Tinjauan penelitian terdahulu yang relevan & perbandingan kontribusi).
-   - **BAB 3. LANDASAN TEORI** (Teori fundamental, perumusan matematis, dan arsitektur/metode pengembangan).
-   - **BAB 4. HASIL DAN PEMBAHASAN** (Hasil eksperimen, pengujian performa, analisis komparatif, dan pembahasan).
-   - **BAB 5. KESIMPULAN DAN SARAN** (5.1 Kesimpulan berbasis butir temuan, 5.2 Saran penelitian lanjutan).
-3. **Bagian Akhir:**
-   - **DAFTAR PUSTAKA** (Standar APA / IEEE, hanging indent 1,27 cm, spasi tunggal).
-   - **LAMPIRAN** (Kode sumber, lembar pengujian, instrumen penelitian, data mentah).
-
----
-
-## 7. STANDAR UNIVERSAL LAPORAN KERJA PRAKTIK (KP) / MAGANG INDUSTRI (4–5 BAB)
-
-Laporan Kerja Praktik (KP), Praktik Kerja Lapangan (PKL), atau Magang Industri memiliki orientasi implementasi praktis di dunia kerja:
-
-### 7.1 Tata Letak & Margin
-- **Kertas:** A4 (21,0 cm x 29,7 cm).
-- **Margin:** Format **4-3-3-3 cm** (Top: 4 cm, Left: 3 cm atau 4 cm, Bottom: 3 cm, Right: 3 cm) atau 4-4-3-3 cm.
-- **Tipografi & Spasi:** *Times New Roman* 12 pt, spasi **1,25x** atau **1,5x**, *Justified*, indentasi alinea 1,0 – 1,27 cm.
-
-### 7.2 Anatomi 5 Bab Laporan Kerja Praktik
-- **BAB 1. PENDAHULUAN:** Latar Belakang KP, Maksud & Tujuan, Manfaat bagi Mahasiswa/Kampus/Mitra Perusahaan, Waktu & Tempat Pelaksanaan, Batasan Penugasan, Sistematika Laporan.
-- **BAB 2. GAMBARAN UMUM PERUSAHAAN / MITRA:** Profil Singkat, Visi & Misi, Struktur Organisasi Perusahaan, Deskripsi Divisi/Unit Kerja Penempatan, Proses Bisnis Utama.
-- **BAB 3. PELAKSANAAN KERJA PRAKTIK:** Uraian Tugas & Tanggung Jawab Harian, Prosedur Kerja / SOP, Perangkat & Teknologi yang Digunakan, Tahapan Analisis/Perancangan/Implementasi Proyek.
-- **BAB 4. EVALUASI DAN PENGENDALIAN PEKERJAAN:** Pengendalian Mutu Kerja (*Quality Assurance*), Kendala Teknis Lapangan, Solusi Pemecahan Masalah (*Problem Solving*), Pembahasan Hasil Evaluasi Pekerjaan.
-- **BAB 5. PENUTUP:** 5.1 Kesimpulan Capaian KP, 5.2 Saran Perbaikan untuk Perusahaan Mitra & untuk Kurikulum Program Studi Kampus.
-
-### 7.3 Kelengkapan Lampiran Khusus KP
-- Wajib menyertakan Surat Keterangan / Sertifikat Selesai Magang dari Perusahaan.
-- Lembar Penilaian Pembimbing Lapangan.
-- Logbook Kegiatan Mingguan (*Weekly Activity Log*).
-- Foto Dokumentasi Kegiatan di Lingkungan Kerja.
-
-
-
+   Sajikan rancangan draf struktur naskah (Judul, Outline Bab, Poin Utama Narasi, Rancangan Tabel/Gambar) dalam format Markdown.
+3. **Persetujuan Pengguna:**
+   Hanya setelah pengguna memberikan persetujuan (*"Lanjut"*, *"Oke"*), barulah berkas Word `.docx` dikompilasi secara penuh menggunakan `officecli`.
