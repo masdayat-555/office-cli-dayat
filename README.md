@@ -77,11 +77,6 @@ Setelah terpasang, Anda tidak perlu menghafal perintah yang rumit. Cukup berikan
 
 AI Agent akan otomatis mengaktifkan skill ini, mengonfirmasi preferensi template Anda, dan menghasilkan berkas `.docx` resmi.
 
-> [!CAUTION]
-> **SUPREME DIRECTIVE (ATURAN TERTINGGI):**
-> 1. Agen AI **DILARANG KERAS** menggunakan *library* pihak ketiga lain seperti `python-docx`, `openpyxl`, atau `python-pptx` untuk membuat, menulis, atau mengedit dokumen Office. **SELURUH** operasi mutasi dokumen **WAJIB** dieksekusi menggunakan mesin `officecli`. Alat lain seperti `markitdown` hanya dizinkan khusus untuk aktivitas **membaca** dokumen.
-> 2. **KEWAJIBAN PENGKODEAN & ANTI-MOJIBAKE:** Agen AI diwajibkan menggunakan `encoding="utf-8"` pada seluruh operasi baca/tulis file (I/O) Python. **DILARANG** melakukan *piping* output terminal (`> file.txt` atau `| Out-File`) karena berisiko merusak karakter (menghasilkan *mojibake* / karakter aneh).
-
 ---
 
 ### ⚙️ Kebutuhan Sistem (Prasyarat)
@@ -112,11 +107,15 @@ Skill ini memanfaatkan dua mesin *open-source* yang terpasang di terminal sistem
 ---
 
 ### 🔄 Sinkronisasi Pembaruan Otomatis
-Skill ini dilengkapi skrip sinkronisasi otomatis setiap **30 hari** melalui:
+Skill ini dilengkapi skrip sinkronisasi otomatis setiap **30 hari**. Namun, Anda dapat memaksa pembaruan kapan saja cukup dengan memberikan instruksi santai ke AI Agent (meskipun sedikit *typo*):
+
+```text
+"perbarui office cli"
+```
+Agen akan otomatis mendeteksi permintaan Anda dan mengeksekusi sinkronisasi dari repositori utama:
 ```bash
 git pull --rebase --autostash origin main
 ```
-Anda juga dapat memperbarui kapan saja dengan meminta ke agent (*"perbarui skill office-cli"*).
 
 ---
 
@@ -157,11 +156,6 @@ office-cli/
 * 📑 **Deep Multi-Format Document Ingestion:** Extracts text, tables, and structure from PDF, DOCX, XLSX, and PPTX via Microsoft MarkItDown.
 * 🖼️ **Asset Extraction:** Losslessly extracts embedded images and diagrams from Word, PowerPoint, Excel, and PDF files.
 * 🎯 **Guaranteed Word (`.docx`) Deliverables:** Compiles pristine OpenXML Word documents directly without manual formatting overhead.
-
-> [!CAUTION]
-> **SUPREME DIRECTIVE:** 
-> 1. AI Agents are **STRICTLY FORBIDDEN** from using third-party libraries (e.g., `python-docx`, `openpyxl`) to write or mutate Office documents. All authoring operations **MUST** use `officecli`. Other tools like `markitdown` are permitted exclusively for **reading/ingestion**.
-> 2. **STRICT UTF-8 & ANTI-MOJIBAKE:** AI Agents **MUST** strictly use `encoding="utf-8"` in all Python I/O scripts. Terminal piping (`> output.json` or `| Out-File`) is **STRICTLY FORBIDDEN** as it causes encoding corruption (*mojibake* / weird characters).
 
 ---
 

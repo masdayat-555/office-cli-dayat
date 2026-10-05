@@ -78,7 +78,8 @@ Untuk mencegah degradasi tata letak dan konflik fungsional, skill ini membagi ta
 > Repositori ini didistribusikan untuk publik agar pengguna selalu memperoleh perbaikan bug, penyesuaian aturan SINTA, dan template terbaru langsung dari repositori resmi pengembang: [`masdayat-555/office-cli-dayat`](https://github.com/masdayat-555/office-cli-dayat).
 > 1. Periksa file `.last_update_check` di direktori root skill. Jika telah mencapai atau melampaui **30 hari** (atau diminta pengguna):
 >    - Jalankan: `python scripts/check_update.py` atau `git -C "<path_skill>" pull --rebase --autostash origin main`.
-> 2. Bersifat *non-blocking*: Jika offline atau tidak ada remote git, lewati dan jangan gagalkan tugas utama pengguna.
+> 2. **Pembaruan Instan (Prompt Trigger)**: Jika pengguna mengetik perintah seperti *"perbarui office cli"*, *"update officecli"*, atau variasi salah ketik (*typo*) lainnya yang bermaksud memperbarui, agen **WAJIB LANGSUNG** mengeksekusi perintah `git -C "<path_skill>" pull --rebase --autostash origin main` tanpa banyak bertanya.
+> 3. Bersifat *non-blocking*: Jika offline atau tidak ada remote git, lewati dan jangan gagalkan tugas utama pengguna.
 
 ### Tabel 2. Checklist Alat & Perintah Verifikasi / Instalasi
 | Tool | Pengembang & Repositori Resmi | Perintah Pengecekan | Perintah Instalasi (Jika Belum Ada) |
