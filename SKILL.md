@@ -41,7 +41,8 @@ office-cli/
 │   ├── template_jurnal_sinta.docx           # Master template OJS SINTA (A4, 1-inch, Page 1 Fit, APA Table)
 │   ├── template_laporan_tugas_akhir.docx    # Master template Skripsi / TA (A4, 4-3-3-3 cm, 5 Bab)
 │   ├── template_laporan_kerja_praktik.docx  # Master template Laporan KP / Magang Industri
-│   └── template_laporan_praktikum.docx      # Master template Laporan Praktikum (Cover luwes, native TOC)
+│   ├── template_laporan_praktikum.docx      # Master template Laporan Praktikum (Cover luwes, native TOC)
+│   └── template_lhp_singkat.docx            # Master template Laporan Praktikum Singkat (Hanya Cover, Tanpa Bab/TOC)
 └── references/
     ├── pedoman_jurnal_sinta.md              # Panduan lengkap penulisan jurnal SINTA 1-6 (IMRaD baku)
     ├── pedoman_jurnal_scopus.md             # Panduan jurnal internasional bereputasi Scopus Q1-Q4
@@ -237,6 +238,7 @@ Jika pengguna menyertakan pedoman khusus dari institusinya (misalnya format marg
 | **Master Template Skripsi 5 Bab** | Berkas Word DOCX resmi Skripsi/TA (A4, 4-3-3-3 cm, TNR 12 pt spasi 1.25x, preliminary Romawi). | [`templates/template_laporan_tugas_akhir.docx`](templates/template_laporan_tugas_akhir.docx) |
 | **Master Template Laporan KP** | Berkas Word DOCX resmi Laporan Kerja Praktik/Magang Industri struktur perusahaan lengkap. | [`templates/template_laporan_kerja_praktik.docx`](templates/template_laporan_kerja_praktik.docx) |
 | **Master Template Laporan Praktikum**| Berkas Word DOCX resmi Laporan Praktikum. Dilarang generik, cover proporsional. | [`templates/template_laporan_praktikum.docx`](templates/template_laporan_praktikum.docx) |
+| **Master Template LHP Singkat**| Berkas Word DOCX resmi Laporan Praktikum khusus untuk penugasan singkat (hanya cover, tanpa BAB, tanpa TOC). | [`templates/template_lhp_singkat.docx`](templates/template_lhp_singkat.docx) |
 
 ---
 
@@ -374,3 +376,10 @@ Berbeda dengan tugas bebas, Laporan Praktikum **WAJIB** dipisahkan per BAB:
 ### 9.4 Daftar Isi (TOC)
 - **Haram** mengetik Daftar Isi secara manual atau memanipulasi *tab leader* di Python.
 - Harus murni di-render menggunakan mesin Field Codes dari Word melalui `officecli`. Selalu selesaikan seluruh modifikasi DOM terlebih dahulu, akhiri dengan perintah JSON `toc`, dan mutlak di-*save* sebelum di-*refresh*.
+
+### 9.5 Varian "LHP Singkat" (Tugas Praktikum Tanpa BAB)
+Beberapa praktikum menghendaki format "LHP Singkat" (hanya *Cover Page* lalu langsung isi penugasan tanpa BAB dan tanpa TOC). Jika pengguna meminta format ini ("halaman judul langsung tugas", "tidak pakai bab"):
+- **Gunakan Master Template `template_lhp_singkat.docx`**: Template ini sudah bersih dari Daftar Isi dan siap diinjeksi tugas.
+- **Konvensi Penamaan File**: **WAJIB** menggunakan format `[NIM]_[Nama Lengkap]_LHP[Nomor Modul].docx` (Contoh: `24330030_Salim Hidayat_LHP1.docx`).
+- **Gaya Penulisan Kode/Console**: Jika tugas meminta reka ulang *console* (tanpa *screenshot*), JANGAN gunakan label kaku seperti "Operator 1:". Gunakan langsung nomor asli dari modul diikuti penjelasannya (perbaiki *typo* modul secara mandiri *kecuali* disuruh patuh mutlak). Setelah teks penjelasan, sisipkan *output raw* dari *console* secara literal.
+- **Peringatan Kritis Logo Cover**: Saat membersihkan halaman *cover* dari paragraf kosong untuk menyesuaikan tinggi spasi agar elemen bawah tidak meluap ke halaman dua, **WAJIB** mengecek apakah paragraf tersebut memiliki *runs* (contoh di `python-docx`: `p.text.strip() == "" and len(p.runs) == 0`). JANGAN menghapus paragraf kosong yang berisi logo Universitas (`len(p.runs) > 0`).
