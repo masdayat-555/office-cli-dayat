@@ -9,6 +9,23 @@ Skill ini merupakan ekosistem terpadu untuk penanganan dokumen digital bagi AI c
 
 ---
 
+## 00. LARANGAN TERTINGGI (SUPREME DIRECTIVE)
+
+> [!CAUTION]
+> **DILARANG KERAS MENGGUNAKAN LIBRARY PIHAK KETIGA LAIN (`python-docx`, `openpyxl`, `python-pptx`, dll) UNTUK MENULIS ATAU MEMODIFIKASI DOKUMEN OFFICE.**
+> 
+> Seluruh operasi pembuatan, mutasi, dan penyuntingan file Office (.docx, .xlsx, .pptx) **WAJIB MUTLAK** menggunakan `officecli` dengan memanfaatkan perintah `batch` atau operasi CLI-nya. Library eksternal hanya boleh digunakan JIKA DAN HANYA JIKA pengguna memberikan izin eksplisit atau `officecli` benar-benar terbukti secara teknis tidak mampu melakukan tugas tersebut.
+> 
+> Pengecualian hanya berlaku untuk **pembacaan (read-only)**: `markitdown` adalah standar resmi yang diizinkan untuk membaca dokumen.
+
+> [!CAUTION]
+> **KEWAJIBAN PENGKODEAN (STRICT UTF-8 ENCODING) & ANTI-MOJIBAKE:**
+> Dilarang keras menghasilkan karakter aneh / *mojibake* (seperti `ÔÇ£`, `Ã©`). 
+> 1. **WAJIB** menggunakan `encoding="utf-8"` pada **setiap** operasi baca/tulis file (I/O) di dalam script Python.
+> 2. **DILARANG** menyalurkan (*piping*) output JSON via terminal (misal: `officecli ... > file.json` atau `| Out-File`) karena PowerShell sering kali merusak *encoding* karakter. Gunakan `subprocess.run` di Python untuk menangkap `stdout` lalu simpan secara aman.
+
+---
+
 ## 0. STRUKTUR DIREKTORI SKILL (DIRECTORY TREE)
 
 Struktur hierarki folder dan berkas pada skill ini dirancang secara modular agar mudah dipelihara dan dipublikasikan:
@@ -23,12 +40,14 @@ office-cli/
 ├── templates/
 │   ├── template_jurnal_sinta.docx           # Master template OJS SINTA (A4, 1-inch, Page 1 Fit, APA Table)
 │   ├── template_laporan_tugas_akhir.docx    # Master template Skripsi / TA (A4, 4-3-3-3 cm, 5 Bab)
-│   └── template_laporan_kerja_praktik.docx  # Master template Laporan KP / Magang Industri
+│   ├── template_laporan_kerja_praktik.docx  # Master template Laporan KP / Magang Industri
+│   └── template_laporan_praktikum.docx      # Master template Laporan Praktikum (Cover luwes, native TOC)
 └── references/
     ├── pedoman_jurnal_sinta.md              # Panduan lengkap penulisan jurnal SINTA 1-6 (IMRaD baku)
     ├── pedoman_jurnal_scopus.md             # Panduan jurnal internasional bereputasi Scopus Q1-Q4
     ├── pedoman_skripsi_lengkap.md           # Pedoman penulisan Skripsi / Tesis 5 Bab standar nasional
     ├── pedoman_kerja_praktik.md             # Pedoman penyusunan Laporan Kerja Praktik & Magang
+    ├── pedoman_laporan_praktikum.md         # Pedoman Laporan Praktikum (struktur bab, format cover)
     ├── resep_officecli_dokumen_ilmiah.md    # Resep batch JSON OfficeCLI siap pakai
     └── aturan_adaptif_pedoman_kampus.md     # Protokol adaptif penyesuaian aturan lokal institusi
 ```
@@ -67,6 +86,7 @@ Untuk mencegah degradasi tata letak dan konflik fungsional, skill ini membagi ta
 | **Microsoft MarkItDown** | [microsoft/markitdown](https://github.com/microsoft/markitdown) | `markitdown --version`<br>atau `python -m markitdown --version` | `pip install markitdown`<br>*(opsional: `pip install markitdown[all]`)* |
 | **OfficeCLI** | [officecli.ai](https://officecli.ai) / [github.com/officecli](https://github.com/officecli) | `officecli --version` | **Windows PowerShell:**<br>`irm https://d.officecli.ai/install.ps1 \| iex`<br>**Linux / macOS (Bash):**<br>`curl -fsSL https://d.officecli.ai/install.sh \| bash` |
 | **pypdf** *(On-Demand)* | [py-pdf/pypdf](https://github.com/py-pdf/pypdf) | `python -c "import pypdf; print(pypdf.__version__)"` | `pip install pypdf` *(khusus ekstraksi gambar PDF)* |
+| **docx2pdf** *(LMS Export)*| [AlJohri/docx2pdf](https://github.com/AlJohri/docx2pdf) | `python -c "import docx2pdf"` | `pip install docx2pdf` *(khusus konversi akhir DOCX ke PDF)* |
 
 > [!WARNING]
 > Jika MarkItDown atau OfficeCLI belum terpasang, agen **WAJIB** menghentikan langkah sementara, melaporkan status kepada pengguna, dan menyajikan perintah instalasi di atas.
@@ -103,20 +123,31 @@ Untuk mencegah degradasi tata letak dan konflik fungsional, skill ini membagi ta
 - **Dari Dokumen Office (`.docx`, `.pptx`, `.xlsx`):** Gunakan modul bawaan Python `zipfile` untuk mengekstrak folder internal `word/media/` atau `ppt/media/` tanpa dependensi eksternal.
 - **Dari Dokumen PDF (`.pdf`):** Gunakan pustaka `pypdf` untuk membaca `page.images` dan menyimpannya ke folder keluaran resolusi asli.
 
+### 3.4 Konversi Hasil Akhir ke PDF (Trigger: "sudah ok")
+- Jika pengguna memberikan instruksi **"sudah ok"** (atau menyatakan laporan sudah final), ini adalah tanda bahwa dokumen DOCX sudah siap dan harus disubmit ke LMS.
+- Agen AI **WAJIB** segera mengonversi file DOCX final tersebut menjadi PDF menggunakan library `docx2pdf`.
+- **DILARANG** menggunakan library pembaca seperti `pypdf` untuk konversi DOCX.
+- Skrip konversi (jalankan dari direktori file, pastikan file DOCX tertutup dari MS Word):
+   ```python
+   from docx2pdf import convert
+   convert("24330030_SalimHidayat_LaporanModul1_PAW.docx")
+   ```
+- Setelah sukses, laporkan kepada pengguna bahwa file PDF siap diunggah ke LMS.
+
 ---
 
 ## 4. STANDAR PENULISAN NASKAH ILMIAH (FOKUS UTAMA: JURNAL SINTA 1–6)
 
 ### Tabel 3. Matriks Perbandingan Format Naskah Ilmiah
-| Parameter Format | Jurnal SINTA 1–6 (Standar Utama) | Jurnal Internasional Scopus (Q1–Q4) | Skripsi / Tugas Akhir (Monograf) |
-| :--- | :--- | :--- | :--- |
-| **Batas Tepi (Margin)** | **2,54 cm (1 inci) Simetris** di seluruh sisi | **2,54 cm (1 inci)** atau format 2 kolom | **4-4-3-3 cm** (Left 4 cm ruang jilid) |
-| **Font & Spasi Isi** | Times New Roman 11–12 pt, spasi **1.15x**, Justified | Times New Roman / Arial 10–11 pt, spasi 1.0–1.15x | Times New Roman 12 pt, spasi **1.5x**, Justified |
-| **Struktur Bab / Seksi** | **DILARANG kata 'BAB'** (`1. PENDAHULUAN`, `2. METODE`) | **DILARANG kata 'BAB'** (`1. Introduction`, `2. Methods`) | **WAJIB kata 'BAB'** (`BAB I PENDAHULUAN`) |
-| **Aliran Halaman** | **Continuous Flow** (Dilarang *Page Break* antar-seksi) | Continuous Flow (1 kolom / 2 kolom) | **Wajib Page Break** di setiap bab baru |
-| **Abstrak & Identitas** | **Wajib Page 1 Fit**, bilingual, 150–200 kata, spasi 1.0x | Structured / Unstructured, 200–250 kata, Full English | Intisari 3 Alinea baku, TNR 10 pt spasi 1.0x |
-| **Standar Tabel** | **Format APA (3 Garis Horizontal)**, tanpa garis vertikal | Format APA murni, judul di atas tabel | Format APA / Boxed (sesuai pedoman kampus) |
-| **Gaya Sitasi** | **APA 7th Edition** (atau IEEE), 15–25 rujukan mutakhir | APA 7th / IEEE / Elsevier, 30–50 rujukan Scopus | APA 7th / IEEE, terbagi primer dan sekunder |
+| Parameter Format | Jurnal SINTA 1–6 (Standar Utama) | Jurnal Internasional Scopus (Q1–Q4) | Skripsi / Tugas Akhir (Monograf) | Laporan Praktikum (Lab) |
+| :--- | :--- | :--- | :--- | :--- |
+| **Batas Tepi (Margin)** | **2,54 cm (1 inci) Simetris** di seluruh sisi | **2,54 cm (1 inci)** atau format 2 kolom | **4-4-3-3 cm** (Left 4 cm ruang jilid) | **2,54 cm** (Simetris) atau standar institusi |
+| **Font & Spasi Isi** | Times New Roman 11–12 pt, spasi **1.15x**, Justified | Times New Roman / Arial 10–11 pt, spasi 1.0–1.15x | Times New Roman 12 pt, spasi **1.5x**, Justified | Times New Roman 12 pt, spasi **1.15x - 1.5x** |
+| **Struktur Bab / Seksi** | **DILARANG kata 'BAB'** (`1. PENDAHULUAN`, `2. METODE`) | **DILARANG kata 'BAB'** (`1. Introduction`, `2. Methods`) | **WAJIB kata 'BAB'** (`BAB I PENDAHULUAN`) | **WAJIB kata 'BAB'** (`BAB I`, `BAB II`) |
+| **Aliran Halaman** | **Continuous Flow** (Dilarang *Page Break* antar-seksi) | Continuous Flow (1 kolom / 2 kolom) | **Wajib Page Break** di setiap bab baru | **Wajib Page Break** antar BAB |
+| **Abstrak & Identitas** | **Wajib Page 1 Fit**, bilingual, 150–200 kata, spasi 1.0x | Structured / Unstructured, 200–250 kata, Full English | Intisari 3 Alinea baku, TNR 10 pt spasi 1.0x | Cover Page Khas (Logo, Identitas Mentok Bawah) |
+| **Standar Tabel** | **Format APA (3 Garis Horizontal)**, tanpa garis vertikal | Format APA murni, judul di atas tabel | Format APA / Boxed (sesuai pedoman kampus) | Format Boxed / Grid (Tabel standar) |
+| **Gaya Sitasi** | **APA 7th Edition** (atau IEEE), 15–25 rujukan mutakhir | APA 7th / IEEE / Elsevier, 30–50 rujukan Scopus | APA 7th / IEEE, terbagi primer dan sekunder | APA 7th Edition (bila ada tinjauan pustaka) |
 
 ---
 
@@ -169,6 +200,12 @@ Ketika mentransformasikan draf ke dalam naskah jurnal Word resmi, agen **WAJIB**
 | **Urutan Skema OpenXML tcPr** | Menambahkan `tcBorders`, `shd`, dan `tcMar` tanpa memperhatikan hierarki ketat skema WordML. | Dokumen gagal validasi skema OpenXML (`unexpected child element` atau `attribute val is missing`). | Urutan anak `<w:tcPr>` wajib: `w:tcW` $\rightarrow$ `w:tcBorders` (top, left, bottom, right) $\rightarrow$ `w:shd` (dengan `w:val="clear"`) $\rightarrow$ `w:tcMar` (top, left, bottom, right). |
 | **Pemberian Tugas Revisi Naskah** | Mengoreksi redaksional teks kritik/audit pengguna alih-alih merevisi naskah artikel di repositori. | Salah tafsir instruksi pengguna; dokumen jurnal riil tidak tersentuh perbaikan. | Ketika pengguna mengirimkan catatan audit dan meminta koreksi, **AGEN WAJIB LANGSUNG MERIVISI DOKUMEN ARTIKEL ASLI** di repositori (`.md` dan `.docx`). |
 | **Kebersihan Repo** | Membuat skrip `fix_xxx.py` atau `dump_xxx.txt` di folder proyek pengguna. | Workspace pengguna kotor oleh berkas sampah sementara. | Seluruh skrip eksekusi sementara **WAJIB** berada di direktori `scratch/` artifact. Timpa (*overwrite*) berkas keluaran tunggal. |
+| **Simbol Unicode Fancy di Tugas** | Menggunakan `\u207b\u2074` (⁻⁴), `\u00b2` (²), `\u2192` (→), `\u2013` (–) dsb. dalam script python-docx untuk dokumen tugas kuliah. | Karakter tampil sebagai "angka aneh" atau mojibake di Word karena font tidak mendukung atau encoding bermasalah saat file ditulis via tool. | **Gunakan notasi plain ASCII seperti ketikan mahasiswa:** `10^-4`, `x^2`, `->`, `-`, `x` (untuk perkalian). Tidak ada Unicode escape di string python-docx untuk tugas. |
+| **Lebar Gambar Terlalu Besar** | Menyisipkan gambar dengan `width=Cm(16)` atau lebih besar dari lebar teks efektif. | Gambar memaksa halaman baru (blank page) setelah gambar karena tingginya melampaui tinggi halaman setelah margin. | **Gunakan `width=Cm(13)` sebagai batas aman** untuk margin narrow (1,27 cm). Jangan pernah naikkan lebar tanpa mengecek dimensi asli gambar terlebih dahulu. |
+| **Siklus Simpan OfficeCLI** | Menjalankan injeksi TOC di `officecli batch`, lalu langsung memanggil `officecli refresh`. | Mesin Word membaca file lama dari disk. Perubahan TOC dari resident RAM lenyap (`resident_died_dirty`). | **WAJIB MENYIMPAN:** `batch` $\rightarrow$ `save` $\rightarrow$ `refresh` $\rightarrow$ `close`. Selalu lakukan `save` sebelum `refresh`. |
+| **TOC (Daftar Isi) Manual** | Menyusun TOC menggunakan ketikan hardcoded spasi/titik dengan `python-docx`. | Dokumen ditolak (*slop*), tidak dinamis, statis dan palsu. | **DILARANG KERAS** mengetik TOC manual. Wajib gunakan `{"type": "toc"}` via OfficeCLI untuk memanggil field native Word. |
+| **Pengaturan Posisi Cover** | Mengandalkan nilai `space_before` / `space_after` yang raksasa (mis. 150pt) untuk mendorong teks ke margin bawah. | Teks cover *overflow* ke halaman berikutnya, ukuran sulit diprediksi jika gambar berubah, layout kaku. | **Gunakan spasi (Enter / paragraf kosong)** untuk mendorong blok teks sampul, atau atur ruang sewajarnya tanpa pt ekstrem. |
+| **Efek Samping doc.add_page_break**| Memanggil `doc.add_page_break()` di `python-docx` di akhir elemen. | Menghasilkan paragraf kosong *siluman* di halaman sebelum break yang memakan ruang 1 baris vertikal. | Sisipkan break langsung di dalam run terakhir: `p.runs[-1].add_break(WD_BREAK.PAGE)` atau setel properti *Page break before*. |
 
 ---
 
@@ -193,7 +230,146 @@ Jika pengguna menyertakan pedoman khusus dari institusinya (misalnya format marg
 | **Pedoman Jurnal Scopus** | Panduan jurnal internasional Q1–Q4, *Extended IMRaD*, *Ablation Study*, ORCID, dan *Upgrading Pathway*. | [`references/pedoman_jurnal_scopus.md`](references/pedoman_jurnal_scopus.md) |
 | **Pedoman Skripsi Lengkap** | Panduan penyusunan Skripsi/Tesis 5 Bab standar nasional, preliminary pages, hingga lampiran. | [`references/pedoman_skripsi_lengkap.md`](references/pedoman_skripsi_lengkap.md) |
 | **Pedoman Kerja Praktik** | Panduan penyusunan Laporan KP/Magang Industri (profil mitra, SOP, proyek, evaluasi mutu). | [`references/pedoman_kerja_praktik.md`](references/pedoman_kerja_praktik.md) |
+| **Pedoman Laporan Praktikum** | Panduan Laporan Praktikum baku (Cover luwes, native TOC, struktur wajib). | [`references/pedoman_laporan_praktikum.md`](references/pedoman_laporan_praktikum.md) |
 | **Resep Batch OfficeCLI** | Koleksi batch JSON siap pakai untuk heading 1-3, TOC otomatis, tabel APA, gambar, dan hanging indent. | [`references/resep_officecli_dokumen_ilmiah.md`](references/resep_officecli_dokumen_ilmiah.md) |
 | **Master Template Jurnal SINTA** | Berkas Word DOCX resmi OJS SINTA (A4, 2,54 cm simetris, Page 1 Fit, tabel APA, bebas mojibake/JEL). | [`templates/template_jurnal_sinta.docx`](templates/template_jurnal_sinta.docx) |
 | **Master Template Skripsi 5 Bab** | Berkas Word DOCX resmi Skripsi/TA (A4, 4-3-3-3 cm, TNR 12 pt spasi 1.25x, preliminary Romawi). | [`templates/template_laporan_tugas_akhir.docx`](templates/template_laporan_tugas_akhir.docx) |
 | **Master Template Laporan KP** | Berkas Word DOCX resmi Laporan Kerja Praktik/Magang Industri struktur perusahaan lengkap. | [`templates/template_laporan_kerja_praktik.docx`](templates/template_laporan_kerja_praktik.docx) |
+| **Master Template Laporan Praktikum**| Berkas Word DOCX resmi Laporan Praktikum. Dilarang generik, cover proporsional. | [`templates/template_laporan_praktikum.docx`](templates/template_laporan_praktikum.docx) |
+
+---
+
+## 8. FORMAT TUGAS KULIAH (LEMBAR JAWABAN MAHASISWA)
+
+> [!IMPORTANT]
+> Bagian ini berlaku untuk **tugas kuliah biasa** (lembar jawaban, soal latihan) — bukan jurnal, bukan skripsi. Aturannya berbeda dan lebih sederhana.
+
+### 8.1 Cara Membaca Dokumen Sumber
+
+**WAJIB** gunakan markitdown atau officecli. **DILARANG KERAS** membuka browser untuk membaca isi dokumen Word/PDF/docx.
+
+```powershell
+python -m markitdown "file.docx"    # baca isi teks
+officecli info "file.docx"          # lihat struktur DOM
+```
+
+### 8.2 Header & Identitas
+
+Format identitas adalah **plain paragraf biasa**, bukan tabel, bukan garis:
+
+```
+JUDUL TUGAS MATA KULIAH (center, bold, TNR 13pt)
+
+Nama        : [Nama Lengkap] / [NIM]
+Nama        : [Nama Lengkap] / [NIM]    ← jika kelompok
+Mata Kuliah : [Nama Mata Kuliah]
+```
+
+**Larangan mutlak pada bagian identitas:**
+| Anti-Pola | Dampak | Solusi |
+| :--- | :--- | :--- |
+| Tabel borderless 2 kolom untuk Nama & NIM | Tampilan rusak/berantakan di Word | Plain paragraf `Label : Nilai / NIM` |
+| Garis horizontal dekoratif (`w:pBdr`) | Terlihat jelek, tidak diminta | Hapus; cukup spasi paragraph kosong |
+| NIM di kolom terpisah | Tidak rapi, tabel tak terlihat | Satukan: `Nama Mahasiswa / NIM` dalam 1 run |
+
+### 8.3 Margin & Tipografi
+
+| Parameter | Nilai untuk Tugas Kuliah |
+| :--- | :--- |
+| **Margin** | **Narrow: 1,27 cm semua sisi** (bukan 4-3-3-3 cm skripsi) |
+| **Font** | Times New Roman |
+| **Ukuran isi** | 12 pt (10–11 pt untuk isi tabel) |
+| **Spasi baris** | 1,15× (`line=276`) |
+| **Alignment** | Justify untuk isi, Center untuk judul & caption |
+
+### 8.4 Prinsip Konten: Paste As-Is
+
+Jika user menyediakan file sumber (`.txt`, `.html`, dsb.), **salin persis isinya ke Word tanpa modifikasi**.
+
+**DILARANG menambahkan tanpa perintah eksplisit:**
+| Yang Dilarang | Alasan |
+| :--- | :--- |
+| Tabel langkah-langkah dari teks yang sudah ada | Mengubah "ketikan manusia" jadi AI slop |
+| Sub-heading tambahan (2.1, 2.2, 2.3 …) | Tugas bukan jurnal IMRaD |
+| Penjelasan/deskripsi ekstra di luar sumber | Tidak diminta |
+| Tabel ringkasan yang menduplikasi isi gambar | Gambar sudah cukup sebagai visualisasi |
+
+### 8.5 Gambar sebagai Visualisasi
+
+Jika user melampirkan gambar dan menyebutnya sebagai "visualisasi":
+- **Sisipkan gambar langsung** — `width=Cm(13)` maksimal untuk margin narrow, caption italic di bawah
+- **DILARANG** menambahkan tabel teks yang mengulang isi gambar
+- **DILARANG** memperbesar ke `Cm(16)` atau lebih — bisa memaksa blank page
+- Gambar = visualisasi selesai, tidak perlu teks pendukung
+
+### 8.6 Tabel 3 Kolom untuk Sub-soal a / b / c
+
+Jika soal memiliki sub-soal a, b, c dengan panjang konten serupa, buat **tabel 1 baris × 3 kolom** untuk hemat ruang:
+- Border: hanya garis vertikal tipis abu-abu (`insideV`) antar kolom, tidak ada top/bottom/left/right
+- Isi setiap kolom: teks as-is dari sumber, font 10 pt
+- Kolom lebar sama rata
+
+### 8.7 Penulisan Simbol Matematika di Tugas: PLAIN ASCII
+
+> [!IMPORTANT]
+> **DILARANG KERAS** menggunakan Unicode escape sequence (`\u207b`, `\u2074`, `\u00b2`, `\u2192`, dsb.) untuk simbol matematika dalam script python-docx tugas kuliah. Simbol ini berpotensi tampil sebagai karakter aneh atau mojibake tergantung encoding file dan dukungan font.
+
+Gunakan **notasi plain ASCII** seperti mahasiswa mengetik di keyboard biasa:
+
+| Simbol | DILARANG | WAJIB Digunakan |
+| :--- | :--- | :--- |
+| Pangkat/eksponen | `x\u00b2`, `x\u00b3`, `10\u207b\u2074` | `x^2`, `x^3`, `10^-4` |
+| Perkalian | `\u00d7`, `\u2715` | `x` atau `*` |
+| Minus panjang (em/en dash) | `\u2013`, `\u2014`, `\u2212` | `-` |
+| Panah | `\u2192`, `\u2190` | `->`, `<-` |
+| Kurang-lebih | `\u2264`, `\u2265` | `<=`, `>=` |
+| Derajat | `\u00b0C` | `derajat C` atau `deg C` |
+| Tak hingga | `\u221e` | `tak hingga` atau `inf` |
+
+### 8.8 Template Identitas (python-docx)
+
+```python
+# Margin narrow
+for attr in ("left_margin","right_margin","top_margin","bottom_margin"):
+    setattr(sec, attr, Cm(1.27))
+
+# Judul center bold
+p = doc.add_paragraph()
+p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+r = p.add_run("JUDUL TUGAS"); r.bold = True
+r.font.name = "Times New Roman"; r.font.size = Pt(13)
+
+# Identitas — plain paragraph, TIDAK pakai tabel, TIDAK pakai hline
+def id_line(label, value):
+    p = doc.add_paragraph()
+    r1 = p.add_run(f"{label:<16}: "); r1.bold = True
+    r1.font.name = "Times New Roman"; r1.font.size = Pt(12)
+    r2 = p.add_run(value)
+    r2.font.name = "Times New Roman"; r2.font.size = Pt(12)
+
+id_line("Nama", "Salim Hidayat / 24330030")
+id_line("Mata Kuliah", "Metode Numerik")
+doc.add_paragraph()  # spasi kosong sebelum konten soal
+```
+
+## 9. FORMAT LAPORAN PRAKTIKUM SECARA UMUM
+
+Laporan Praktikum memiliki tingkat keformalan di antara tugas biasa dan skripsi. Patuhi konvensi berikut untuk menghindari keluhan pengguna (*user pushback*):
+
+### 9.1 Struktur Bab yang Tersendiri
+Berbeda dengan tugas bebas, Laporan Praktikum **WAJIB** dipisahkan per BAB:
+- Setiap BAB baru (`BAB I PENDAHULUAN`, `BAB II KEGIATAN PRAKTIKUM`, dll.) **HARUS** berada di halaman baru.
+- Sisipkan *Page Break* (`Ctrl+Enter`) tepat sebelum judul Bab atau pada *run* terakhir sebelum bab tersebut.
+
+### 9.2 Dasar Teori Mengikat
+- Jangan pernah menyematkan teori klise AI ("yappingan singkat").
+- Bagian **Dasar Teori** harus selalu diparafrase/dirangkum **langsung dari Modul Praktikum resmi (PDF/Word)** yang diberikan oleh institusi.
+
+### 9.3 Tampilan Halaman Sampul (Cover Page)
+- **Tengah Rapat Atas**: Judul laporan (LAPORAN PRAKTIKUM X) diletakkan di paling atas halaman (tanpa paragraf tersembunyi sebelumnya).
+- **Mentok Bawah (Bottom Margin Flush)**: Blok identitas kampus (Fakultas, Universitas, Kota, Tahun) diatur agar benar-benar menempel pada batas margin kertas terbawah.
+- **Keseimbangan (Luwes)**: Jangan gunakan *spacing point (pt)* raksasa yang menyiksa layout. Atur secara proporsional dengan kombinasi spasi paragraf atau `space_after` untuk mendorong Logo dan teks "Disusun Oleh" ke area tengah.
+
+### 9.4 Daftar Isi (TOC)
+- **Haram** mengetik Daftar Isi secara manual atau memanipulasi *tab leader* di Python.
+- Harus murni di-render menggunakan mesin Field Codes dari Word melalui `officecli`. Selalu selesaikan seluruh modifikasi DOM terlebih dahulu, akhiri dengan perintah JSON `toc`, dan mutlak di-*save* sebelum di-*refresh*.

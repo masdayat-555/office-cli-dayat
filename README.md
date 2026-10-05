@@ -77,6 +77,11 @@ Setelah terpasang, Anda tidak perlu menghafal perintah yang rumit. Cukup berikan
 
 AI Agent akan otomatis mengaktifkan skill ini, mengonfirmasi preferensi template Anda, dan menghasilkan berkas `.docx` resmi.
 
+> [!CAUTION]
+> **SUPREME DIRECTIVE (ATURAN TERTINGGI):**
+> 1. Agen AI **DILARANG KERAS** menggunakan *library* pihak ketiga lain seperti `python-docx`, `openpyxl`, atau `python-pptx` untuk membuat, menulis, atau mengedit dokumen Office. **SELURUH** operasi mutasi dokumen **WAJIB** dieksekusi menggunakan mesin `officecli`. Alat lain seperti `markitdown` hanya dizinkan khusus untuk aktivitas **membaca** dokumen.
+> 2. **KEWAJIBAN PENGKODEAN & ANTI-MOJIBAKE:** Agen AI diwajibkan menggunakan `encoding="utf-8"` pada seluruh operasi baca/tulis file (I/O) Python. **DILARANG** melakukan *piping* output terminal (`> file.txt` atau `| Out-File`) karena berisiko merusak karakter (menghasilkan *mojibake* / karakter aneh).
+
 ---
 
 ### ⚙️ Kebutuhan Sistem (Prasyarat)
@@ -98,6 +103,11 @@ Skill ini memanfaatkan dua mesin *open-source* yang terpasang di terminal sistem
      ```bash
      curl -fsSL https://d.officecli.ai/install.sh | bash
      ```
+
+3. **docx2pdf (Ekspor Akhir ke LMS):**
+   ```bash
+   pip install docx2pdf
+   ```
 
 ---
 
@@ -121,12 +131,14 @@ office-cli/
 ├── templates/
 │   ├── template_jurnal_sinta.docx           # Master template universal Jurnal OJS SINTA
 │   ├── template_laporan_tugas_akhir.docx    # Master template universal Skripsi / Tugas Akhir
-│   └── template_laporan_kerja_praktik.docx  # Master template universal Kerja Praktik / Magang
+│   ├── template_laporan_kerja_praktik.docx  # Master template universal Kerja Praktik / Magang
+│   └── template_laporan_praktikum.docx      # Master template Laporan Praktikum
 └── references/
     ├── pedoman_jurnal_sinta.md              # Panduan publikasi jurnal SINTA 1–6
     ├── pedoman_jurnal_scopus.md             # Panduan publikasi jurnal Scopus Q1–Q4
     ├── pedoman_skripsi_lengkap.md           # Panduan lengkap skripsi & tugas akhir 5 bab
     ├── pedoman_kerja_praktik.md             # Panduan laporan kerja praktik & magang industri
+    ├── pedoman_laporan_praktikum.md         # Pedoman Laporan Praktikum (struktur bab, format cover)
     ├── resep_officecli_dokumen_ilmiah.md    # Resep batch JSON teknis OfficeCLI (Resep 1–12)
     └── aturan_adaptif_pedoman_kampus.md     # Mesin adaptasi & matriks komparatif dokumen
 ```
@@ -145,6 +157,11 @@ office-cli/
 * 📑 **Deep Multi-Format Document Ingestion:** Extracts text, tables, and structure from PDF, DOCX, XLSX, and PPTX via Microsoft MarkItDown.
 * 🖼️ **Asset Extraction:** Losslessly extracts embedded images and diagrams from Word, PowerPoint, Excel, and PDF files.
 * 🎯 **Guaranteed Word (`.docx`) Deliverables:** Compiles pristine OpenXML Word documents directly without manual formatting overhead.
+
+> [!CAUTION]
+> **SUPREME DIRECTIVE:** 
+> 1. AI Agents are **STRICTLY FORBIDDEN** from using third-party libraries (e.g., `python-docx`, `openpyxl`) to write or mutate Office documents. All authoring operations **MUST** use `officecli`. Other tools like `markitdown` are permitted exclusively for **reading/ingestion**.
+> 2. **STRICT UTF-8 & ANTI-MOJIBAKE:** AI Agents **MUST** strictly use `encoding="utf-8"` in all Python I/O scripts. Terminal piping (`> output.json` or `| Out-File`) is **STRICTLY FORBIDDEN** as it causes encoding corruption (*mojibake* / weird characters).
 
 ---
 
@@ -170,6 +187,7 @@ git clone https://github.com/masdayat-555/office-cli-dayat.git ~/.agents/skills/
 2. **OfficeCLI:**
    - Windows: `irm https://d.officecli.ai/install.ps1 | iex`
    - Linux/macOS: `curl -fsSL https://d.officecli.ai/install.sh | bash`
+3. **docx2pdf:** `pip install docx2pdf`
 
 ---
 
