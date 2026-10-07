@@ -1,11 +1,11 @@
 ---
 name: office-cli
-description: Unified Document Suite for AI Agents. Fast multi-format extraction to Markdown via Microsoft MarkItDown, and programmatic authoring/manipulation of Microsoft Office documents (Word, Excel, PowerPoint) via OfficeCLI.
+description: Unified Document Suite for AI Agents. Fast multi-format extraction to Markdown via Microsoft MarkItDown, programmatic authoring/manipulation of Microsoft Office documents (Word, Excel, PowerPoint) via OfficeCLI, and validated reference management via Mendeley Desktop with PDF identity pre-check protocol.
 ---
 
-# Unified Office & Document Suite (MarkItDown + OfficeCLI)
+# Unified Office & Document Suite (MarkItDown + OfficeCLI + Mendeley)
 
-Skill ini merupakan ekosistem terpadu untuk penanganan dokumen digital bagi AI coding agent. Mengintegrasikan kemampuan **ekstraksi cerdas multi-format ke Markdown** menggunakan **Microsoft MarkItDown** dan **pembuatan/manipulasi dokumen Office native** menggunakan **OfficeCLI**, dengan kepatuhan penuh terhadap standar publikasi ilmiah nasional terakreditasi **SINTA (SINTA 1–6)**, jurnal internasional **Scopus (Q1–Q4)**, serta laporan akademik formal (Skripsi, Tesis, Kerja Praktik).
+Skill ini merupakan ekosistem terpadu untuk penanganan dokumen digital bagi AI coding agent. Mengintegrasikan kemampuan **ekstraksi cerdas multi-format ke Markdown** menggunakan **Microsoft MarkItDown**, **pembuatan/manipulasi dokumen Office native** menggunakan **OfficeCLI**, serta **manajemen referensi tervalidasi** menggunakan **Mendeley Desktop**, dengan kepatuhan penuh terhadap standar publikasi ilmiah nasional terakreditasi **SINTA (SINTA 1–6)**, jurnal internasional **Scopus (Q1–Q4)**, serta laporan akademik formal (Skripsi, Tesis, Kerja Praktik).
 
 ---
 
@@ -329,31 +329,35 @@ Gunakan **notasi plain ASCII** seperti mahasiswa mengetik di keyboard biasa:
 | Derajat | `\u00b0C` | `derajat C` atau `deg C` |
 | Tak hingga | `\u221e` | `tak hingga` atau `inf` |
 
-### 8.8 Template Identitas (python-docx)
+### 8.8 Resep Eksekusi Standar Format Tugas Kuliah (OfficeCLI Native)
 
-```python
-# Margin narrow
-for attr in ("left_margin","right_margin","top_margin","bottom_margin"):
-    setattr(sec, attr, Cm(1.27))
+Sesuai Supreme Directive 00, penyusunan tugas kuliah **WAJIB menggunakan OfficeCLI batch**, bukan library python-docx:
 
-# Judul center bold
-p = doc.add_paragraph()
-p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-r = p.add_run("JUDUL TUGAS"); r.bold = True
-r.font.name = "Times New Roman"; r.font.size = Pt(13)
+1. **Section Setup (Margin Narrow 1,27 cm semua sisi):**
+   ```json
+   {
+     "command": "set",
+     "path": "/section[1]",
+     "props": {
+       "marginTop": "1.27cm",
+       "marginBottom": "1.27cm",
+       "marginLeft": "1.27cm",
+       "marginRight": "1.27cm",
+       "pageWidth": "21.0cm",
+       "pageHeight": "29.7cm"
+     }
+   }
+   ```
 
-# Identitas — plain paragraph, TIDAK pakai tabel, TIDAK pakai hline
-def id_line(label, value):
-    p = doc.add_paragraph()
-    r1 = p.add_run(f"{label:<16}: "); r1.bold = True
-    r1.font.name = "Times New Roman"; r1.font.size = Pt(12)
-    r2 = p.add_run(value)
-    r2.font.name = "Times New Roman"; r2.font.size = Pt(12)
+2. **Identitas Plain Paragraf (Individu vs Kelompok):**
+   - **Tugas Individu:** Hanya satu baris `Nama : [Nama Lengkap] / [NIM]` (Dilarang mencantumkan nama rekan).
+   - **Tugas Kelompok:** Baris nama diulang per anggota.
+   - Menggunakan paragraf standar Times New Roman 12pt, tanpa tabel borderless dan tanpa garis horizontal dekoratif.
 
-id_line("Nama", "Salim Hidayat / 24330030")
-id_line("Mata Kuliah", "Metode Numerik")
-doc.add_paragraph()  # spasi kosong sebelum konten soal
-```
+3. **Tipografi & Spasi:**
+   - Font: Times New Roman 12 pt.
+   - Spasi baris: 1,15x (`lineSpacing: "1.15x"`).
+   - Alignment: Justified untuk isi teks, Center untuk Judul Tugas.
 
 ## 9. FORMAT LAPORAN PRAKTIKUM SECARA UMUM
 
@@ -383,3 +387,216 @@ Beberapa praktikum menghendaki format "LHP Singkat" (hanya *Cover Page* lalu lan
 - **Konvensi Penamaan File**: **WAJIB** menggunakan format `[NIM]_[Nama Lengkap]_LHP[Nomor Modul].docx` (Contoh: `24330030_Salim Hidayat_LHP1.docx`).
 - **Gaya Penulisan Kode/Console**: Jika tugas meminta reka ulang *console* (tanpa *screenshot*), JANGAN gunakan label kaku seperti "Operator 1:". Gunakan langsung nomor asli dari modul diikuti penjelasannya (perbaiki *typo* modul secara mandiri *kecuali* disuruh patuh mutlak). Setelah teks penjelasan, sisipkan *output raw* dari *console* secara literal.
 - **Peringatan Kritis Logo Cover**: Saat membersihkan halaman *cover* dari paragraf kosong untuk menyesuaikan tinggi spasi agar elemen bawah tidak meluap ke halaman dua, **WAJIB** mengecek apakah paragraf tersebut memiliki *runs* (contoh di `python-docx`: `p.text.strip() == "" and len(p.runs) == 0`). JANGAN menghapus paragraf kosong yang berisi logo Universitas (`len(p.runs) > 0`).
+
+---
+
+## 10. MANAJEMEN REFERENSI TERVALIDASI (MENDELEY + FOLDER REFERENSI)
+
+> [!IMPORTANT]
+> Bagian ini berlaku untuk **semua proyek penulisan ilmiah (Jurnal SINTA, Skripsi, Tesis)**. Tujuannya adalah memastikan seluruh sitasi dalam naskah berasal dari sumber yang sudah diverifikasi identitasnya — bukan hanya dari ingatan atau copy-paste abstrak.
+
+### 10.1 Prinsip Dasar: Folder `REFERENSI` sebagai Sumber Kebenaran Tunggal
+
+Setiap proyek penulisan ilmiah **WAJIB** memiliki satu folder `REFERENSI/` di root workspace proyek.
+
+```text
+ROOT_PROYEK/
+├── REFERENSI/
+│   ├── README.md                         # Tabel pelacak status validasi semua sitasi
+│   ├── Koto_2021_IndoBERTweet.pdf
+│   ├── Devlin_2019_BERT.pdf
+│   └── ...                              # Semua file PDF sitasi
+└── naskah_artikel.docx
+```
+
+**Konvensi Penamaan File PDF:**
+```
+[NamaBelakangPenulisPertama]_[Tahun]_[KataKunciJudul].pdf
+Contoh: Koto_2021_IndoBERTweet.pdf
+        Landis_1977_Kappa.pdf
+```
+
+Jika folder `REFERENSI/` belum ada, agen **WAJIB** membuatnya beserta file `README.md` berisi tabel pelacak sitasi sebelum melanjutkan tugas apapun terkait referensi.
+
+---
+
+### 10.1.5 Inisialisasi API Mendeley (Sifat: OPSIONAL / ON-DEMAND)
+
+> [!NOTE]
+> **ATURAN WAJIB AGEN:** Integrasi otomatisasi API Mendeley ini **JANGAN DIWAJIBKAN** kepada semua klien. Tawarkan dan pandu klien melakukan setup ini **HANYA JIKA** klien secara eksplisit meminta pembuatan daftar pustaka, integrasi Mendeley otomatis, atau validasi sitasi.
+
+Jika klien membutuhkan daftar pustaka terintegrasi Mendeley secara otomatis, agen AI **WAJIB** memandu klien dengan memberikan panduan setup rahasia (*secrets*) secara **Global di direktori Skill**. Agen harus mem-format panduan tersebut dengan jelas di chat.
+
+**Template Panduan yang Wajib Disampaikan Agen ke Klien:**
+1. **Daftar Aplikasi:** Buka portal developer Mendeley di `https://dev.mendeley.com/myapps.html`.
+2. **Isi Form:** Buat aplikasi baru dengan mengisi form:
+   - *Application Name*: (Bebas, misal: Office CLI AI)
+   - *Description*: (Bebas)
+   - *Redirect URL*: **WAJIB** diisi persis `http://localhost:12345/callback`
+3. **Generate Secret:** Klik *Generate Secret* (atau *Submit*). **PENTING:** Segera *copy* *Secret* yang muncul karena hanya ditampilkan sekali.
+4. **Temukan Client ID:** Lihat tabel "My applications" di bagian atas halaman tersebut. *Client ID* Anda adalah angka yang berada tepat di bawah kolom **"ID"**.
+5. **Simpan Credentials:** Buka file konfigurasi global skill di:
+   `~/.gemini/config/skills/office-cli/.env` (sesuaikan dengan OS Windows/Mac klien)
+   Lalu masukkan kredensial Anda:
+   ```env
+   MENDELEY_CLIENT_ID=masukkan_angka_id_anda
+   MENDELEY_CLIENT_SECRET=masukkan_secret_anda
+   ```
+6. **Otorisasi (Hanya Sekali):** Buka terminal dan jalankan skrip otorisasi berikut:
+   ```bash
+   python ~/.gemini/config/skills/office-cli/scripts/mendeley_setup.py
+   ```
+   *(Browser akan terbuka untuk meminta izin login Mendeley. Setelah sukses, token akan tersimpan aman).*
+
+*(Catatan untuk Agen: File `.env` dan token `*.json` sudah otomatis terlindungi oleh `.gitignore` sehingga tidak akan ikut ter-publish ke publik. Skrip integrasi ini dibangun murni menggunakan `urllib` bawaan Python (Zero-Dependency) untuk menembus proteksi Cloudflare Mendeley, sehingga agen **TIDAK PERLU** menyuruh klien melakukan `pip install` apapun. Setelah setup klien selesai, agen siap menggunakan skrip `mendeley_upload.py` untuk menginjeksi metadata PDF).*
+
+---
+
+### 10.2 Protokol Validasi PDF Sebelum Upload ke Mendeley (4 Langkah Wajib)
+
+> [!CAUTION]
+> **DILARANG KERAS** mengupload PDF langsung ke Mendeley tanpa menjalankan Langkah 1 (validasi identitas). Mendeley sering salah mengekstrak metadata dari PDF — terutama untuk paper konferensi dan jurnal lokal (SINTA).
+
+#### Langkah 1 — Baca Identitas Paper via `markitdown`
+
+Sebelum menyentuh Mendeley, ekstrak metadata dari file PDF untuk verifikasi:
+
+```powershell
+python -m markitdown "REFERENSI/Koto_2021_IndoBERTweet.pdf" > "REFERENSI/_temp_baca.md"
+```
+
+Lalu baca output `_temp_baca.md` dan **ekstrak 7 field wajib** berikut:
+
+| Field | Yang Dicari | Contoh Nilai |
+| :--- | :--- | :--- |
+| **Judul** | Judul lengkap artikel | *IndoBERTweet: A Pretrained Language Model...* |
+| **Penulis** | Semua nama penulis (urutan benar) | Fajri Koto, Jey Han Lau, Timothy Baldwin |
+| **Tahun** | Tahun publikasi | 2021 |
+| **Venue / Jurnal** | Nama jurnal atau prosiding konferensi | EMNLP 2021 |
+| **Volume & Issue** | Jika jurnal (bukan prosiding) | Vol. 5, No. 2 |
+| **Halaman** | Halaman awal–akhir | 10123–10134 |
+| **DOI** | Tautan DOI resmi | https://doi.org/10.18653/v1/2021.emnlp-main.796 |
+
+Jika ada field yang **tidak ditemukan** di PDF (terutama DOI untuk paper lama), agen **WAJIB** mencarinya via web search sebelum lanjut ke Langkah 2.
+
+#### Langkah 2 — Koreksi & Persiapan Data (Oleh Agen AI)
+Agen AI **WAJIB** mencocokkan 7 field tersebut dari hasil ekstraksi. Jika ada yang salah/kurang (misal DOI tidak ada, atau nama jurnal disingkat), agen harus mencari kebenaran datanya via *Web Search* dan menyiapkan *dictionary* Python berisi metadata yang benar.
+
+#### Langkah 3 — Upload Otomatis via API (Metadata + PDF + BibTeX)
+Setelah data dipastikan 100% akurat, agen menggunakan skrip global `mendeley_upload.py` untuk melakukan 3 tugas sekaligus secara otomatis: mengunggah metadata, melampirkan PDF fisik, dan membuat ekspor lokal `references.bib`.
+
+**Contoh kode eksekusi bagi agen:**
+```python
+import sys
+import os
+sys.path.append(os.path.expanduser('~/.gemini/config/skills/office-cli/scripts'))
+from mendeley_upload import create_document
+
+doc_data = {
+    "title": "IndoBERTweet: A Pretrained Language Model...",
+    "type": "journal",
+    "authors": [
+        {"first_name": "Fajri", "last_name": "Koto"},
+        {"first_name": "Jey Han", "last_name": "Lau"}
+    ],
+    "year": 2021,
+    "source": "Proceedings of EMNLP",
+    "identifiers": {"doi": "10.18653/v1/2021.emnlp-main.796"}
+}
+
+# Upload metadata, attach PDF, dan append ke BibTeX
+create_document(
+    doc_data=doc_data, 
+    pdf_path="c:/path/ke/proyek/REFERENSI/Koto_2021_IndoBERTweet.pdf",
+    bibtex_dir="c:/path/ke/proyek/REFERENSI/"
+)
+```
+
+#### Langkah 4 — Konfirmasi Final
+Tandai status entry di `REFERENSI/README.md` proyek klien menjadi ✅. Klien sekarang bisa melihat referensi beserta PDF fisiknya langsung di aplikasi Mendeley.
+
+---
+
+### 10.3 Konvensi Penulisan Sitasi Sementara (Placeholder)
+
+Karena agen tidak dapat menyisipkan *field* Mendeley Cite secara interaktif ke dalam Microsoft Word, agen **WAJIB** meninggalkan jejak penanda (*placeholder*) yang sangat jelas di dalam draf teks yang ditulisnya. Tujuannya agar klien dapat dengan mudah mencari paper tersebut di panel Mendeley Cite tanpa takut tertukar dengan paper bersampul/penulis mirip.
+
+**Format Penanda Wajib:**
+`[CITE: NamaBelakang Tahun, 3-Kata-Pertama-Judul]`
+
+**Contoh Penulisan oleh Agen di Naskah:**
+> Penggunaan model bahasa pra-latih sangat efektif untuk klasifikasi teks di media sosial `[CITE: Koto 2021, IndoBERTweet A Pretrained]`. Hal ini mendukung arsitektur *transformer* dasar yang telah diusulkan sebelumnya `[CITE: Devlin 2019, BERT Pre-training of]`.
+
+Dengan format yang detail ini, klien cukup mengetik/menyalin kata kunci tersebut ke kolom pencarian *Mendeley Cite* di Word, lalu menimpa *placeholder* tersebut dengan sitasi interaktif yang asli.
+
+---
+
+### 10.4 Aturan Sinkronisasi Daftar Pustaka SINTA dari Mendeley
+
+Karena metadata dan file PDF sudah terinjeksi sempurna ke Mendeley klien, sinkronisasi ke naskah Word menjadi sangat mudah:
+
+#### Format Export untuk Jurnal SINTA (APA 7th Edition)
+1. **Opsi 1 (Otomatis & Interaktif):** Klien tinggal membuka Microsoft Word, mengaktifkan **Mendeley Cite add-in**, cari penanda `[CITE: ...]` di naskah, lalu pilih *Insert Citation* dengan style **APA 7th Edition**. Daftar pustaka otomatis akan ter-generate di akhir naskah.
+2. **Opsi 2 (Fallback / Auto Cite Lokal):** Jika Mendeley Cite klien bermasalah, klien bisa langsung menggunakan file `REFERENSI/references.bib` yang digenerate otomatis oleh agen. File `.bib` ini bisa dibuka di LaTeX, Zotero, atau alat Word bibliografi pihak ketiga tanpa bergantung pada internet.
+
+#### Checklist Final Daftar Pustaka SINTA
+
+> [!IMPORTANT]
+> **TEMPORAL AWARENESS (KESADARAN WAKTU):** Agen AI **WAJIB** menyadari bahwa tahun saat ini adalah **2026** setiap kali mem-filter atau mencari referensi. Jangan merekomendasikan literatur usang yang melanggar batas usia SINTA.
+
+| Syarat | Keterangan |
+| :--- | :--- |
+| ✅ Urutan A–Z | Berdasarkan nama belakang penulis pertama |
+| ✅ Format APA 7th | `Penulis. (Tahun). Judul. *Jurnal*, *Vol*(Issue), halaman. DOI` |
+| ✅ *Hanging Indent* 1,27 cm | Baris kedua dan seterusnya menjorok ke kanan |
+| ✅ Spasi 1.0x (single) | Antar baris dalam satu entri |
+| ✅ Spasi setelah entri | Tambahkan spasi 6–10pt antar entri |
+| ✅ DOI aktif & dapat diklik | Format `https://doi.org/xxx` dalam hyperlink biru |
+| ✅ Minimal 15 sitasi | Jurnal SINTA umumnya mensyaratkan ≥ 15 referensi primari |
+| ✅ **80% Literatur Terkini** | **Minimal 80% referensi WAJIB berusia maksimal 10 tahun terakhir (Batas minimal tahun terbit = 2016 karena saat ini adalah 2026).** |
+| ❌ Dilarang `[1], [2]` | APA bukan IEEE; jangan pakai penomoran dalam kurung siku |
+
+---
+
+### 10.5 Tabel Masalah Umum Mendeley & Solusinya
+
+| Masalah | Penyebab | Solusi |
+| :--- | :--- | :--- |
+| Judul terpotong atau salah kapital | OCR PDF gagal ekstrak teks bersih | Edit manual di panel detail |
+| Semua penulis tercampur jadi satu nama | Mendeley gagal parse separator | Pisahkan manual: `Koto, F.` kemudian `Lau, J. H.` dst |
+| Tahun kosong atau salah | PDF metadata tidak terisi | Cek halaman cover PDF, isi manual |
+| DOI kosong untuk paper konferensi | PDF tidak menyematkan DOI di metadata | Cari DOI via `doi.org` atau `semanticscholar.org` |
+| Nama jurnal dalam bahasa Inggris singkat | Mendeley tidak tahu nama lengkap | Isi dengan nama lengkap resmi prosiding |
+| Duplikat entri | Drag & drop dua kali | Hapus duplikat via `Edit > Select Duplicates > Delete` |
+| Plugin Word tidak muncul | Mendeley belum terinstal Add-in | Buka Mendeley → `Tools > Install MS Word Plugin` |
+
+---
+
+### 10.6 "BULLDOZER MODE" (FULL-AUTO ROBUST SCRIPTING)
+
+Jika klien memerintahkan untuk mengunduh dan menyinkronkan seluruh referensi secara massal (misalnya: *"download semua sitasi dan jalanin mendeley auto full"* atau *"pakai bulldozer mode"*), agen **WAJIB** mengeksekusi otomatisasi tangguh dengan spesifikasi berikut:
+
+1. **Pembuatan Skrip Unduhan & Unggahan Gabungan (`scratch/auto_download_robust.py`):**
+   Agen menulis skrip Python yang memproses daftar referensi dalam loop panjang.
+2. **Fallback API Ganda:**
+   Skrip mencari metadata dan URL PDF Open Access dengan mencoba **OpenAlex API** terlebih dahulu (tanpa key). Jika gagal, jatuh kembali (*fallback*) ke **CrossRef API**.
+3. **Integritas Akademik Mutlak (No PDF = No Cite):**
+   Jika PDF fisik gagal diunduh atau terkunci *paywall*, skrip **DILARANG KERAS** melakukan "Force Upload" metadata ke Mendeley. Mengutip referensi tanpa memiliki dan membaca dokumen aslinya adalah pelanggaran integritas akademik. Skrip wajib jujur mencatat status *Gagal/Paywalled* di log, dan **TIDAK** mendaftarkan paper tersebut ke Mendeley. Klien harus tahu paper mana yang gagal didapat agar tidak dikutip.
+4. **Timer Berkala (`schedule`):**
+   Agen wajib membungkus proses eksekusi latar belakang dengan `manage_task` dan `schedule` (contoh: Timer 60 detik) untuk memantau kemajuan log secara reguler dan terus memberikan laporan (*progress update*) kepada klien, tanpa memaksa klien menunggu dalam diam.
+
+---
+
+### 10.7 "VISUAL BROWSER AGENT" (OTORITAS BYPASS BLOKIR API)
+
+Jika skrip *Bulldozer Mode* (berbasis API Python) gagal mengunduh PDF Open-Access karena diblokir oleh anti-bot atau captcha (seperti pada Semantic Scholar, Elsevier, atau ArXiv timeout), agen memiliki **Otoritas** penuh untuk membangkitkan sub-agen peramban visual (`browser_subagent`).
+
+1. **Simulasi Manusia:** Sub-agen ini akan mengendalikan Google Chrome asli, mengetikkan kata kunci layaknya manusia (contoh: *'Attention Is All You Need arxiv pdf'*), dan menelusuri halaman web untuk mencari *Direct Link* PDF yang gagal dijangkau oleh skrip statis.
+2. **Penyedotan Pasca-Pencarian:** Setelah sub-agen kembali dengan URL PDF murni, agen utama akan menggunakan Python untuk menarik file tersebut ke dalam folder `REFERENSI/` dan menyuntikkannya ke Mendeley secara legal, mematuhi prinsip Integritas Akademik.
+3. **Pemicu:** Mode ini bisa ditawarkan oleh agen jika API gagal berulang kali, atau dipicu klien dengan perintah seperti *"Gunakan browser agent"*, *"Cari pakai Chrome"*, atau *"Akali pakai headless browser"*.
+
+### 10.8 GOLDEN RULE: ITERASI = BULLDOZER MODE
+Setiap tugas yang membutuhkan iterasi berulang (seperti mencoba mengunduh puluhan file, merevisi skrip pencarian berkali-kali, atau memecahkan masalah API yang terus gagal) **WAJIB menggunakan pendekatan Bulldozer Mode**. Agen tidak boleh melakukan iterasi panjang secara sinkron. Agen harus mendelegasikan iterasi ke latar belakang (`run_command` dengan timer, skrip Python `while/for` yang tangguh, atau `browser_subagent`) dan melaporkan hasilnya secara asinkron kepada klien. Jangan menahan interaksi (*block*) untuk tugas iteratif!
+
+### Referensi Dokumen Spesifik
+- Jika tugas melibatkan **Surat Permohonan Insentif**, **WAJIB** merujuk ke pedoman detail di [pedoman_surat_insentif.md](file:///C:/Users/masdayat/.gemini/config/skills/office-cli/references/pedoman_surat_insentif.md) untuk menghindari *error formatting* berulang.

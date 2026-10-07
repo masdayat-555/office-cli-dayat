@@ -35,3 +35,7 @@ templates/Template_Laporan_TA_*.docx
 templates/Template_Laporan_KP_*.docx
 
 
+
+# Mendeley Secrets
+.env
+.mendeley_token.json

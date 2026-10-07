@@ -76,3 +76,75 @@ Jika sebuah naskah yang awalnya dirancang untuk jurnal SINTA (misal SINTA 2) ing
 3. **Tambahkan Studi Ablasi (*Ablation Study*):** Buktikan secara matematis kontribusi setiap modul (misalnya: buktikan performa model dengan vs tanpa *Emotional Seeding*, dengan vs tanpa *Domain Adaptation*).
 4. **Sertakan Data & Code Repositori:** Unggah draf dataset teranotasi dan kode inferensi ke repositori terbuka dengan lisensi open-source (MIT/Apache 2.0).
 5. **Tambahkan Pernyataan Etika & CRediT:** Lengkapi naskah dengan *Data Availability* dan pembagian peran penulis formal.
+
+
+
+## 5. MANAJEMEN REFERENSI TERVALIDASI (FULL AUTO MENDELEY)
+
+> [!IMPORTANT]
+> **TEMPORAL AWARENESS (KESADARAN WAKTU):** Penulis dan Agen AI **WAJIB** menyadari bahwa tahun saat ini adalah **2026** setiap kali mem-filter atau mencari referensi.
+>
+> **Yang Agen AI lakukan secara Otomatis (Full Auto):**
+> 1. Membaca PDF via `markitdown` dan memverifikasi metadata.
+> 2. Mengunggah metadata & file fisik PDF langsung ke akun Mendeley klien via API.
+> 3. Membuat file cadangan `references.bib` di komputer lokal.
+> 4. Menyisipkan *placeholder* sitasi di draf naskah Word.
+>
+> **Yang Pengguna lakukan secara Manual (Semi-Auto):**
+> Membuka Word, mencari teks *placeholder* di naskah, lalu mengeklik "Insert Citation" dari panel Mendeley Cite.
+
+### 5.1 Folder `REFERENSI/` — Repositori PDF Sitasi
+
+Setiap proyek penulisan **WAJIB** memiliki satu folder `REFERENSI/` di root workspace proyek.
+**Konvensi Penamaan File PDF (wajib dipatuhi):**
+`[NamaBelakangPenulisPertama]_[Tahun]_[KataKunciJudul].pdf`
+
+### 5.2 Alur Otomatisasi (PDF → Mendeley)
+
+1. **Ekstrak Teks:** Agen membaca isi PDF menggunakan `markitdown`.
+2. **Koreksi Data:** Agen mengoreksi 7 field wajib (Judul, Penulis, Tahun, Venue, Vol/Issue, Halaman, DOI).
+3. **Upload via API:** Agen menggunakan skrip internal (`mendeley_upload.py`) untuk mem-POST metadata dan PDF langsung ke Mendeley.
+
+### 5.3 Konvensi Penulisan Sitasi Sementara (Placeholder)
+
+**Format Penanda Wajib:**
+`[CITE: NamaBelakang Tahun, 3-Kata-Pertama-Judul]`
+
+Pengguna tinggal menyalin `Koto 2021, IndoBERTweet` ke kolom pencarian Mendeley Cite di Word.
+
+### 5.4 Checklist Final Daftar Pustaka
+
+Gunakan checklist ini sebelum naskah dikirim:
+
+| # | Syarat | Detail |
+| :--: | :--- | :--- |
+| 1 | ✅ **85% Literatur Mutakhir (Krusial)** | **Minimal 85% referensi WAJIB dari 5 tahun terakhir (Tahun terbit ≥ 2021, karena saat ini adalah 2026).** |
+| 2 | ✅ Semua sitasi punya PDF | Ada di folder `REFERENSI/` dan terunggah ke Mendeley. |
+| 3 | ✅ Kualitas Referensi | Wajib bersumber dari jurnal internasional bereputasi (Scopus/WoS), bukan web sembarangan. |
+| 4 | ✅ Format Sitasi | Sesuai pedoman Author Guidelines jurnal tujuan (Bisa APA 7th, IEEE, atau Elsevier Harvard). |
+| 5 | ✅ DOI aktif & dapat diklik | Wajib format `https://doi.org/xxx`. |
+| 6 | ✅ Minimal 30-50 referensi | Jurnal Scopus menuntut tinjauan literatur yang ekstensif dan komprehensif. |
+
+---
+
+### 5.5 Tabel Masalah Umum Mendeley
+
+| Masalah | Solusi |
+| :--- | :--- |
+| Plugin Mendeley Cite tidak muncul di Word | Di Word, klik Insert > Get Add-ins > Cari "Mendeley Cite". |
+| Sitasi baru tidak muncul di panel Word | Klik "Update From Library" di opsi Mendeley Cite. |
+| Agen gagal upload | Script agen sudah mendukung *Auto-Refresh*, jika gagal periksa koneksi internet. |
+
+---
+
+### 🚀 Opsi "Bulldozer Mode" (Mass-Download Otomatis)
+
+Jika Anda memiliki daftar referensi yang panjang dan ingin mencari ketersediaannya secara massal tanpa mengunduh manual satu per satu, Anda bisa memerintahkan agen: **"Aktifkan Bulldozer Mode"**.
+Dalam mode ini, agen AI akan:
+1. Mengerahkan segala cara (API OpenAlex, CrossRef, dll) untuk menemukan dan mengunduh PDF Open-Access.
+2. Memasukkan referensi tersebut secara otomatis ke Mendeley.
+3. **Integritas Akademik:** Jika PDF terkunci *paywall* atau tidak ditemukan, agen akan **Jujur Melapor Gagal** dan tidak akan memasukkannya ke Mendeley. Mengutip dokumen tanpa pernah membaca fisiknya adalah pelanggaran akademik.
+
+### 🕵️‍♂️ Otoritas "Visual Browser Agent" (Bypass Blokir API)
+
+Jika *Bulldozer Mode* gagal menembus keamanan repositori (*bot detection* / blokir API) namun Anda yakin PDF tersebut gratis di internet, agen memiliki **otoritas** untuk membangkitkan sub-agen visual. Sub-agen ini akan mengendalikan browser Google Chrome asli Anda untuk mencari dan "menyelamatkan" link PDF rahasia tersebut layaknya penelusuran manusia, lalu menyuntikkannya ke Mendeley Anda secara legal. Perintahkan saja: **"Gunakan browser agent untuk cari PDF ini."**

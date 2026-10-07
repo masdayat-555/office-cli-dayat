@@ -78,6 +78,9 @@ Format jurnal SINTA berbeda mendasar dari laporan skripsi:
 - Minimal 15 - 25 referensi, dengan minimal 80% berupa artikel jurnal ilmiah primer 5-10 tahun terakhir.
 - Diurutkan alfabetis (A-Z), menggunakan format paragraf gantung (*hanging indent* 1,27 cm), spasi tunggal, dan wajib menyertakan tautan DOI aktif (`https://doi.org/...`).
 
+> [!IMPORTANT]
+> **Kewajiban Validasi Referensi via Mendeley:** Seluruh sitasi dalam naskah SINTA **WAJIB** sudah melewati protokol validasi Mendeley (lihat §4) sebelum naskah dikirim ke redaksi. Referensi yang dimasukkan dari ingatan atau copy-paste abstrak tanpa verifikasi file PDF asli **DILARANG** dan berisiko menciptakan entri palsu/tidak dapat ditelusuri oleh *reviewer*.
+
 ---
 
 ## 3. MASTER TEMPLATE RESMI JURNAL SINTA (DOCX)
@@ -91,3 +94,102 @@ Master template resmi yang telah distandarisasi untuk seluruh penulisan jurnal S
 - Alur: Single-column continuous flow dengan blok abstrak berindentasi 0,5 cm.
 - Tabel: APA 3 garis horizontal dengan header abu-abu tipis (*#F2F2F2*).
 - Style: Bersih dari mojibake, tanpa kode ekonomi JEL, dan siap diisi naskah baru.
+
+---
+
+## 4. MANAJEMEN REFERENSI TERVALIDASI UNTUK JURNAL SINTA
+
+> [!IMPORTANT]
+> **TEMPORAL AWARENESS (KESADARAN WAKTU):** Penulis dan Agen AI **WAJIB** menyadari bahwa tahun saat ini adalah **2026** setiap kali mem-filter atau mencari referensi. Jangan merekomendasikan literatur usang yang melanggar batas usia SINTA.
+>
+> **Batasan Teknis Agen AI:**
+> Agen AI tidak dapat berinteraksi langsung dengan add-in Mendeley di Microsoft Word (tidak bisa klik "Insert Citation" atau "Insert Bibliography" secara interaktif).
+> 
+> **Yang Agen AI lakukan secara Otomatis (Full Auto):**
+> 1. Membaca PDF via `markitdown` dan memverifikasi metadata yang salah.
+> 2. Mengunggah metadata & file fisik PDF langsung ke akun Mendeley klien via API.
+> 3. Membuat file cadangan `references.bib` di komputer lokal.
+> 4. Menyisipkan *placeholder* sitasi di draf naskah Word.
+>
+> **Yang Pengguna lakukan secara Manual (Semi-Auto):**
+> Membuka Word, mencari teks *placeholder* di naskah, lalu mengeklik "Insert Citation" dari panel Mendeley Cite untuk mengubahnya jadi sitasi resmi.
+
+### 4.1 Folder `REFERENSI/` — Repositori PDF Sitasi
+
+Setiap proyek jurnal SINTA **WAJIB** memiliki satu folder `REFERENSI/` di root workspace proyek.
+
+```text
+ROOT_PROYEK/
+├── REFERENSI/
+│   ├── README.md                  # Tabel pelacak status validasi
+│   ├── references.bib             # File BibTeX cadangan otomatis
+│   ├── Koto_2021_IndoBERTweet.pdf
+│   └── Devlin_2019_BERT.pdf
+└── naskah_artikel.docx
+```
+
+**Konvensi Penamaan File PDF (wajib dipatuhi):**
+`[NamaBelakangPenulisPertama]_[Tahun]_[KataKunciJudul].pdf`
+Contoh benar: `Koto_2021_IndoBERTweet.pdf`
+Contoh salah: `paper_akhir.pdf` / `download(1).pdf`
+
+### 4.2 Alur Otomatisasi (PDF → Mendeley)
+
+Alih-alih *drag & drop* manual, integrasi ini dikendalikan oleh AI:
+1. **Ekstrak Teks:** Agen membaca isi PDF menggunakan `markitdown`.
+2. **Koreksi Data:** Agen mengoreksi 7 field wajib (Judul, Penulis, Tahun, Venue, Vol/Issue, Halaman, DOI). Jika DOI hilang, agen mencarinya di internet.
+3. **Upload via API:** Agen menggunakan skrip internal (`mendeley_upload.py`) untuk mem-POST metadata dan melampirkan file PDF fisiknya langsung ke *library* Mendeley.
+
+### 4.3 Konvensi Penulisan Sitasi Sementara (Placeholder) di Naskah Word
+
+Karena AI tidak bisa mengeklik plugin Word, ia akan menuliskan draf naskah dengan penanda khusus.
+
+**Format Penanda Wajib:**
+`[CITE: NamaBelakang Tahun, 3-Kata-Pertama-Judul]`
+
+**Contoh di Naskah:**
+> Penggunaan model bahasa sangat efektif untuk klasifikasi teks `[CITE: Koto 2021, IndoBERTweet A Pretrained]`. Hal ini juga mendukung arsitektur *transformer* dasar `[CITE: Devlin 2019, BERT Pre-training of]`.
+
+Dengan format yang mendetail ini, pengguna hanya perlu menyalin teks `Koto 2021, IndoBERTweet` ke kolom pencarian di panel *Mendeley Cite* di dalam MS Word, sehingga terhindar dari salah pilih paper.
+
+### 4.4 Checklist Final Daftar Pustaka SINTA (APA 7th)
+
+Gunakan checklist ini sebelum naskah dikirim ke redaksi jurnal:
+
+| # | Syarat | Detail |
+| :--: | :--- | :--- |
+| 1 | ✅ **80% Literatur Terkini (Krusial)** | **Minimal 80% referensi WAJIB dari 10 tahun terakhir (Tahun terbit ≥ 2016, karena saat ini adalah 2026).** |
+| 2 | ✅ Semua sitasi punya PDF | Ada di folder `REFERENSI/` dan terunggah ke Mendeley. |
+| 3 | ✅ Urutan A–Z | Otomatis jika menggunakan Mendeley Cite. |
+| 4 | ✅ Format APA 7th | `Penulis. (Tahun). Judul. *Jurnal*, *Vol*(Issue), hlm. https://doi.org/xxx` |
+| 5 | ✅ *Hanging indent* 1,27 cm | Otomatis jika menggunakan Mendeley Cite. |
+| 6 | ✅ Spasi 1.0x antar baris | Rapat tapi terbaca, dengan spasi 6-10pt antar entri. |
+| 7 | ✅ DOI aktif & dapat diklik | Hyperlink biru, format `https://doi.org/xxx`. |
+| 8 | ✅ Minimal 15 referensi | SINTA 3–4 minimal 15 referensi primari, SINTA 1–2 minimal 20. |
+| 9 | ❌ DILARANG `[1], [2]` numerik | Standar psikologi/sosial/SINTA dominan pakai APA (bukan IEEE), jangan pakai kurung siku. |
+| 10 | ❌ DILARANG sitasi tanpa DOI | Semua artikel jurnal modern wajib ada DOI (pengecualian hanya untuk buku/dokumen cetak lawas). |
+
+---
+
+### 4.5 Tabel Masalah Umum Mendeley & Solusinya
+
+| Masalah | Penyebab | Solusi |
+| :--- | :--- | :--- |
+| Plugin Mendeley Cite tidak muncul di Word | Add-in belum dipasang dari Store | Di Word, klik Insert > Get Add-ins > Cari "Mendeley Cite". |
+| Sitasi baru tidak muncul di panel Word | Word belum sinkron dengan Cloud | Klik "Update From Library" di opsi Mendeley Cite. |
+| Salah sitasi | Placeholder terlalu mirip dengan paper lain | Selalu cocokkan **Tahun** dan **3 Kata Judul** dari *placeholder* yang dibuat AI. |
+| Agen gagal upload | Token API kedaluwarsa | Script agen saat ini sudah mendukung *Auto-Refresh*, jika masih gagal periksa koneksi internet. |
+
+---
+
+### 🚀 Opsi "Bulldozer Mode" (Mass-Download Otomatis)
+
+Jika Anda memiliki daftar referensi yang panjang dan ingin mencari ketersediaannya secara massal tanpa mengunduh manual satu per satu, Anda bisa memerintahkan agen: **"Aktifkan Bulldozer Mode"**.
+Dalam mode ini, agen AI akan:
+1. Mengerahkan segala cara (API OpenAlex, CrossRef, dll) untuk menemukan dan mengunduh PDF Open-Access.
+2. Memasukkan referensi tersebut secara otomatis ke Mendeley.
+3. **Integritas Akademik:** Jika PDF terkunci *paywall* atau tidak ditemukan, agen akan **Jujur Melapor Gagal** dan tidak akan memasukkannya ke Mendeley. Mengutip dokumen tanpa pernah membaca fisiknya adalah pelanggaran akademik.
+
+### 🕵️‍♂️ Otoritas "Visual Browser Agent" (Bypass Blokir API)
+
+Jika *Bulldozer Mode* gagal menembus keamanan repositori (*bot detection* / blokir API) namun Anda yakin PDF tersebut gratis di internet, agen memiliki **otoritas** untuk membangkitkan sub-agen visual. Sub-agen ini akan mengendalikan browser Google Chrome asli Anda untuk mencari dan "menyelamatkan" link PDF rahasia tersebut layaknya penelusuran manusia, lalu menyuntikkannya ke Mendeley Anda secara legal. Perintahkan saja: **"Gunakan browser agent untuk cari PDF ini."**
