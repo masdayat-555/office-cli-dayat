@@ -50,6 +50,7 @@ office-cli/
     ├── pedoman_skripsi_lengkap.md           # Pedoman penulisan Skripsi / Tesis 5 Bab standar nasional
     ├── pedoman_kerja_praktik.md             # Pedoman penyusunan Laporan Kerja Praktik & Magang
     ├── pedoman_laporan_praktikum.md         # Pedoman Laporan Praktikum (struktur bab, format cover)
+    ├── pedoman_lkm_metode_numerik.md        # Pedoman LKM Metode Numerik (monograf 5 bab, pola mahasiswa BAB IV)
     ├── resep_officecli_dokumen_ilmiah.md    # Resep batch JSON OfficeCLI siap pakai
     └── aturan_adaptif_pedoman_kampus.md     # Protokol adaptif penyesuaian aturan lokal institusi
 ```
@@ -710,9 +711,10 @@ Setiap tugas yang membutuhkan iterasi berulang (seperti mencoba mengunduh puluha
 
 ### Referensi Dokumen Spesifik
 - Jika tugas melibatkan **Surat Permohonan Insentif**, **WAJIB** merujuk ke pedoman detail di [pedoman_surat_insentif.md](file:///C:/Users/masdayat/.gemini/config/skills/office-cli/references/pedoman_surat_insentif.md) untuk menghindari *error formatting* berulang.
-- Jika tugas melibatkan **Laporan Praktikum (LHP / LKM)**, **WAJIB MUTLAK** merujuk ke pedoman detail di [pedoman_laporan_praktikum.md](file:///C:/Users/masdayat/.gemini/config/skills/office-cli/references/pedoman_laporan_praktikum.md).
-  - **Pembedaan Hirarki**: LHP (singkat, tanpa bab/TOC, hanya tugas praktek lab) vs LKM (monograf lengkap 5 bab, template `template_lkm_metode_numerik.docx`, cover, kata pengantar, TOC native Word, Bab I-V, daftar pustaka).
-  - **Dilarang Merusak LKM**: Jangan pernah mengubah atau merusak dokumen LKM menjadi LHP saat pengguna meminta perbaikan atau revisi tugas.
+- Jika tugas melibatkan **Laporan Praktikum Umum / LHP Singkat**, **WAJIB** merujuk ke [pedoman_laporan_praktikum.md](file:///C:/Users/masdayat/.gemini/config/skills/office-cli/references/pedoman_laporan_praktikum.md).
+- Jika tugas melibatkan **LKM (Laporan Keseluruhan Modul) Metode Numerik**, **WAJIB MUTLAK** merujuk ke pedoman spesifik di [pedoman_lkm_metode_numerik.md](file:///C:/Users/masdayat/.gemini/config/skills/office-cli/references/pedoman_lkm_metode_numerik.md).
+  - **Pembedaan Hirarki**: LHP (singkat, tanpa bab/TOC, hanya tugas praktek lab) vs LKM (monograf lengkap 5 bab, template `template_lkm_metode_numerik.docx`, cover, kata pengantar, TOC native Word Automatic Table 1, Bab I-V, daftar pustaka).
+  - **Dilarang Merusak LKM**: Jangan pernah mengubah atau merusak dokumen LKM menjadi LHP saat pengguna meminta perbaikan atau revisi tugas!
   - **Pola Mahasiswa Logis di BAB IV (Anti-Yapping)**: Wajib ikuti alur mahasiswa: Soal & Matriks -> Kode & Output Konsol Scilab Langsung di Satu Box -> Komentar & Penjelasan di Bawahnya. Dilarang yapping/esai bertele-tele di depan dan dilarang membuat subbab 4.3 pembahasan terpisah yang redundan.
   - **Persamaan Matriks Native 2D (OMML XML)**: Matriks dan determinan wajib dirender sebagai persamaan matematika 2D native Word (kurung siku `[]` untuk matriks, garis tegak vertikal `||` untuk determinan).
   - **Zero PDF**: Berkas diserahkan dalam format DOCX mentah; dilarang otomatis membuat PDF kecuali diminta secara eksplisit.
