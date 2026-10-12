@@ -87,7 +87,8 @@ Untuk mencegah degradasi tata letak dan konflik fungsional, skill ini membagi ta
 | :--- | :--- | :--- | :--- |
 | **Microsoft MarkItDown** | [microsoft/markitdown](https://github.com/microsoft/markitdown) | `markitdown --version`<br>atau `python -m markitdown --version` | `pip install markitdown`<br>*(opsional: `pip install markitdown[all]`)* |
 | **OfficeCLI** | [officecli.ai](https://officecli.ai) / [github.com/officecli](https://github.com/officecli) | `officecli --version` | **Windows PowerShell:**<br>`irm https://d.officecli.ai/install.ps1 \| iex`<br>**Linux / macOS (Bash):**<br>`curl -fsSL https://d.officecli.ai/install.sh \| bash` |
-| **pypdf** *(On-Demand)* | [py-pdf/pypdf](https://github.com/py-pdf/pypdf) | `python -c "import pypdf; print(pypdf.__version__)"` | `pip install pypdf` *(khusus ekstraksi gambar PDF)* |
+| **PyMuPDF (`pymupdf`)** | [pymupdf/PyMuPDF](https://github.com/pymupdf/PyMuPDF) | `python -c "import pymupdf; print(pymupdf.__version__)"` | `pip install pymupdf` *(engine utama rendering PDF & ekstraksi gambar hi-res)* |
+| **pypdf** *(On-Demand)* | [py-pdf/pypdf](https://github.com/py-pdf/pypdf) | `python -c "import pypdf; print(pypdf.__version__)"` | `pip install pypdf` *(fallback ekstraksi gambar PDF)* |
 | **docx2pdf** *(LMS Export)*| [AlJohri/docx2pdf](https://github.com/AlJohri/docx2pdf) | `python -c "import docx2pdf"` | `pip install docx2pdf` *(khusus konversi akhir DOCX ke PDF)* |
 
 > [!WARNING]
@@ -381,7 +382,32 @@ Berbeda dengan tugas bebas, Laporan Praktikum **WAJIB** dipisahkan per BAB:
 - **Haram** mengetik Daftar Isi secara manual atau memanipulasi *tab leader* di Python.
 - Harus murni di-render menggunakan mesin Field Codes dari Word melalui `officecli`. Selalu selesaikan seluruh modifikasi DOM terlebih dahulu, akhiri dengan perintah JSON `toc`, dan mutlak di-*save* sebelum di-*refresh*.
 
-### 9.5 Varian "LHP Singkat" (Tugas Praktikum Tanpa BAB)
+### 9.5 ATURAN KHUSUS PRAKTIKUM METODE NUMERIK: LHP (DULUAN) VS LKM (BELAKANGAN)
+
+> [!CAUTION]
+> **ATURAN MUTLAK METODE NUMERIK (UNIVERSITAS JANABADRA - DOSEN IBU YUMARLIN MZ):**
+> 1. **LHP (Laporan Hasil Praktikum) → DIKERJAKAN DULUAN (PER MODUL RUTIN):**
+>    - **Master Template Wajib**: `templates/template_lhp_singkat.docx`.
+>    - **DILARANG MENGGUNAKAN BAB** (Tanpa BAB I, Tanpa BAB II, dst.).
+>    - **DILARANG MENGGUNAKAN KATA PENGANTAR & DAFTAR ISI (TOC)**.
+>    - **DILARANG MENJALANKAN SCILAB CLI SECARA OTOMATIS**: Scilab adalah praktikum langsung milik mahasiswa di lab. Agen DILARANG mengeksekusi Scilab CLI di background. Agen WAJIB menyediakan blok kode teks salin (copy-ready code box) agar mahasiswa yang menyalin dan menjalankannya sendiri di Scilab Command Window lab!
+     - **HANYA KERJAKAN SOAL-SOAL BAGIAN 'PRAKTEK' (BUKAN SEMUANYA)!**
+>      - Percobaan/langkah praktikum dasar di lab (misal: pembentukan array, pengalamatan, operasi matematika, matriks/SPL, grafik umum) adalah praktikum mandiri milik mahasiswa di lab, **JANGAN dimasukkan ke LHP oleh AI**.
+>      - Bagian yang bertuliskan **'Praktek :'** (misal: Praktek 1, Praktek 2) **ITULAH YANG DIANGGAP SEBAGAI TUGAS LHP**! Kerjakan soal-soal Praktek ini secara tuntas (sintaks Scilab, console output literal, penjelasan, dan gambar grafik jika ada).
+>    - **DILARANG MEMASUKKAN 'TUGAS PRAKTIKUM' (Halaman Akhir Modul)!**
+>      - Soal bertuliskan 'Tugas Praktikum' di akhir modul (misal perkalian matriks & determinan matriks) **BELUM TERMASUK** di LHP! Tugas tersebut disimpan untuk LKM nanti. Masuknya ke LKM hanya setelah selesai dikerjakan oleh mahasiswa dan diminta oleh mahasiswa!
+>    - **Struktur Dokumen LHP**:
+>      - Cover Page resmi Universitas Janabadra (Salim Hidayat / 24330030 / Informatika / 2026).
+>      - Page Break → Langsung Judul **`TUGAS LHP`** (Centered, Bold 14pt).
+>      - Soal-soal Praktek (Praktek 1, Praktek 2, dst.).
+>    - **Konvensi Nama File**: `[NIM]_[Nama Lengkap]_LHP[Nomor Modul].docx` dan `.pdf` (Contoh: `24330030_Salim Hidayat_LHP2.docx` & `24330030_Salim Hidayat_LHP2.pdf`).
+> 
+> 2. **LKM (Laporan Keseluruhan Modul) → DIKERJAKAN BELAKANGAN (SETELAH SEMUA TUGAS SELESAI):**
+>    - **Master Template Wajib**: `templates/template_lkm_metode_numerik.docx`.
+>    - **Waktu Pengerjaan**: Baru dibuat belakangan setelah seluruh tugas praktikum selesai dikerjakan dan mahasiswa meminta penyusunan LKM.
+>    - **Struktur Lengkap**: Cover LKM → Kata Pengantar → Native TOC Word → BAB I Pendahuluan → BAB II Tinjauan Pustaka → BAB III Pelaksanaan Praktikum → BAB IV Tugas Praktikum (pembahasan mendalam seluruh tugas modul) → BAB V Penutup → Daftar Pustaka.
+
+### 9.6 Varian "LHP Singkat" Umum (Tugas Praktikum Tanpa BAB)
 Beberapa praktikum menghendaki format "LHP Singkat" (hanya *Cover Page* lalu langsung isi penugasan tanpa BAB dan tanpa TOC). Jika pengguna meminta format ini ("halaman judul langsung tugas", "tidak pakai bab"):
 - **Gunakan Master Template `template_lhp_singkat.docx`**: Template ini sudah bersih dari Daftar Isi dan siap diinjeksi tugas.
 - **Konvensi Penamaan File**: **WAJIB** menggunakan format `[NIM]_[Nama Lengkap]_LHP[Nomor Modul].docx` (Contoh: `24330030_Salim Hidayat_LHP1.docx`).
