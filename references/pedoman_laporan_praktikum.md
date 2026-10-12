@@ -5,18 +5,17 @@
 > **JANGAN GUNAKAN FORMAT LAPORAN UMUM DENGAN STRUKTUR BAB UNTUK TUGAS RUTIN METODE NUMERIK!**
 > Pada Praktikum Metode Numerik, terdapat 2 jenis dokumen dengan alur wajib:
 > 
-> 1. **LHP (Laporan Hasil Praktikum) $
-ightarrow$ DIKERJAKAN DULUAN (RUTIN PER MODUL)**:
+> 1. **LHP (Laporan Hasil Praktikum) -> DIKERJAKAN DULUAN (RUTIN PER MODUL)**:
 >    - Format: **LHP Singkat** menggunakan master template `templates/template_lhp_singkat.docx`.
 >    - **DILARANG PAKAI BAB** (Tanpa BAB I, Tanpa BAB II, Tanpa BAB III, Tanpa BAB IV, Tanpa BAB V).
 >    - **DILARANG PAKAI KATA PENGANTAR & DAFTAR ISI (TOC)**.
 >    - Struktur: **Hanya Cover Page resmi**, lalu halaman berikutnya **LANGSUNG JUDUL `TUGAS LHP`** berisi langkah percobaan, sintaks, output raw console, visualisasi grafik, dan penyelesaian tugas modul.
 >    - Penamaan File: `[NIM]_[Nama Lengkap]_LHP[Nomor Modul].docx` (misal: `24330030_Salim Hidayat_LHP2.docx`).
 > 
-> 2. **LKM (Laporan Keseluruhan Modul) $
-ightarrow$ DIKERJAKAN BELAKANGAN (AKHIR SEMESTER)**:
+> 2. **LKM (Laporan Keseluruhan Modul) -> DIKERJAKAN BELAKANGAN (AKHIR SEMESTER)**:
 >    - Format: Laporan monograf komprehensif menggunakan master template `templates/template_lkm_metode_numerik.docx`.
 >    - **WAJIB STRUKTUR LENGKAP**: Cover LKM, Kata Pengantar, Daftar Isi (TOC native Word), BAB I Pendahuluan, BAB II Tinjauan Pustaka, BAB III Pelaksanaan Praktikum, BAB IV Tugas Praktikum, BAB V Penutup, Daftar Pustaka.
+>    - **DILARANG MERUSAK ATAU MENDOWNGRADE LKM MENJADI LHP**: Jika pengguna meminta pengerjaan, perbaikan, atau revisi pada dokumen LKM (Laporan Keseluruhan Modul), agen **DILARANG KERAS** mengubah formatnya menjadi LHP, dilarang membuang struktur bab, dan dilarang menghapus Kata Pengantar atau Daftar Isi! Revisi harus tetap mempertahankan integritas dokumen LKM utuh.
 
 Pedoman ini **wajib ditaati secara mutlak** oleh Agen AI saat menyusun, merevisi, atau memformat dokumen Laporan Praktikum. Laporan Praktikum memiliki tingkat keformalan (formality) yang kaku dan berbeda dari tugas harian biasa.
 
@@ -105,8 +104,15 @@ lalu memutasinya menggunakan `officecli batch` (mengganti judul modul, menyisipk
      - Seluruh tangkapan layar (*screenshot*) konsol laboratorium, cuplikan kode Scilab, kurva grafik visual, serta analisis dan komentarnya dari LHP disalin apa adanya persis sesuai struktur aslinya.
      - **DILARANG MENDUPLIKASI KODE JIKA SUDAH ADA SCREENSHOT**: Jangan membuat box kode teks tambahan di atas atau di bawah gambar jika *screenshot* konsol Scilab sudah ditampilkan. Cukup tampilkan *screenshot* asli dan penjelasannya ("kan udah ada screenshot-an").
      - DILARANG hanya meringkas singkat atau mengosongkan Bab ini!
-  7. **BAB IV TUGAS PRAKTIKUM**:
-     - Di LKM inilah seluruh soal dari bagian **'TUGAS PRAKTIKUM'** (halaman akhir modul) resmi dimasukkan, dihitung manual, dibuktikan secara aljabar linier langkah demi langkah, dan dibahas secara komprehensif.
+  7. **BAB IV TUGAS PRAKTIKUM (POLA PENGERJAAN MAHASISWA LOGIS: SOAL -> KODE & OUTPUT KONSOL LANGSUNG -> KOMENTAR DI BAWAHNYA)**:
+     - Di LKM inilah seluruh soal dari bagian **'TUGAS PRAKTIKUM'** (halaman akhir modul) resmi dijawab secara lugas, logis, dan tervalidasi.
+     - **ALUR WAJIB TIAP NOMOR SOAL/TUGAS (POLA MAHASISWA / HUMAN STUDENT WORKFLOW)**:
+       1. **Soal & Matriks/Persoalan**: Sajikan soal dan bentuk matematisnya (persamaan matriks 2D native) dengan jelas.
+       2. **Sintaks Perintah & Output Konsol Scilab Langsung Menyatu**: Jawab langsung persoalan menggunakan satu kotak konsol Scilab literal (`--> perintah` diikuti nilai outputnya langsung di bawahnya, persis seperti tampilan command window Scilab mahasiswa). Mahasiswa menjawab soal komputasi langsung dengan kode dan outputnya di situ!
+       3. **Komentar dan Penjelasan di Bawahnya**: Penjelasan logis dan matematis diletakkan di bawah kotak kode/output: verifikasi perhitungan aljabar linier manual baris demi baris, penjelasan operator yang dipakai (`*` aljabar linier murni vs `.*` per-elemen), dan sifat/karakteristik matriks (seperti nonsingularitas det != 0 dan jaminan solusi unik SPL).
+     - **DILARANG YAPPING / MELEBAR DI AWAL**: Dilarang keras menulis esai teoritis panjang lebar atau analisis bertele-tele sebelum kode/output ditampilkan. Mahasiswa menjawab soal secara langsung (*to the point*), bukan berfilsafat di awal!
+     - **DILARANG SUBBAB PEMBAHASAN TERPISAH (SUBBAB 4.3 HARAM)**: Dilarang memecah pembahasan ke dalam subbab terpisah seperti "4.3 Pembahasan dan Analisis Komputasi Numerik" yang mengulang-ulang narasi. Pembahasan dan analisis mutlak melekat langsung sebagai komentar di bawah masing-masing nomor tugas (4.1 dan 4.2).
+     - **PERSAMAAN MATRIKS NATIVE 2D WORD (OMML XML)**: Seluruh matriks dan determinan wajib dirender sebagai persamaan matematika 2D native Word (kurung siku `[]` untuk matriks A, B, C dan garis vertikal `||` untuk determinan J). Dilarang menulis matriks dalam bentuk teks flat satu baris.
      - Soal, persamaan matriks, dan perhitungan aljabar linier **WAJIB RATA KIRI (`align=LEFT`)**, dilarang di-justify agar tidak terjadi peregangan spasi rusak (*stretched justify*).
      - **DILARANG ELEMEN VISUAL GIMMICK (GARIS BIRU / WEB CALLOUT)**: Dilarang keras menggunakan border tabel berwarna biru (`#0969DA`), aksen garis tepi warna-warni, atau gaya *callout* web pada naskah ilmiah, LKM, atau LHP. Seluruh dokumen menggunakan format teks hitam standar tanpa kotak berwarna aneh.
   8. **BAB V PENUTUP**: Kesimpulan menyeluruh dan Saran.

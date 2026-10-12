@@ -42,7 +42,8 @@ office-cli/
 │   ├── template_laporan_tugas_akhir.docx    # Master template Skripsi / TA (A4, 4-3-3-3 cm, 5 Bab)
 │   ├── template_laporan_kerja_praktik.docx  # Master template Laporan KP / Magang Industri
 │   ├── template_laporan_praktikum.docx      # Master template Laporan Praktikum (Cover luwes, native TOC)
-│   └── template_lhp_singkat.docx            # Master template Laporan Praktikum Singkat (Hanya Cover, Tanpa Bab/TOC)
+│   ├── template_lhp_singkat.docx            # Master template Laporan Praktikum Singkat (Hanya Cover, Tanpa Bab/TOC)
+│   └── template_lkm_metode_numerik.docx     # Master template Laporan Keseluruhan Modul (Monograf 5 Bab, TOC native)
 └── references/
     ├── pedoman_jurnal_sinta.md              # Panduan lengkap penulisan jurnal SINTA 1-6 (IMRaD baku)
     ├── pedoman_jurnal_scopus.md             # Panduan jurnal internasional bereputasi Scopus Q1-Q4
@@ -709,3 +710,9 @@ Setiap tugas yang membutuhkan iterasi berulang (seperti mencoba mengunduh puluha
 
 ### Referensi Dokumen Spesifik
 - Jika tugas melibatkan **Surat Permohonan Insentif**, **WAJIB** merujuk ke pedoman detail di [pedoman_surat_insentif.md](file:///C:/Users/masdayat/.gemini/config/skills/office-cli/references/pedoman_surat_insentif.md) untuk menghindari *error formatting* berulang.
+- Jika tugas melibatkan **Laporan Praktikum (LHP / LKM)**, **WAJIB MUTLAK** merujuk ke pedoman detail di [pedoman_laporan_praktikum.md](file:///C:/Users/masdayat/.gemini/config/skills/office-cli/references/pedoman_laporan_praktikum.md).
+  - **Pembedaan Hirarki**: LHP (singkat, tanpa bab/TOC, hanya tugas praktek lab) vs LKM (monograf lengkap 5 bab, template `template_lkm_metode_numerik.docx`, cover, kata pengantar, TOC native Word, Bab I-V, daftar pustaka).
+  - **Dilarang Merusak LKM**: Jangan pernah mengubah atau merusak dokumen LKM menjadi LHP saat pengguna meminta perbaikan atau revisi tugas.
+  - **Pola Mahasiswa Logis di BAB IV (Anti-Yapping)**: Wajib ikuti alur mahasiswa: Soal & Matriks -> Kode & Output Konsol Scilab Langsung di Satu Box -> Komentar & Penjelasan di Bawahnya. Dilarang yapping/esai bertele-tele di depan dan dilarang membuat subbab 4.3 pembahasan terpisah yang redundan.
+  - **Persamaan Matriks Native 2D (OMML XML)**: Matriks dan determinan wajib dirender sebagai persamaan matematika 2D native Word (kurung siku `[]` untuk matriks, garis tegak vertikal `||` untuk determinan).
+  - **Zero PDF**: Berkas diserahkan dalam format DOCX mentah; dilarang otomatis membuat PDF kecuali diminta secara eksplisit.
