@@ -91,12 +91,12 @@ lalu memutasinya menggunakan `officecli batch` (mengganti judul modul, menyisipk
 - **KONTEN WAJIB PER BAB DI LKM**:
   1. **Cover Page**: Judul LAPORAN KESELURUHAN MODUL, nama, NIM, fakultas, universitas.
   2. **KATA PENGANTAR**: Format monograf rapi dengan first-line indent 1 cm dan blok tanda tangan di kanan bawah (DILARANG newline dalam paragraf justified).
-  3. **DAFTAR ISI (WAJIB DAFTAR ISI OTOMATIS ASLI WORD / NATIVE TOC FIELD CODE)**:
-     - **DILARANG KERAS** membuat Daftar Isi manual (ketikan teks tab statis `title \t page`).
-     - Wajib menggunakan field code native Word: `TOC \o "1-3" \h \z \u` yang dibungkus `<w:fldChar>` (`begin`, `separate`, `end`) dengan entri ber-tab stop dots leader di 9350 twips (~16.5 cm).
-     - **DILARANG MENYUNTIKKAN `<w:updateFields w:val="true"/>`**: Tag XML ini memicu pop-up dialog peringatan Word yang mengganggu: *"This document contains fields that may refer to other files. Do you want to update the fields in this document?"*.
-     - **WAJIB MENJALANKAN `officecli refresh <path_file.docx>`**: Selalu jalankan `officecli refresh` setelah selesai menyusun naskah. Perintah ini mengaktifkan engine Word di latar belakang untuk menghitung nomor halaman riil secara otomatis dan menyimpan hasilnya ke TOC. Saat pengguna membuka dokumen di Word, Daftar Isi langsung terisi nomor halaman nyata secara instan **TANPA POP-UP PERINGATAN SAMA SEKALI**.
-     - Setiap judul bab (`Heading 1`) dan sub-bab (`Heading 2` / `Heading 3`) harus ditautkan dengan bookmark (`_Toc...`) atau style heading Word standar agar fitur "Update Field" (Perbarui Bidang) bekerja sempurna.
+  3. **DAFTAR ISI (WAJIB DAFTAR ISI OTOMATIS ASLI WORD DARI PILIHAN TERSEDIA / AUTOMATIC TABLE 1)**:
+     - **DILARANG KERAS** membuat Daftar Isi manual (ketikan teks tab statis `title \t page`) atau menyuntikkan field mentah tanpa kontainer SDT.
+     - **Wajib menggunakan Building Block resmi bawaan Word "Automatic Table 1" (Tabel Otomatis 1)** yang terbungkus dalam Structured Document Tag (`<w:sdt>`) galeri Table of Contents. Saat dokumen dibuka dan diklik di Word, muncul tab interaktif resmi Word: `[ Table of Contents v | Update Table... ]`.
+     - **DILARANG MENYUNTIKKAN `<w:updateFields w:val="true"/>`**: Tag XML ini memicu pop-up dialog peringatan keamanan Word: *"This document contains fields that may refer to other files. Do you want to update the fields in this document?"*.
+     - **Pre-render Nomor Halaman via Word COM / OfficeCLI**: Nomor halaman riil dihitung dan diisi secara otomatis sebelum berkas disimpan. Saat pengguna membuka dokumen di Word, Daftar Isi langsung terisi nomor halaman nyata secara instan, berfungsi normal seperti dokumen Word buatan tangan, dan **BEBAS DARI POP-UP PERINGATAN SAMA SEKALI**.
+     - Setiap judul bab (`Heading 1`) dan sub-bab (`Heading 2` / `Heading 3`) ditautkan dengan bookmark (`_Toc...`) atau style heading Word standar sehingga tombol "Update Table" bekerja sempurna.
   4. **BAB I PENDAHULUAN**: Latar Belakang dan Tujuan Praktikum.
   5. **BAB II TINJAUAN PUSTAKA**: Landasan teori lengkap dari modul.
   6. **BAB III PELAKSANAAN PRAKTIKUM (WAJIB COPAS UTUH DARI LHP, DILARANG BIKIN FORMAT BARU)**:
