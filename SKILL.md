@@ -168,6 +168,35 @@ Untuk mencegah degradasi tata letak dan konflik fungsional, skill ini membagi ta
      - Centang kotak **"Do not compress images in file"** (*Jangan kompres gambar dalam file*).
      - Atur **Default resolution** ke **High fidelity**.
 
+### 3.6 Protokol Hirarki Heading Asli & Daftar Isi Otomatis Word (Pilihan Bawaan: Automatic Table 1)
+
+> [!IMPORTANT]
+> **ATURAN EMAS HEADING DAN DAFTAR ISI OTOMATIS (AGAR NORMAL SEPERTI DOKUMEN WORD RESMI):**
+> Pengguna Microsoft Word tidak mengetik Daftar Isi manual dan tidak menyuntikkan kode palsu. Word bekerja dengan membaca **Heading Styles resmi** (`Heading 1`, `Heading 2`, `Heading 3`). Jika heading diformat secara benar, fitur Daftar Isi Otomatis bawaan Word (*Automatic Table 1*) langsung mengenali seluruh struktur naskah secara instan dan dapat diperbarui kapan saja oleh pengguna secara natural.
+
+1. **Hirarki Heading Wajib (Style Asli Word, Warna Hitam Pekat `#000000`)**:
+   - **`Heading 1`**: Untuk seluruh judul bab utama dan bagian awal monograf:
+     `KATA PENGANTAR`, `DAFTAR ISI`, `BAB I PENDAHULUAN`, `BAB II TINJAUAN PUSTAKA`, `BAB III PELAKSANAAN PRAKTIKUM`, `BAB IV TUGAS PRAKTIKUM`, `BAB V PENUTUP`, `DAFTAR PUSTAKA`.
+     *Format*: Times New Roman 14 pt, **Bold**, Hitam Pekat (`#000000`), Perataan Tengah (*Center*), Spasi 1.15x, dan **WAJIB `PageBreakBefore = True`** agar setiap bab selalu dimulai di halaman baru tersendiri.
+   - **`Heading 2`**: Untuk seluruh sub-bab (misal `1.1 Latar Belakang`, `1.2 Tujuan Praktikum`, `2.1 Dasar Teori`, `4.1 Tugas 1`, `5.1 Kesimpulan`, `5.2 Saran`).
+     *Format*: Times New Roman 12 pt, **Bold**, Hitam Pekat (`#000000`), Perataan Kiri (*Left*), Spasi 1.15x.
+   - **`Heading 3`**: Untuk sub-sub bab bertingkat (misal `1.1.1`).
+2. **Pilihan Daftar Isi Bawaan Word: "Automatic Table 1" (Tabel Otomatis 1)**:
+   - Gunakan komponen galeri resmi bawaan Word: `Built-In Building Blocks -> Automatic Table 1` yang dibungkus dalam Structured Document Tag (`<w:sdt>`).
+   - Ubah judul wadah TOC menjadi **`DAFTAR ISI`** (TNR 14 pt, Bold, Center, `PageBreakBefore = True`).
+   - Saat diklik di Microsoft Word, muncul kontrol/tab interaktif resmi: **`[ Table of Contents ▾ | Update Table... ]`** (atau *Perbarui Tabel...*).
+3. **Pemberantasan Pop-Up Peringatan Keamanan (Zero External Pop-Up Policy)**:
+   - **DILARANG KERAS MENYUNTIKKAN `<w:updateFields w:val="true"/>`** ke dalam `word/settings.xml`. Tag ini memicu dialog peringatan keamanan Word: *"This document contains fields that may refer to other files. Do you want to update the fields in this document?"*.
+   - **Pre-render Nomor Halaman di Belakang Layar**: Selalu panggil `doc.TablesOfContents(1).Update()` via Word COM atau jalankan `officecli refresh` sebelum dokumen diserahkan ke pengguna. Nomor halaman riil sudah terhitung dan tertulis rapi sehingga dokumen terbuka secara instan dan bersih dari pop-up.
+4. **Pemisahan Halaman Ketat (Page Break Antar Bagian)**:
+   - Dilarang keras menumpuk Daftar Isi di halaman yang sama dengan Kata Pengantar.
+   - Urutan halaman monograf baku:
+     - Halaman 1: Cover (tanpa header/footer angka)
+     - Halaman 2: KATA PENGANTAR (diakhiri blok tanda tangan kanan bawah)
+     - Halaman 3: DAFTAR ISI (halaman tersendiri dengan PageBreakBefore)
+     - Halaman 4: BAB I PENDAHULUAN (halaman baru tersendiri)
+     - Halaman berikutnya: BAB II, BAB III, BAB IV, BAB V, DAFTAR PUSTAKA (masing-masing diawali PageBreakBefore).
+
 ---
 
 ## 4. STANDAR PENULISAN NASKAH ILMIAH (FOKUS UTAMA: JURNAL SINTA 1–6)
@@ -237,7 +266,10 @@ Ketika mentransformasikan draf ke dalam naskah jurnal Word resmi, agen **WAJIB**
 | **Simbol Unicode Fancy di Tugas** | Menggunakan `\u207b\u2074` (⁻⁴), `\u00b2` (²), `\u2192` (→), `\u2013` (–) dsb. dalam script python-docx untuk dokumen tugas kuliah. | Karakter tampil sebagai "angka aneh" atau mojibake di Word karena font tidak mendukung atau encoding bermasalah saat file ditulis via tool. | **Gunakan notasi plain ASCII seperti ketikan mahasiswa:** `10^-4`, `x^2`, `->`, `-`, `x` (untuk perkalian). Tidak ada Unicode escape di string python-docx untuk tugas. |
 | **Lebar Gambar Terlalu Besar** | Menyisipkan gambar dengan `width=Cm(16)` atau lebih besar dari lebar teks efektif. | Gambar memaksa halaman baru (blank page) setelah gambar karena tingginya melampaui tinggi halaman setelah margin. | **Gunakan `width=Cm(13)` sebagai batas aman** untuk margin narrow (1,27 cm). Jangan pernah naikkan lebar tanpa mengecek dimensi asli gambar terlebih dahulu. |
 | **Siklus Simpan OfficeCLI** | Menjalankan injeksi TOC di `officecli batch`, lalu langsung memanggil `officecli refresh`. | Mesin Word membaca file lama dari disk. Perubahan TOC dari resident RAM lenyap (`resident_died_dirty`). | **WAJIB MENYIMPAN:** `batch` $\rightarrow$ `save` $\rightarrow$ `refresh` $\rightarrow$ `close`. Selalu lakukan `save` sebelum `refresh`. |
-| **TOC (Daftar Isi) Manual** | Menyusun TOC menggunakan ketikan hardcoded spasi/titik dengan `python-docx`. | Dokumen ditolak (*slop*), tidak dinamis, statis dan palsu. | **DILARANG KERAS** mengetik TOC manual. Wajib gunakan `{"type": "toc"}` via OfficeCLI untuk memanggil field native Word. |
+| **Hirarki Heading & Daftar Isi Otomatis** | Mengetik TOC manual, menyuntikkan field mentah tanpa kontainer SDT, atau memasang `<w:updateFields>` yang memicu pop-up keamanan (*"fields refer to other files"*). | Dokumen dianggap tidak normal/rusak, muncul peringatan keamanan eksternal saat dibuka, dan fitur otomatis Word tidak bekerja wajar. | **Wajib gunakan hirarki Heading Word asli (`Heading 1` & `Heading 2`) dipadu Building Block resmi bawaan Word "Automatic Table 1" (`<w:sdt>`)**. Setel `PageBreakBefore = True` pada tiap bab, hitung nomor halaman riil di belakang layar via Word COM/`officecli refresh`, dan **DILARANG KERAS menyuntikkan `<w:updateFields>`**. |
+| **Page Break Antar Bab & Daftar Isi** | Menumpuk Daftar Isi di halaman yang sama dengan Kata Pengantar, atau membiarkan bab baru bersambung di halaman sebelumnya tanpa pemisah tegas. | Tata letak acak-acakan, format laporan rusak, tidak memenuhi standar monograf akademik. | Setiap bagian utama (`Heading 1`: KATA PENGANTAR, DAFTAR ISI, BAB I s.d. BAB V, DAFTAR PUSTAKA) **WAJIB dimulai pada halaman baru** (`pageBreakBefore = True` pada paragraf heading). |
+| **Bab III LKM (Pelaksanaan Praktikum)** | Mendesain format baru yang berbeda dari LHP, merangkum ulang teks, menghilangkan gambar tangkapan layar lab, atau menduplikasi kode dalam box teks tambahan. | Menghilangkan bukti pekerjaan praktikum mahasiswa di lab, format acak-acakan merusak kerapian dokumen. | **Wajib COPAS UTUH (Exact Copy / Verbatim)** dari berkas LHP (`doc_lhp`) paragraf 15 hingga selesai beserta seluruh relasi media gambar resolusi tinggi (300 DPI) asli tanpa mengubah urutan atau membuat format baru. Jangan buat box kode baru jika screenshot sudah ada ("kan udah ada screenshot-an"). |
+| **Bab IV LKM (Tugas Praktikum & Matriks)** | Menambahkan border tabel biru `#0969DA`, callout web warna-warni, atau teks persamaan matriks yang di-justify hingga spasi merenggang. | Tampilan seperti *AI slop*, rumus aljabar linier rusak/sulit dibaca. | **Format monokrom hitam formal**, seluruh komputasi matriks dan aljabar linier **WAJIB RATA KIRI (`align=LEFT`)**, font kode monospace Consolas, bersih dari kotak aksen biru. |
 | **Pengaturan Posisi Cover** | Mengandalkan nilai `space_before` / `space_after` yang raksasa (mis. 150pt) untuk mendorong teks ke margin bawah. | Teks cover *overflow* ke halaman berikutnya, ukuran sulit diprediksi jika gambar berubah, layout kaku. | **Gunakan spasi (Enter / paragraf kosong)** untuk mendorong blok teks sampul, atau atur ruang sewajarnya tanpa pt ekstrem. |
 | **Efek Samping doc.add_page_break**| Memanggil `doc.add_page_break()` di `python-docx` di akhir elemen. | Menghasilkan paragraf kosong *siluman* di halaman sebelum break yang memakan ruang 1 baris vertikal. | Sisipkan break langsung di dalam run terakhir: `p.runs[-1].add_break(WD_BREAK.PAGE)` atau setel properti *Page break before*. |
 
