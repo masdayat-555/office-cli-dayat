@@ -441,7 +441,8 @@ Berbeda dengan tugas bebas, Laporan Praktikum **WAJIB** dipisahkan per BAB:
 >    - **DAFTAR ISI (WAJIB DAFTAR ISI OTOMATIS ASLI WORD / NATIVE TOC FIELD CODE)**:
 >      - **DILARANG KERAS** membuat Daftar Isi manual (ketikan teks tab statis `title \t page`).
 >      - Wajib menggunakan field code native Word: `TOC \o "1-3" \h \z \u` yang dibungkus `<w:fldChar>` (`begin`, `separate`, `end`) dengan entri ber-tab stop dots leader di 9350 twips (~16.5 cm).
->      - Wajib menyuntikkan `<w:updateFields w:val="true"/>` ke dalam `word/settings.xml` agar Word otomatis menyegarkan dan menghitung nomor halaman setiap bab saat dibuka pengguna.
+>      - **DILARANG MENYUNTIKKAN `<w:updateFields w:val="true"/>`**: Tag XML ini memicu pop-up dialog peringatan Word yang mengganggu: *"This document contains fields that may refer to other files. Do you want to update the fields in this document?"*.
+>      - **WAJIB MENJALANKAN `officecli refresh <path_file.docx>`**: Selalu jalankan `officecli refresh` setelah selesai menyusun naskah. Perintah ini mengaktifkan engine Word di latar belakang untuk menghitung nomor halaman riil secara otomatis dan menyimpan hasilnya ke TOC. Saat pengguna membuka dokumen di Word, Daftar Isi langsung terisi nomor halaman nyata secara instan **TANPA POP-UP PERINGATAN SAMA SEKALI**.
 >      - Setiap judul bab (`Heading 1`) dan sub-bab (`Heading 2` / `Heading 3`) harus ditautkan dengan bookmark (`_Toc...`) atau style heading Word standar agar fitur "Update Field" (Perbarui Bidang) bekerja sempurna.
 >    - **KONTEN BAB III PELAKSANAAN PRAKTIKUM (WAJIB COPAS UTUH DARI LHP, DILARANG BIKIN FORMAT BARU)**:
 >      - BAB III Pelaksanaan Praktikum pada LKM **MUTLAK MENGAMBIL SELURUH PENYELESAIAN DARI TUGAS LHP** (Praktek 1 s.d. selesai) secara utuh (**COPAS PERSIS** dari naskah LHP yang telah diselesaikan mahasiswa).
