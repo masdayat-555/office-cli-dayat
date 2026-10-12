@@ -126,16 +126,47 @@ Untuk mencegah degradasi tata letak dan konflik fungsional, skill ini membagi ta
 - **Dari Dokumen Office (`.docx`, `.pptx`, `.xlsx`):** Gunakan modul bawaan Python `zipfile` untuk mengekstrak folder internal `word/media/` atau `ppt/media/` tanpa dependensi eksternal.
 - **Dari Dokumen PDF (`.pdf`):** Gunakan pustaka `pypdf` untuk membaca `page.images` dan menyimpannya ke folder keluaran resolusi asli.
 
-### 3.4 Konversi Hasil Akhir ke PDF (Trigger: "sudah ok")
-- Jika pengguna memberikan instruksi **"sudah ok"** (atau menyatakan laporan sudah final), ini adalah tanda bahwa dokumen DOCX sudah siap dan harus disubmit ke LMS.
-- Agen AI **WAJIB** segera mengonversi file DOCX final tersebut menjadi PDF menggunakan library `docx2pdf`.
-- **DILARANG** menggunakan library pembaca seperti `pypdf` untuk konversi DOCX.
-- Skrip konversi (jalankan dari direktori file, pastikan file DOCX tertutup dari MS Word):
+### 3.4 Aturan Konversi ke PDF: DILARANG Membuat PDF Tanpa Permintaan Eksplisit
+- **DILARANG membuat atau mengonversi berkas `.pdf` (docx2pdf / export) jika TIDAK DIMINTA SECARA EKSPLISIT oleh pengguna.**
+- Standar keluaran utama dan default selalu berupa dokumen Microsoft Word (`.docx`). Mahasiswa memerlukan berkas `.docx` untuk meninjau tata letak, mengedit naskah, dan menimpa *screenshot* praktikum asli hasil kerja mereka sendiri di laboratorium.
+- Agen AI **HANYA** menjalankan konversi ke PDF jika pengguna secara spesifik dan tegas meminta (misal: *"buatkan pdf"*, *"tolong convert ke pdf"*, *"ekspor ke pdf"*, dsb.).
+- Skrip konversi (hanya jika diminta, pastikan berkas DOCX tertutup dari MS Word):
    ```python
    from docx2pdf import convert
-   convert("24330030_SalimHidayat_LaporanModul1_PAW.docx")
+   convert("24330030_Salim Hidayat_LHP2.docx")
    ```
-- Setelah sukses, laporkan kepada pengguna bahwa file PDF siap diunggah ke LMS.
+
+### 3.5 Protokol Anti-Burik (Preservasi Kualitas Citra & Resolusi Tinggi)
+
+> [!IMPORTANT]
+> **MASALAH UTAMA GAMBAR BURIK / BLURRY SAAT EXPORT KE PDF:**
+> Secara default, Microsoft Word mengompresi gambar dan saat pengguna mengekspor menggunakan menu *Save As PDF*, Word sering menggunakan preset kompresi rendah (*Minimum size* / 96–150 DPI) atau mendownsample citra yang disisipkan.
+> Selain itu, gambar yang diekstrak dari PDF modul sering kali beresolusi rendah jika tidak diekstrak pada DPI tinggi, sehingga saat ditarik di Word gambarnya menjadi pecah dan burik.
+
+**Kaidah Wajib Anti-Burik untuk Dokumen Ilmiah & Laporan:**
+1. **Injeksi XML High Fidelity ke Dokumen Word (`word/settings.xml`)**:
+   Setiap template master dan dokumen `.docx` yang diproduksi **WAJIB** memiliki flag OpenXML anti-kompresi di dalam `word/settings.xml`:
+   ```xml
+   <w14:defaultImageDpi xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" w14:val="0"/>
+   <w:doNotCompressPNG/>
+   ```
+   *Catatan:* Nilai `w14:val="0"` secara spesifik mengaktifkan mode **"High Fidelity"** di Microsoft Word, yang melarang Word melakukan *downsampling* atau kompresi otomatis terhadap gambar yang disisipkan.
+2. **Standar Resolusi Gambar & Tangkapan Layar (Minimal 300 DPI)**:
+   - **Ekstraksi PDF / Rendering Halaman**: Wajib menggunakan PyMuPDF (`pymupdf`) dengan resolusi minimal **300 DPI** (`pix = page.get_pixmap(dpi=300)`). **DILARANG KERAS** mengekstrak atau merender halaman PDF pada DPI 72, 96, atau 150!
+   - **Format Gambar**: Wajib format **PNG lossless**. Dilarang menggunakan JPG terkompresi untuk tangkapan layar antarmuka atau kurva grafik.
+   - **Injeksi Metadata DPI**: Sebelum gambar disisipkan ke Word, simpan citra dengan metadata resolusi 300 DPI menggunakan Pillow:
+     ```python
+     img.save(output_path, dpi=(300, 300))
+     ```
+3. **Proporsi Dimensi Gambar**:
+   - Gambar berdimensi kecil (< 800 piksel) **DILARANG ditarik paksa memenuhi lebar halaman** (15–16 cm). Letakkan gambar di tengah (*Center*) dengan ukuran fisik proporsional (lebar 6–9 cm) agar piksel tidak membesar dan buram.
+4. **Panduan Pengguna (Save As PDF di Word GUI Tanpa Burik)**:
+   Jika mahasiswa menyimpan / mengekspor dokumen Word ke PDF secara mandiri di aplikasi Microsoft Word:
+   - Buka **File > Save As > PDF**.
+   - Pada bagian optimasi di bawah kotak dialog, **PILIH "Standard (publishing online and printing)"**, **JANGAN PILIH** *"Minimum size"*.
+   - Melalui **Word Options > Advanced > Image Size and Quality**:
+     - Centang kotak **"Do not compress images in file"** (*Jangan kompres gambar dalam file*).
+     - Atur **Default resolution** ke **High fidelity**.
 
 ---
 
@@ -390,22 +421,41 @@ Berbeda dengan tugas bebas, Laporan Praktikum **WAJIB** dipisahkan per BAB:
 >    - **Master Template Wajib**: `templates/template_lhp_singkat.docx`.
 >    - **DILARANG MENGGUNAKAN BAB** (Tanpa BAB I, Tanpa BAB II, dst.).
 >    - **DILARANG MENGGUNAKAN KATA PENGANTAR & DAFTAR ISI (TOC)**.
->    - **DILARANG MENJALANKAN SCILAB CLI SECARA OTOMATIS**: Scilab adalah praktikum langsung milik mahasiswa di lab. Agen DILARANG mengeksekusi Scilab CLI di background. Agen WAJIB menyediakan blok kode teks salin (copy-ready code box) agar mahasiswa yang menyalin dan menjalankannya sendiri di Scilab Command Window lab!
-     - **HANYA KERJAKAN SOAL-SOAL BAGIAN 'PRAKTEK' (BUKAN SEMUANYA)!**
+>    - **DILARANG MENJALANKAN SCILAB CLI SECARA OTOMATIS**: Scilab adalah praktikum langsung m>      - **HANYA KERJAKAN SOAL-SOAL BAGIAN 'PRAKTEK' (BUKAN SEMUANYA)!**
 >      - Percobaan/langkah praktikum dasar di lab (misal: pembentukan array, pengalamatan, operasi matematika, matriks/SPL, grafik umum) adalah praktikum mandiri milik mahasiswa di lab, **JANGAN dimasukkan ke LHP oleh AI**.
 >      - Bagian yang bertuliskan **'Praktek :'** (misal: Praktek 1, Praktek 2) **ITULAH YANG DIANGGAP SEBAGAI TUGAS LHP**! Kerjakan soal-soal Praktek ini secara tuntas (sintaks Scilab, console output literal, penjelasan, dan gambar grafik jika ada).
 >    - **DILARANG MEMASUKKAN 'TUGAS PRAKTIKUM' (Halaman Akhir Modul)!**
 >      - Soal bertuliskan 'Tugas Praktikum' di akhir modul (misal perkalian matriks & determinan matriks) **BELUM TERMASUK** di LHP! Tugas tersebut disimpan untuk LKM nanti. Masuknya ke LKM hanya setelah selesai dikerjakan oleh mahasiswa dan diminta oleh mahasiswa!
+>    - **DILARANG MENDUPLIKASI KODE JIKA SUDAH ADA SCREENSHOT**:
+>      - Jika sudah terdapat tangkapan layar (*screenshot*) konsol atau grafik Scilab dari praktikum, **DILARANG** membuat box teks / tabel kode yang mengulang isi *screenshot*! Cukup sajikan *screenshot* asli diikuti narasi penjelasan dan analisisnya.
 >    - **Struktur Dokumen LHP**:
 >      - Cover Page resmi Universitas Janabadra (Salim Hidayat / 24330030 / Informatika / 2026).
 >      - Page Break → Langsung Judul **`TUGAS LHP`** (Centered, Bold 14pt).
 >      - Soal-soal Praktek (Praktek 1, Praktek 2, dst.).
->    - **Konvensi Nama File**: `[NIM]_[Nama Lengkap]_LHP[Nomor Modul].docx` dan `.pdf` (Contoh: `24330030_Salim Hidayat_LHP2.docx` & `24330030_Salim Hidayat_LHP2.pdf`).
+>    - **Konvensi Nama File**: Format wajib adalah `[NIM]_[Nama Lengkap]_LHP[Nomor Modul].docx` (Contoh: `24330030_Salim Hidayat_LHP2.docx`). Berkas diserahkan dalam format DOCX. DILARANG membuat file PDF otomatis kecuali diminta secara eksplisit oleh mahasiswa.
 > 
 > 2. **LKM (Laporan Keseluruhan Modul) → DIKERJAKAN BELAKANGAN (SETELAH SEMUA TUGAS SELESAI):**
 >    - **Master Template Wajib**: `templates/template_lkm_metode_numerik.docx`.
 >    - **Waktu Pengerjaan**: Baru dibuat belakangan setelah seluruh tugas praktikum selesai dikerjakan dan mahasiswa meminta penyusunan LKM.
->    - **Struktur Lengkap**: Cover LKM → Kata Pengantar → Native TOC Word → BAB I Pendahuluan → BAB II Tinjauan Pustaka → BAB III Pelaksanaan Praktikum → BAB IV Tugas Praktikum (pembahasan mendalam seluruh tugas modul) → BAB V Penutup → Daftar Pustaka.
+>    - **Struktur Lengkap**: Cover LKM → Kata Pengantar → Native TOC Word → BAB I Pendahuluan → BAB II Tinjauan Pustaka → BAB III Pelaksanaan Praktikum → BAB IV Tugas Praktikum → BAB V Penutup → Daftar Pustaka.
+>    - **DAFTAR ISI (WAJIB DAFTAR ISI OTOMATIS ASLI WORD / NATIVE TOC FIELD CODE)**:
+>      - **DILARANG KERAS** membuat Daftar Isi manual (ketikan teks tab statis `title \t page`).
+>      - Wajib menggunakan field code native Word: `TOC \o "1-3" \h \z \u` yang dibungkus `<w:fldChar>` (`begin`, `separate`, `end`) dengan entri ber-tab stop dots leader di 9350 twips (~16.5 cm).
+>      - Wajib menyuntikkan `<w:updateFields w:val="true"/>` ke dalam `word/settings.xml` agar Word otomatis menyegarkan dan menghitung nomor halaman setiap bab saat dibuka pengguna.
+>      - Setiap judul bab (`Heading 1`) dan sub-bab (`Heading 2` / `Heading 3`) harus ditautkan dengan bookmark (`_Toc...`) atau style heading Word standar agar fitur "Update Field" (Perbarui Bidang) bekerja sempurna.
+>    - **KONTEN BAB III PELAKSANAAN PRAKTIKUM (WAJIB COPAS UTUH DARI LHP, DILARANG BIKIN FORMAT BARU)**:
+>      - BAB III Pelaksanaan Praktikum pada LKM **MUTLAK MENGAMBIL SELURUH PENYELESAIAN DARI TUGAS LHP** (Praktek 1 s.d. selesai) secara utuh (**COPAS PERSIS** dari naskah LHP yang telah diselesaikan mahasiswa).
+>      - **DILARANG KERAS MEMBUAT FORMAT BARU**: Dilarang merangkum ulang, dilarang mendesain ulang urutan, dilarang membuat heading baru yang berbeda dari LHP, dan dilarang membuat format acak-acakan baru yang merusak kerapian dokumen!
+>      - Seluruh tangkapan layar (*screenshot*) konsol laboratorium, cuplikan kode Scilab, kurva grafik visual, serta analisis dan komentarnya dari LHP disalin apa adanya persis sesuai struktur aslinya.
+>      - **DILARANG MENDUPLIKASI KODE JIKA SUDAH ADA SCREENSHOT**: Jangan membuat box kode teks terpisah jika *screenshot* konsol Scilab sudah ditampilkan. Cukup tampilkan *screenshot* asli dan penjelasannya ("kan udah ada screenshot-an").
+>      - **DILARANG** hanya meringkas atau mengosongkan BAB III! LKM adalah monograf utuh yang mengintegrasikan seluruh percobaan LHP.
+>    - **KONTEN BAB IV TUGAS PRAKTIKUM**:
+>      - Berisi penyelesaian mendalam untuk seluruh soal di bagian **'TUGAS PRAKTIKUM'** pada halaman akhir modul (misal perkalian matriks dan determinan), lengkap dengan perhitungan aljabar linier analitis manual langkah demi langkah, sintaks Scilab, dan *console output* literal.
+>    - **ATURAN TATA LETAK & ANTI-JUSTIFY RUSAK (ANTI-STRETCHED JUSTIFICATION)**:
+>      - **DILARANG MENYISIPKAN NEWLINE ('\n') DALAM PARAGRAF JUSTIFIED**: Di Microsoft Word, *line break* (`<w:br/>`) pada paragraf *justified* akan memicu perentangan spasi kata secara paksa (*forced justified stretch*), menyebabkan spasi antar-kata meregang sangat lebar dan tampak rusak. Setiap baris baru harus berupa objek paragraf terpisah (`<w:p>`).
+>      - Deskripsi soal, persamaan matematika, matriks numerik, daftar butir sub-list, dan blok kode program **WAJIB RATA KIRI (`align=LEFT`)**, DILARANG KERAS di-justify!
+>    - **DILARANG ELEMEN VISUAL GIMMICK (GARIS BIRU / WEB CALLOUT)**:
+>      - Dilarang keras menggunakan border tabel berwarna biru (`#0969DA`), aksen garis tepi warna-warni, atau gaya *callout* web pada naskah ilmiah, LKM, atau LHP. Dokumen akademik formal wajib menggunakan format teks hitam standar tanpa kotak berwarna aneh.
 
 ### 9.6 Varian "LHP Singkat" Umum (Tugas Praktikum Tanpa BAB)
 Beberapa praktikum menghendaki format "LHP Singkat" (hanya *Cover Page* lalu langsung isi penugasan tanpa BAB dan tanpa TOC). Jika pengguna meminta format ini ("halaman judul langsung tugas", "tidak pakai bab"):

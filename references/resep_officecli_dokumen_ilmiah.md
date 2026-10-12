@@ -724,6 +724,58 @@ Blueprint struktur naskah Laporan Kerja Praktik / Magang Industri (Heading Organ
 ]
 ```
 
+---
+
+## 14. RESEP 13: PROTOKOL ANTI-BURIK DOKUMEN WORD (HIGH FIDELITY INJECTION & 300 DPI CITRA)
+
+Resep Python untuk mengunci dokumen Word agar tidak pernah melakukan kompresi/downsampling gambar otomatis saat disimpan atau diekspor ke PDF:
+
+```python
+import zipfile
+import re
+from pathlib import Path
+from PIL import Image
+
+def inject_anti_burik_settings(docx_path: str):
+    """
+    Menginjeksi flag High Fidelity ke word/settings.xml dalam file .docx.
+    Menghentikan kompresi dan downsampling gambar otomatis di Microsoft Word.
+    """
+    docx_file = Path(docx_path)
+    temp_zip = docx_file.with_suffix(".temp.zip")
+    
+    with zipfile.ZipFile(docx_file, 'r') as zin, zipfile.ZipFile(temp_zip, 'w') as zout:
+        for item in zin.infolist():
+            content = zin.read(item.filename)
+            if item.filename == 'word/settings.xml':
+                xml_text = content.decode('utf-8')
+                
+                # 1. Update/Inject defaultImageDpi val="0" (High Fidelity)
+                if 'defaultImageDpi' in xml_text:
+                    xml_text = re.sub(r'<w14:defaultImageDpi[^>]*/>', '<w14:defaultImageDpi w14:val="0"/>', xml_text)
+                else:
+                    xml_text = xml_text.replace('</w:settings>', '<w14:defaultImageDpi xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" w14:val="0"/></w:settings>')
+                
+                # 2. Inject doNotCompressPNG jika belum ada
+                if 'doNotCompressPNG' not in xml_text:
+                    xml_text = xml_text.replace('</w:settings>', '<w:doNotCompressPNG/></w:settings>')
+                
+                content = xml_text.encode('utf-8')
+            zout.writestr(item, content)
+            
+    temp_zip.replace(docx_file)
+    print(f"Sukses menginjeksi pengaturan Anti-Burik (High Fidelity) ke {docx_path}")
+
+def prepare_image_anti_burik(input_image_path: str, output_image_path: str, target_dpi: int = 300):
+    """
+    Menyiapkan citra tangkapan layar/grafik dengan format PNG lossless dan metadata 300 DPI.
+    """
+    img = Image.open(input_image_path)
+    img.save(output_image_path, format="PNG", dpi=(target_dpi, target_dpi))
+    print(f"Gambar anti-burik tersimpan di {output_image_path} ({target_dpi} DPI)")
+```
+
+
 
 
 
