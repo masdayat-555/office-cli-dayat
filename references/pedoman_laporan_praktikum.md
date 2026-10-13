@@ -17,7 +17,25 @@
 >    - **WAJIB STRUKTUR LENGKAP**: Cover LKM, Kata Pengantar, Daftar Isi (TOC native Word), BAB I Pendahuluan, BAB II Tinjauan Pustaka, BAB III Pelaksanaan Praktikum, BAB IV Tugas Praktikum, BAB V Penutup, Daftar Pustaka.
 >    - **DILARANG MERUSAK ATAU MENDOWNGRADE LKM MENJADI LHP**: Jika pengguna meminta pengerjaan, perbaikan, atau revisi pada dokumen LKM (Laporan Keseluruhan Modul), agen **DILARANG KERAS** mengubah formatnya menjadi LHP, dilarang membuang struktur bab, dan dilarang menghapus Kata Pengantar atau Daftar Isi! Revisi harus tetap mempertahankan integritas dokumen LKM utuh.
 
-Pedoman ini **wajib ditaati secara mutlak** oleh Agen AI saat menyusun, merevisi, atau memformat dokumen Laporan Praktikum. Laporan Praktikum memiliki tingkat keformalan (formality) yang kaku dan berbeda dari tugas harian biasa.
+Pedoman ini **wajib ditaati secara mutlak** oleh Agen AI saat menyusun, merevisi, atau memformat dokumen Laporan Praktikum (Laprak) untuk seluruh mata kuliah praktikum di Fakultas Teknik - Prodi Informatika Universitas Janabadra.
+
+---
+
+## 0. PRINSIP UTAMA: JIWA TEKNIK YANG JUJUR (DILARANG MEMBOHONGI DOSEN)
+
+> [!CAUTION]
+> 1. **INTEGRITAS BUKTI KODE & TERMINAL**:
+>    Jika sebuah aksi teknis dilaporkan (misal: migrasi database, model Eloquent, controller, konfigurasi routing), **ISI BERKAS KODE DAN PERINTAH TERMINALNYA WAJIB DITAMPILKAN BERDAMPINGAN**. Dilarang hanya melaporkan perintah berjalan tanpa membuktikan isi kodenya!
+> 2. **SELURUH SCREENSHOT WAJIB DIPASANG 100%**:
+>    Semua berkas tangkapan layar (*screenshot*) yang telah diambil mahasiswa di folder kerja (misal folder `SS/`) **WAJIB dipakai seluruhnya**. Tidak boleh ada gambar yang dihilangkan, disembunyikan, atau diabaikan.
+> 3. **FORMAT LANGKAH BERURUTAN BERNOMOR (ANTI-AI SLOP / ANTI-YAPPING)**:
+>    Bagian Pelaksanaan Praktikum dan Pelaksanaan Tugas **WAJIB berupa Langkah Berurutan Bernomor (1, 2, 3...)**, BUKAN bullet bercabang atau poin di dalam poin di dalam poin (gaya ocehan AI). Setiap nomor menjelaskan tindakan teknis nyata dan LANGSUNG diikuti gambar tangkapan layar di bawahnya.
+> 4. **WARNA HEADING MUTLAK HITAM PEKAT (`#000000`)**:
+>    Heading 1, Heading 2, dan Heading 3 WAJIB berwarna Hitam Pekat (`#000000`). **DILARANG KERAS** menggunakan warna biru default Word (`#4F81BD`).
+> 5. **PARAGRAF RATA KANAN-KIRI (JUSTIFY)**:
+>    Seluruh teks isi paragraf WAJIB disetel rata kanan-kiri (**Justify**), jarak spasi baris **1.15**, spasi setelah paragraf 4–6pt.
+
+---
 
 ## 1. ATURAN HALAMAN SAMPUL (COVER)
 - **Posisi Judul**: Judul utama ("LAPORAN PRAKTIKUM I", dst.) WAJIB berada di baris paling atas tanpa paragraf kosong sebelumnya.
@@ -27,23 +45,23 @@ Pedoman ini **wajib ditaati secara mutlak** oleh Agen AI saat menyusun, merevisi
 
 ## 2. ATURAN DAFTAR ISI (TOC)
 - **Haram Mengetik Manual**: Dilarang menyusun teks "Daftar Isi" secara manual dengan ketikan titik-titik dan tebakan nomor halaman.
-- **Wajib Native Word**: Harus diinjeksi menggunakan `officecli batch` dengan perintah `{"type": "toc"}`.
-- **Siklus Wajib**: Modifikasi TOC via `officecli` harus mengikuti siklus: `batch` -> **`save`** -> `refresh` -> `close`. Tanpa `save`, Daftar Isi akan lenyap/rusak saat direfresh.
+- **Wajib Native Word**: Harus menggunakan Building Block `<w:sdt>` Automatic Table 1 bawaan Microsoft Word yang interaktif.
+- **Sinkronisasi Halaman via Word COM**: Setelah penyusunan via `officecli` selesai dan ditutup (`officecli close`), jalankan pembaruan TOC via COM engine Word (`doc.TablesOfContents(1).Update()`) agar seluruh halaman tersinkronisasi presisi bebas pop-up warning.
 
 ## 3. ATURAN STRUKTUR BAB & PAGE BREAK
-- **Pemisahan Halaman**: Setiap pergantian BAB (misal dari BAB I ke BAB II) **WAJIB** berada di halaman baru.
-- **Metode Break**: Gunakan perintah *Page Break* (`Ctrl+Enter` atau `WD_BREAK.PAGE` langsung di `runs[-1]`) atau pastikan heading BAB diset dengan properti *Page break before*. Jangan biarkan BAB menyangkut di tengah atau akhir halaman sebelumnya.
+- **Pemisahan Halaman**: Setiap pergantian BAB (misal dari BAB I ke BAB II) **WAJIB** berada di halaman baru (`pageBreakBefore: true`).
+- **Metode Break**: Jangan biarkan BAB menyangkut di tengah atau akhir halaman sebelumnya.
 
 ## 4. ATURAN SUMBER KONTEN (ANTI-YAPPING)
-- **Dasar Teori Mengikat**: Jangan menggunakan narasi *AI slop* (penjelasan generik AI). Dasar Teori **mutlak harus diekstrak dan diparafrase langsung dari modul/dokumen referensi resmi** (misalnya PDF modul dari dosen).
-- **Visualisasi Gambar**: Jika ada gambar tugas, cukup letakkan gambar dan berikan *caption* miring di bawahnya. Jangan buat tabel narasi panjang berulang jika instruksi tidak meminta.
+- **Dasar Teori Mengikat**: Jangan menggunakan narasi *AI slop*. Dasar Teori **mutlak harus diekstrak dan diparafrase langsung dari modul/dokumen referensi resmi** dosen.
+- **Visualisasi Gambar**: Letakkan gambar di tengah (*Center*) dengan spasi proporsional (lebar 11.5cm s.d. 14.0cm).
 
 ## 5. PENDEKATAN TEKNIS GENERASI
 Alih-alih menyusun dari nol menggunakan `python-docx` yang rawan cacat margin, **AGEN SANGAT DISARANKAN** untuk menyalin dari Master Template:
 - Untuk LHP Singkat / Tugas Per Modul: `templates/template_lhp_singkat.docx`
-- Untuk Laporan Praktikum Umum: `templates/template_laporan_praktikum.docx`
+- Untuk Laporan Praktikum Umum: `templates/template_laporan_praktikum.docx` (Template Resmi Janabadra Berbasis Modul 7)
 - Untuk LKM (Laporan Keseluruhan Modul) Metode Numerik: `templates/template_lkm_metode_numerik.docx`
-lalu memutasinya menggunakan `officecli batch` (mengganti judul modul, menyisipkan paragraf teks, memasukkan gambar) untuk menjaga integritas format margin dan properti *Page Break*.
+lalu memutasinya menggunakan `officecli batch` dan menyelaraskan warna Heading 3 ke hitam murni (`000000`).
 
 ---
 

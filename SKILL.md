@@ -41,7 +41,7 @@ office-cli/
 │   ├── template_jurnal_sinta.docx           # Master template OJS SINTA (A4, 1-inch, Page 1 Fit, APA Table)
 │   ├── template_laporan_tugas_akhir.docx    # Master template Skripsi / TA (A4, 4-3-3-3 cm, 5 Bab)
 │   ├── template_laporan_kerja_praktik.docx  # Master template Laporan KP / Magang Industri
-│   ├── template_laporan_praktikum.docx      # Master template Laporan Praktikum (Cover luwes, native TOC)
+│   ├── template_laporan_praktikum.docx      # Master template Laporan Praktikum (Cover resmi Janabadra, Heading hitam, native SDT TOC)
 │   ├── template_lhp_singkat.docx            # Master template Laporan Praktikum Singkat (Hanya Cover, Tanpa Bab/TOC)
 │   └── template_lkm_metode_numerik.docx     # Master template Laporan Keseluruhan Modul (Monograf 5 Bab, TOC native)
 └── references/
