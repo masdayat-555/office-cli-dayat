@@ -1,157 +1,118 @@
-# PEDOMAN PENULISAN LKM (LAPORAN KESELURUHAN MODUL) METODE NUMERIK
+# PEDOMAN PENULISAN LKM (LEMBAR / LAPORAN KEGIATAN MAHASISWA) METODE NUMERIK
 
 > [!IMPORTANT]
-> **KEDUDUKAN HUKUM DOKUMEN: MONOGRAF LENGKAP AKHIR SEMESTER**  
-> LKM (Laporan Keseluruhan Modul) adalah laporan monograf ilmiah komprehensif yang merangkum seluruh pelaksanaan praktikum Metode Numerik (Fakultas Teknik - Program Studi Informatika, Universitas Janabadra).  
-> Dokumen ini **berbeda mutlak** dengan LHP (Laporan Hasil Praktikum yang berformat singkat per modul).
+> **KEDUDUKAN HUKUM DOKUMEN: LAPORAN RESMI PRAKTIKUM METODE NUMERIK**  
+> LKM (Lembar / Laporan Kegiatan Mahasiswa) adalah format laporan resmi praktikum Metode Numerik di Program Studi Informatika, Fakultas Teknik, Universitas Janabadra (Dosen Pembina: Ibu Yumarlin MZ, M.Kom.).  
+> Dokumen ini **bukan laporan praktikum umum** dan disusun per modul (LKM 1, LKM 2, LKM 3, dst.) yang mengintegrasikan seluruh percobaan laboratorium, pembuktian kode, tangkapan layar, komentar sub-program, serta penyelesaian tugas modul.
 
 ---
 
-## 1. ATURAN INTEGRITAS DOKUMEN (ANTI-DOWNGRADE)
+## 1. DOKTRIN UTAMA & KEJUJURAN AKADEMIK
 
-> [!CAUTION]
-> **DILARANG KERAS MENGUBAH / MERUSAK LKM MENJADI LHP!**  
-> Jika pengguna meminta pembuatan, penyusunan, atau revisi pada dokumen LKM:
-> 1. **Dilarang membuang struktur bab**: Dokumen LKM **WAJIB** memiliki 5 BAB lengkap (BAB I s.d. BAB V), Kata Pengantar, Daftar Isi, dan Daftar Pustaka.
-> 2. **Revisi Parsial yang Presisi**: Jika pengguna meminta perbaikan pada bagian tertentu (contoh: *"perbaiki bagian tugas"*), agen **HANYA** memodifikasi bagian tersebut (BAB IV) tanpa menghapus Kata Pengantar, Daftar Isi, atau bab-bab lainnya.
-> 3. **Master Template Wajib**: Seluruh generasi dokumen LKM wajib berbasis `templates/template_lkm_metode_numerik.docx`.
+1. **SELURUH SCREENSHOT MAHASISWA WAJIB DIPASANG 100%**:
+   - Semua tangkapan layar (*screenshot*) SciNotes, Scilab Console, maupun Scilab Graphic Window hasil pengerjaan mahasiswa **WAJIB terpasang seluruhnya**.
+   - Posisi gambar wajib di tengah (*Center*), proporsional (lebar `11.5cm` s.d. `13.5cm`).
+2. **KOMENTAR DAN PENJELASAN SUB-PROGRAM WAJIB LENGKAP**:
+   - Dosen mewajibkan adanya ulasan sub-program, fungsi logika, variabel, rumus, dan percabangan/perulangan di bawah setiap nomor praktikum dan tugas.
+   - **DILARANG KERAS MENGHAPUS ATAU MEMANGKAS KOMENTAR SUB-PROGRAM**.
+3. **ANTI-AI SLOP / ANTI-YAPPING**:
+   - Dilarang keras menggunakan gaya bahasa generik AI yang bertele-tele. Gunakan bahasa teknik yang lugas, presisi, faktual, dan mencerminkan pengerjaan langsung di software Scilab.
 
 ---
 
-## 2. STRUKTUR BAKU DOKUMEN LKM (5 BAB LENGKAP)
+## 2. STRUKTUR BAKU DOKUMEN LKM (4 BAB RESMI)
 
-Setiap berkas LKM wajib mematuhi susunan hierarki halaman berikut secara berurutan:
+Setiap berkas LKM mematuhi hierarki 4 Bab resmi berikut (setiap BAB baru **WAJIB Page Break Before**):
 
 ```text
-HALAMAN JUDUL (COVER LKM)
-├── KATA PENGANTAR
-├── DAFTAR ISI (Native Word Automatic Table 1)
-├── BAB I PENDAHULUAN
-│   ├── 1.1 Latar Belakang
-│   └── 1.2 Tujuan Praktikum
-├── BAB II TINJAUAN PUSTAKA
-│   ├── 2.1 Konsep Dasar Array dan Matriks
-│   ├── 2.2 Pengalamatan dan Operasi Element-Wise
-│   ├── 2.3 Sistem Persamaan Linier dan Determinan
-│   └── 2.4 Visualisasi Grafik Dua Dimensi
-├── BAB III PELAKSANAAN PRAKTIKUM
-│   └── (Copas utuh dari pengerjaan LHP: screenshot lab, kode, grafik, dan analisis)
-├── BAB IV TUGAS PRAKTIKUM
-│   ├── 4.1 Tugas 1 (Pola Mahasiswa: Soal -> Kode & Output Konsol -> Komentar)
-│   └── 4.2 Tugas 2 (Pola Mahasiswa: Soal -> Kode & Output Konsol -> Komentar)
-├── BAB V PENUTUP
-│   ├── 5.1 Kesimpulan
-│   └── 5.2 Saran
-└── DAFTAR PUSTAKA
+HALAMAN JUDUL (COVER RESMI JANABADRA)
+DAFTAR ISI (Native Word Automatic Table 1 <w:sdt> - Halaman Tersendiri)
+BAB I PENDAHULUAN
+  1.1 Latar Belakang (Justified, ringkas, kontekstual materi modul)
+  1.2 Tujuan Praktikum (Poin-poin capaian pembelajaran modul)
+  1.3 Dasar Teori (Persamaan analitis, fungsi polinomial/biseksi, teorema Bolzano, dsb)
+BAB II KEGIATAN PRAKTIKUM
+  2.1 Alat dan Bahan
+      2.1.1 Perangkat Keras (Laptop Advan Ai Gen Ryzen 7 8845HS, RAM 16GB, SSD 512GB)
+      2.1.2 Perangkat Lunak (OS Windows 11, Scilab 2024 / SciNotes, Word 2021)
+  2.2 Pelaksanaan Praktikum (Langkah 1..n + 100% Screenshot di tengah + Komentar Sub-Program Wajib)
+BAB III PELAKSANAAN TUGAS
+  3.1 Tugas 1: [Judul Tugas 1] (Penyelesaian analitis manual + eksekusi Scilab + Komentar)
+  3.2 Tugas 2: [Judul Tugas 2] (Langkah SciNotes + Screenshot kode bagian 1..n + Komentar + Analisis Komparatif)
+BAB IV PENUTUP
+  4.1 Kesimpulan (Rangkuman kuantitatif hasil praktikum & konvergensi nilai akar)
+  4.2 Saran (Rekomendasi teknis pemrograman Scilab)
+DAFTAR PUSTAKA (Standar sitasi ilmiah IEEE / APA)
 ```
 
 ---
 
-## 3. ATURAN KHUSUS TIAP BAGIAN
+## 3. ATURAN MUTLAK PERLINDUNGAN RUMUS MATEMATIKA & TIPOGRAFI
 
-### 3.1 Halaman Sampul (Cover LKM)
-- **Judul Utama**: `LAPORAN KESELURUHAN MODUL METODE NUMERIK` (Huruf kapital, Arial 14pt, tebal, rata tengah).
-- **Logo Kampus**: Logo resmi Universitas Janabadra diletakkan di tengah dengan lebar proporsional (~5.5 cm).
-- **Blok Identitas Penyusun**: Rata tengah:
+> [!CAUTION]
+> ### 🚨 PERLINDUNGAN RUMUS: ANTI-STRETCHING & ANTI RATA TENGAH RENTAN
+> 1. **DILARANG MENYISIPKAN NEWLINE ('\n') DALAM PARAGRAF JUSTIFIED**:
+>    - Di Microsoft Word, menyisipkan `\n` (soft line break / Shift+Enter) di dalam *run* teks *justify* akan memicu peregangan spasi kata secara paksa (*forced justified stretch*). Hal ini merusak tampilan rumus dan menghasilkan spasi raksasa antar-simbol (seperti `D   =   b^2   -   4ac`).
+> 2. **RUMUS WAJIB MENJADI PARAGRAF MANDIRI PERATAAN KIRI (LEFT) DENGAN INDENTASI**:
+>    - Setiap baris rumus analitis, persamaan matematika, matriks, atau kalkulasi numerik ($D = b^2 - 4ac$, $x_{1,2} = \dots$) **WAJIB** dibuat sebagai objek paragraf tersendiri (`<w:p>`) dengan `alignment = WD_ALIGN_PARAGRAPH.LEFT` dan diberi indentasi kiri (`left_indent = Inches(0.4)` atau `1cm`).
+>    - **JANGAN MENGANDALKAN RATA TENGAH (CENTER) UNTUK RUMUS BERTAHAP**: Perataan tengah sangat rapuh dan rentan rusak/patah saat enter tidak sengaja tertekan atau margin bergeser. Perataan kiri berindentasi memberikan proteksi $100\%$ stabil dan rapi layaknya buku teks matematika.
+> 3. **PEMBERSIHAN SOFT ENTER PADA PARAGRAF NARASI**:
+>    - Teks narasi paragraf isi wajib rata kanan-kiri (*justify*), namun **WAJIB** dibersihkan dari `\n` menggunakan:
+>      ```python
+>      clean_text = " ".join([line.strip() for line in text.split('\n') if line.strip()])
+>      ```
+>    - Setiap butir langkah, nomor urut, label judul, dan baris rumus harus berupa objek paragraf Word independen (`doc.add_paragraph()`).
+
+---
+
+## 4. STANDAR HEADING & DAFTAR ISI OTOMATIS
+
+1. **Warna Heading Wajib Hitam Pekat (`#000000`)**:
+   - `Heading 1` : Warna `#000000`, Tebal, Center (untuk Judul BAB).
+   - `Heading 2` : Warna `#000000`, Tebal, Left (untuk Sub-bab `1.1`, `2.1`, `3.1`, `4.1`).
+   - `Heading 3` : Warna `#000000`, Tebal, Left (untuk Sub-sub bab `2.1.1`).
+   - **HARAM** menggunakan heading berwarna biru default Word.
+2. **Pembersihan `w:numPr` pada Heading 2 & 3 Template**:
+   - Hapus tag `w:numPr` dari XML gaya Heading 2 dan Heading 3 bawaan template agar tidak terjadi penomoran dobel/tabrakan (seperti `1.4 1.1 Latar Belakang`):
+     ```python
+     for sname in ['Heading 2', 'Heading 3']:
+         st = doc.styles[sname]
+         for np in st._element.xpath('.//w:numPr'):
+             np.getparent().remove(np)
+     ```
+3. **Daftar Isi Otomatis Native Word (`<w:sdt>`)**:
+   - Wajib menggunakan kontainer Structured Document Tag (`<w:sdt>`) bawaan template (*Automatic Table 1*).
+   - Dilarang membuat Daftar Isi teks statis dengan titik-titik tab manual.
+   - Perbarui nomor halaman riil via Word COM di belakang layar tanpa memicu dialog pop-up `Normal.dotm`.
+
+---
+
+## 5. FORMAT SPESIFIKASI HALAMAN SAMPUL (COVER RESMI)
+
+- **Judul Atas (Center, Bold 14pt)**:
+  - `LAPORAN PRAKTIKUM [NOMOR MODUL]`
+  - `METODE NUMERIK`
+  - `[JUDUL MODUL PRAKTIKUM SESUAI MATERI]`
+- **Logo Kampus**: Logo resmi Universitas Janabadra di tengah (lebar proporsional ~5.5 cm).
+- **Blok Identitas Penyusun (Center, 12pt)**:
   - `Disusun Oleh :`
-  - `Nama: Salim Hidayat`
-  - `NIM: 24330030`
-- **Blok Institusi Bawah**: Rata tengah di batas bawah halaman (flush to bottom):
-  - `PROGRAM STUDI INFORMATIKA`
+  - `Salim Hidayat`
+  - `24330030`
+- **Blok Institusi Bawah (Center, Bold 12pt, menempel ke margin bawah)**:
   - `FAKULTAS TEKNIK`
+  - `PROGRAM STUDI INFORMATIKA`
   - `UNIVERSITAS JANABADRA`
   - `YOGYAKARTA`
   - `2026`
 
-### 3.2 Kata Pengantar
-- Paragraf isi menggunakan *First-Line Indent* 1 cm dan rata kiri-kanan (*justify*).
-- Dilarang menyisipkan karakter *newline* (`\n`) manual di dalam run teks agar spasi justify tidak renggang/rusak.
-- Blok tanda tangan penyusun (Yogyakarta, 2026 & Salim Hidayat) berada di kanan bawah.
-
-### 3.3 Daftar Isi (Wajib Native Word Automatic Table 1)
-- **Haram Mengetik Manual**: Dilarang mengetik titik-titik tab statis (`... 4`).
-- **Wajib Building Block Word**: Dibungkus dalam Structured Document Tag (`<w:sdt>`) bawaan Word (Automatic Table 1). Saat diklik di Word, muncul tab interaktif resmi Word: `[ Table of Contents v | Update Table... ]`.
-- **Dilarang Tag XML updateFields**: Dilarang menyisipkan `<w:updateFields w:val="true"/>` karena memicu pop-up peringatan keamanan Word saat berkas dibuka mahasiswa.
-- **Wajib Refresh Nomor Halaman Riil**: Jalankan `officecli refresh <nama_file.docx>` untuk menghitung dan mencetak nomor halaman riil secara otomatis ke dalam XML TOC sebelum diserahkan ke mahasiswa.
-
-### 3.4 BAB III Pelaksanaan Praktikum (Preservasi Penuh dari LHP)
-- Bab ini berisi seluruh modul praktikum yang telah dikerjakan di lab.
-- **Wajib Copas Persis**: Seluruh tangkapan layar (*screenshot*) konsol laboratorium, cuplikan kode Scilab, kurva grafik visual, serta analisis dan komentarnya disalin apa adanya persis sesuai struktur aslinya dari LHP.
-- **Dilarang Menduplikasi Kode**: Jika *screenshot* konsol Scilab sudah ditampilkan, jangan membuat box teks kode tambahan yang mengulang isi screenshot.
-
 ---
 
-## 4. STANDAR EMAS BAB IV TUGAS PRAKTIKUM (POLA LOGIS MAHASISWA)
+## 6. PROTOKOL PENAMAAN FILE & KEBIJAKAN ZERO PDF
 
-> [!IMPORTANT]
-> **POLA MAHASISWA: SOAL -> KODE & OUTPUT KONSOL LANGSUNG -> KOMENTAR DI BAWAHNYA**  
-> Mahasiswa mengerjakan soal komputasi secara *to the point*, logis, dan terstruktur. Dilarang berfilsafat atau menulis esai teoritis panjang lebar di awal soal!
-
-### 4.1 Alur Wajib Tiap Nomor Tugas
-Setiap butir tugas praktikum di BAB IV wajib disusun dengan urutan mutlak berikut:
-
-1. **Penyajian Soal & Matriks/Persoalan**:
-   - Tuliskan instruksi soal secara lugas.
-   - Sajikan matriks atau formula numerik menggunakan **Persamaan Matematika 2D Native Word (OMML XML)**:
-     - Matriks menggunakan kurung siku 2D (`[...]`).
-     - Determinan menggunakan garis tegak vertikal 2D (`|...|`).
-     - Dilarang menuliskan matriks sebagai teks datar satu baris (`[3 5 2 10; ...]`).
-
-2. **Sintaks Perintah & Output Konsol Scilab Langsung di Satu Box**:
-   - Jawab langsung pertanyaan menggunakan **satu blok konsol Scilab literal**.
-   - Format blok konsol menggabungkan baris perintah (`--> perintah`) dan hasil kalkulasi Scilab di bawahnya, persis seperti rekaman nyata pada Scilab Command Window:
-     ```text
-     --> A = [3 5 2 10; 2 1 6 9; 4 2 1 12; 9 3 2 4];
-
-     --> B = [3; 5; 3; 9];
-
-     --> C = A * B
-      C  = 
-
-        130.
-        110.
-        133.
-        84.
-     ```
-
-3. **Komentar dan Penjelasan di Bawahnya**:
-   - Tempatkan uraian analitis dan matematis tepat **di bawah** kotak kode/output:
-     - **Verifikasi Perhitungan Manual**: Uraikan perkalian aljabar linier baris demi baris secara rinci (misal: *Baris 1: (3×3) + (5×5) + ... = 130*).
-     - **Analisis Operator**: Jelaskan perbedaan operator yang digunakan (misal: operator `*` untuk aljabar matriks murni vs operator `.*` untuk operasi *element-wise*).
-     - **Karakteristik Matematis**: Jelaskan sifat matriks dari hasil yang didapat (misal: nilai determinan $\det(J) = -27 \neq 0$ membuktikan bahwa matriks bersifat **nonsingular**, memiliki balikan $J^{-1}$, dan sistem persamaan linier $J \cdot x = b$ dijamin memiliki solusi unik dan tunggal).
-
-### 4.2 Larangan Keras pada BAB IV
-- **Dilarang Yapping di Awal**: Dilarang menulis narasi panjang, ulasan teori, atau penjelasan sebelum kode dan output disajikan.
-- **Dilarang Subbab 4.3 Pembahasan Terpisah**: Dilarang memecah alur pengerjaan dengan membuat subbab terpisah seperti *"4.3 Pembahasan dan Analisis Komputasi Numerik"*. Seluruh analisis, evaluasi, dan pembahasan wajib melekat langsung di bawah masing-masing nomor tugas (subbab 4.1 dan 4.2).
-- **Dilarang Gimmick Visual Garis Biru / Web Callout**: Seluruh naskah ilmiah formal dilarang menggunakan tabel callout berbingkai biru (`#0969DA`) atau aksen warna-warni. Gunakan format paragraf berindentasi rapi dan kotak kode abu-abu standar.
-
----
-
-## 5. FORMAT TIPOGRAFI, PARAGRAF, DAN MARGIN
-
-- **Ukuran Kertas**: A4 (21,0 cm $\times$ 29,7 cm).
-- **Batas Margin**:
-  - Kiri (*Left*): 4,0 cm
-  - Atas (*Top*): 3,0 cm
-  - Kanan (*Right*): 3,0 cm
-  - Bawah (*Bottom*): 3,0 cm
-- **Tipografi**:
-  - Judul Bab & Subbab: Font Arial, tebal (*bold*).
-  - Teks Isi: Font Calibri, ukuran 11 pt.
-  - Spasi Antar Baris: 1.15 line spacing, spasi setelah paragraf (*space after*) 0 pt atau 4 pt.
-  - Perataan Persamaan & Hitungan: **Rata Kiri (`align=LEFT`)**, dilarang di-justify agar tidak terjadi peregangan spasi rusak (*stretched justify*).
-- **Page Break**: Setiap BAB baru (BAB I, BAB II, BAB III, BAB IV, BAB V) **WAJIB** dimulai pada halaman baru (*Page break before*).
-
----
-
-## 6. PROTOKOL EKSPOR & KEBIJAKAN ZERO PDF
-
-1. **Format Utama Adalah DOCX Mentah**:
-   - Berkas wajib diserahkan dalam format `.docx` berbasis template `template_lkm_metode_numerik.docx`.
-   - Nama Berkas: `[NIM]_[Nama Lengkap]_LKM[Nomor Modul].docx` (contoh: `24330030_Salim Hidayat_LKM2.docx`).
-2. **Kebijakan Zero PDF (Kecuali Diminta Eksplisit)**:
-   - Agen **DILARANG OTOMATIS** mengonversi atau menghasilkan file PDF.
-   - File PDF hanya diproduksi jika pengguna secara tegas memerintahkan: *"buatkan pdf"*, *"export ke pdf"*, dsb.
+1. **Format Penamaan File**:
+   - Format wajib: `[NIM]_[Nama Lengkap]_LKM[Nomor Modul].docx` (Contoh: `24330030_Salim Hidayat_LKM3.docx`).
+2. **Format Utama Adalah DOCX**:
+   - Berkas diserahkan dalam bentuk DOCX native yang dapat diedit langsung oleh mahasiswa.
+   - **DILARANG OTOMATIS** mengonversi atau menghasilkan berkas PDF kecuali diminta secara eksplisit oleh mahasiswa.
 3. **Preservasi Resolusi Citra (High Fidelity Minimal 300 DPI)**:
-   - Setiap tangkapan layar praktikum wajib disimpan dalam format PNG lossless dengan resolusi minimal 300 DPI.
-   - Jangan melakukan downsampling atau kompresi agresif pada gambar lab.
+   - Tangkapan layar disimpan dalam format PNG lossless tanpa kompresi agresif.

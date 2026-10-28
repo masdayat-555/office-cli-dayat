@@ -447,50 +447,70 @@ Berbeda dengan tugas bebas, Laporan Praktikum **WAJIB** dipisahkan per BAB:
 - **Haram** mengetik Daftar Isi secara manual atau memanipulasi *tab leader* di Python.
 - Harus murni di-render menggunakan mesin Field Codes dari Word melalui `officecli`. Selalu selesaikan seluruh modifikasi DOM terlebih dahulu, akhiri dengan perintah JSON `toc`, dan mutlak di-*save* sebelum di-*refresh*.
 
-### 9.5 ATURAN KHUSUS PRAKTIKUM METODE NUMERIK: LHP (DULUAN) VS LKM (BELAKANGAN)
+### 9.5 ATURAN KHUSUS PRAKTIKUM METODE NUMERIK: LHP VS LKM (LEMBAR / LAPORAN KEGIATAN MAHASISWA)
 
 > [!CAUTION]
 > **ATURAN MUTLAK METODE NUMERIK (UNIVERSITAS JANABADRA - DOSEN IBU YUMARLIN MZ):**
-> 1. **LHP (Laporan Hasil Praktikum) → DIKERJAKAN DULUAN (PER MODUL RUTIN):**
+> 1. **LHP (Laporan Hasil Praktikum) → FORMAT TUGAS SINGKAT PER MODUL:**
 >    - **Master Template Wajib**: `templates/template_lhp_singkat.docx`.
 >    - **DILARANG MENGGUNAKAN BAB** (Tanpa BAB I, Tanpa BAB II, dst.).
 >    - **DILARANG MENGGUNAKAN KATA PENGANTAR & DAFTAR ISI (TOC)**.
->    - **DILARANG MENJALANKAN SCILAB CLI SECARA OTOMATIS**: Scilab adalah praktikum langsung m>      - **HANYA KERJAKAN SOAL-SOAL BAGIAN 'PRAKTEK' (BUKAN SEMUANYA)!**
->      - Percobaan/langkah praktikum dasar di lab (misal: pembentukan array, pengalamatan, operasi matematika, matriks/SPL, grafik umum) adalah praktikum mandiri milik mahasiswa di lab, **JANGAN dimasukkan ke LHP oleh AI**.
->      - Bagian yang bertuliskan **'Praktek :'** (misal: Praktek 1, Praktek 2) **ITULAH YANG DIANGGAP SEBAGAI TUGAS LHP**! Kerjakan soal-soal Praktek ini secara tuntas (sintaks Scilab, console output literal, penjelasan, dan gambar grafik jika ada).
->    - **DILARANG MEMASUKKAN 'TUGAS PRAKTIKUM' (Halaman Akhir Modul)!**
->      - Soal bertuliskan 'Tugas Praktikum' di akhir modul (misal perkalian matriks & determinan matriks) **BELUM TERMASUK** di LHP! Tugas tersebut disimpan untuk LKM nanti. Masuknya ke LKM hanya setelah selesai dikerjakan oleh mahasiswa dan diminta oleh mahasiswa!
->    - **DILARANG MENDUPLIKASI KODE JIKA SUDAH ADA SCREENSHOT**:
->      - Jika sudah terdapat tangkapan layar (*screenshot*) konsol atau grafik Scilab dari praktikum, **DILARANG** membuat box teks / tabel kode yang mengulang isi *screenshot*! Cukup sajikan *screenshot* asli diikuti narasi penjelasan dan analisisnya.
 >    - **Struktur Dokumen LHP**:
 >      - Cover Page resmi Universitas Janabadra (Salim Hidayat / 24330030 / Informatika / 2026).
 >      - Page Break → Langsung Judul **`TUGAS LHP`** (Centered, Bold 14pt).
 >      - Soal-soal Praktek (Praktek 1, Praktek 2, dst.).
->    - **Konvensi Nama File**: Format wajib adalah `[NIM]_[Nama Lengkap]_LHP[Nomor Modul].docx` (Contoh: `24330030_Salim Hidayat_LHP2.docx`). Berkas diserahkan dalam format DOCX. DILARANG membuat file PDF otomatis kecuali diminta secara eksplisit oleh mahasiswa.
+>    - **Konvensi Nama File**: `[NIM]_[Nama Lengkap]_LHP[Nomor Modul].docx` (Contoh: `24330030_Salim Hidayat_LHP2.docx`).
 > 
-> 2. **LKM (Laporan Keseluruhan Modul) → DIKERJAKAN BELAKANGAN (SETELAH SEMUA TUGAS SELESAI):**
->    - **Master Template Wajib**: `templates/template_lkm_metode_numerik.docx`.
->    - **Waktu Pengerjaan**: Baru dibuat belakangan setelah seluruh tugas praktikum selesai dikerjakan dan mahasiswa meminta penyusunan LKM.
->    - **Struktur Lengkap**: Cover LKM → Kata Pengantar → Native TOC Word → BAB I Pendahuluan → BAB II Tinjauan Pustaka → BAB III Pelaksanaan Praktikum → BAB IV Tugas Praktikum → BAB V Penutup → Daftar Pustaka.
->    - **DAFTAR ISI (WAJIB DAFTAR ISI OTOMATIS ASLI WORD / NATIVE TOC FIELD CODE)**:
->      - **DILARANG KERAS** membuat Daftar Isi manual (ketikan teks tab statis `title \t page`).
->      - Wajib menggunakan field code native Word: `TOC \o "1-3" \h \z \u` yang dibungkus `<w:fldChar>` (`begin`, `separate`, `end`) dengan entri ber-tab stop dots leader di 9350 twips (~16.5 cm).
->      - **DILARANG MENYUNTIKKAN `<w:updateFields w:val="true"/>`**: Tag XML ini memicu pop-up dialog peringatan Word yang mengganggu: *"This document contains fields that may refer to other files. Do you want to update the fields in this document?"*.
->      - **WAJIB MENJALANKAN `officecli refresh <path_file.docx>`**: Selalu jalankan `officecli refresh` setelah selesai menyusun naskah. Perintah ini mengaktifkan engine Word di latar belakang untuk menghitung nomor halaman riil secara otomatis dan menyimpan hasilnya ke TOC. Saat pengguna membuka dokumen di Word, Daftar Isi langsung terisi nomor halaman nyata secara instan **TANPA POP-UP PERINGATAN SAMA SEKALI**.
->      - Setiap judul bab (`Heading 1`) dan sub-bab (`Heading 2` / `Heading 3`) harus ditautkan dengan bookmark (`_Toc...`) atau style heading Word standar agar fitur "Update Field" (Perbarui Bidang) bekerja sempurna.
->    - **KONTEN BAB III PELAKSANAAN PRAKTIKUM (WAJIB COPAS UTUH DARI LHP, DILARANG BIKIN FORMAT BARU)**:
->      - BAB III Pelaksanaan Praktikum pada LKM **MUTLAK MENGAMBIL SELURUH PENYELESAIAN DARI TUGAS LHP** (Praktek 1 s.d. selesai) secara utuh (**COPAS PERSIS** dari naskah LHP yang telah diselesaikan mahasiswa).
->      - **DILARANG KERAS MEMBUAT FORMAT BARU**: Dilarang merangkum ulang, dilarang mendesain ulang urutan, dilarang membuat heading baru yang berbeda dari LHP, dan dilarang membuat format acak-acakan baru yang merusak kerapian dokumen!
->      - Seluruh tangkapan layar (*screenshot*) konsol laboratorium, cuplikan kode Scilab, kurva grafik visual, serta analisis dan komentarnya dari LHP disalin apa adanya persis sesuai struktur aslinya.
->      - **DILARANG MENDUPLIKASI KODE JIKA SUDAH ADA SCREENSHOT**: Jangan membuat box kode teks terpisah jika *screenshot* konsol Scilab sudah ditampilkan. Cukup tampilkan *screenshot* asli dan penjelasannya ("kan udah ada screenshot-an").
->      - **DILARANG** hanya meringkas atau mengosongkan BAB III! LKM adalah monograf utuh yang mengintegrasikan seluruh percobaan LHP.
->    - **KONTEN BAB IV TUGAS PRAKTIKUM**:
->      - Berisi penyelesaian mendalam untuk seluruh soal di bagian **'TUGAS PRAKTIKUM'** pada halaman akhir modul (misal perkalian matriks dan determinan), lengkap dengan perhitungan aljabar linier analitis manual langkah demi langkah, sintaks Scilab, dan *console output* literal.
->    - **ATURAN TATA LETAK & ANTI-JUSTIFY RUSAK (ANTI-STRETCHED JUSTIFICATION)**:
->      - **DILARANG MENYISIPKAN NEWLINE ('\n') DALAM PARAGRAF JUSTIFIED**: Di Microsoft Word, *line break* (`<w:br/>`) pada paragraf *justified* akan memicu perentangan spasi kata secara paksa (*forced justified stretch*), menyebabkan spasi antar-kata meregang sangat lebar dan tampak rusak. Setiap baris baru harus berupa objek paragraf terpisah (`<w:p>`).
->      - Deskripsi soal, persamaan matematika, matriks numerik, daftar butir sub-list, dan blok kode program **WAJIB RATA KIRI (`align=LEFT`)**, DILARANG KERAS di-justify!
->    - **DILARANG ELEMEN VISUAL GIMMICK (GARIS BIRU / WEB CALLOUT)**:
->      - Dilarang keras menggunakan border tabel berwarna biru (`#0969DA`), aksen garis tepi warna-warni, atau gaya *callout* web pada naskah ilmiah, LKM, atau LHP. Dokumen akademik formal wajib menggunakan format teks hitam standar tanpa kotak berwarna aneh.
+> 2. **LKM (Lembar Kegiatan Mahasiswa / Laporan Kegiatan Mahasiswa) → LAPORAN RESMI MODUL METODE NUMERIK:**
+>    - **Bukan Laporan Praktikum Umum!** LKM adalah format laporan resmi praktikum Metode Numerik Universitas Janabadra per modul (LKM 1, LKM 2, LKM 3, dst.) yang merangkum seluruh kegiatan laboratorium dan penugasan modul.
+>    - **Master Template Wajib**: `templates/template_laporan_praktikum.docx` (Cover resmi Janabadra, heading hitam, `<w:sdt>` native TOC).
+>    - **Struktur Baku Dokumen LKM (4 BAB Wajib - Setiap BAB Wajib Page Break Before)**:
+>      ```text
+>      HALAMAN SAMPUL (Cover Resmi Janabadra: LAPORAN PRAKTIKUM [X] - METODE NUMERIK - [JUDUL MODUL])
+>      DAFTAR ISI (Native Word Automatic Table 1 <w:sdt> - Halaman Tersendiri)
+>      BAB I PENDAHULUAN
+>        1.1 Latar Belakang (Justified, ringkas, kontekstual modul komputasi)
+>        1.2 Tujuan Praktikum (Poin-poin capaian modul)
+>        1.3 Dasar Teori (Rumus analitis, fungsi polinomial/biseksi, teorema Bolzano, dsb)
+>      BAB II KEGIATAN PRAKTIKUM
+>        2.1 Alat dan Bahan (Perangkat Keras Advan Ai Gen Ryzen 7, Perangkat Lunak Scilab & Windows 11)
+>        2.2 Pelaksanaan Praktikum (Langkah 1..n + 100% Screenshot mahasiswa terpasang di tengah + Komentar Sub-Program Wajib)
+>      BAB III PELAKSANAAN TUGAS
+>        3.1 Tugas 1: [Judul Tugas 1] (Penyelesaian analitis manual + eksekusi Scilab + Komentar)
+>        3.2 Tugas 2: [Judul Tugas 2] (Langkah kode SciNotes + Screenshot kode bagian 1..n + Komentar Sub-Program + Analisis Komparatif)
+>      BAB IV PENUTUP
+>        4.1 Kesimpulan (Poin keberhasilan komputasi & verifikasi data numerik)
+>        4.2 Saran (Rekomendasi teknis pemrograman Scilab)
+>      DAFTAR PUSTAKA (Standar sitasi ilmiah IEEE / APA)
+>      ```
+> 
+>    - **ATURAN MUTLAK PERLINDUNGAN RUMUS MATEMATIKA (ANTI-STRETCHING & ANTI RATA TENGAH RENTAN)**:
+>      - **DILARANG MENYISIPKAN NEWLINE ('\n') DALAM PARAGRAF JUSTIFIED**: Di Microsoft Word, menyisipkan `\n` di dalam *run* paragraf berformat *justify* akan memicu peregangan spasi paksa (*forced justified stretching*), menghasilkan spasi bolong-bolong raksasa antar-simbol (seperti `D   =   b^2   -   4ac`).
+>      - **RUMUS WAJIB MENJADI PARAGRAF MANDIRI DENGAN PERATAAN KIRI (LEFT) & INDENTASI**: Setiap baris rumus analitis, fungsi, matriks, atau kalkulasi matematika ($D = b^2 - 4ac$, $x_{1,2}$, limit, biseksi) **WAJIB** berupa objek paragraf tersendiri (`<w:p>`) dengan `alignment = WD_ALIGN_PARAGRAPH.LEFT` dan diberi `left_indent = Inches(0.4)` atau `1cm`.
+>      - **JANGAN MENGANDALKAN RATA TENGAH (CENTER) UNTUK RUMUS BERTAHAP**: Perataan tengah rentan rusak, berantakan, atau patah saat enter tertekan atau terdistorsi margin. Perataan kiri berindentasi memberikan perlindungan $100\%$ stabil dan rapi layaknya buku teks matematika.
+> 
+>    - **PEMBERSIHAN SOFT ENTER PADA TEKS NARASI NON-RUMUS**:
+>      - Paragraf isi non-rumus wajib rata kanan-kiri (*justify*), namun **WAJIB** dibersihkan dari `\n` menggunakan:
+>        `clean_text = " ".join([line.strip() for line in text.split('\n') if line.strip()])`.
+>      - Setiap butir langkah, nomor, label, dan baris rumus harus berupa objek paragraf Word independen (`doc.add_paragraph()`).
+> 
+>    - **KOMENTAR DAN PENJELASAN SUB-PROGRAM WAJIB DISAJIKAN LENGKAP**:
+>      - Dosen (Ibu Yumarlin MZ) mewajibkan ulasan sub-program / penjelasan setiap baris program pada setiap nomor praktikum dan tugas.
+>      - **DILARANG KERAS MENGHAPUS ATAU MEMANGKAS KOMENTAR SUB-PROGRAM**.
+> 
+>    - **HEADING HITAM PEKAT & PEMBERSIHAN `numPr`**:
+>      - Gaya *Heading 1*, *Heading 2*, dan *Heading 3* **WAJIB** disetel ke warna Hitam Pekat (`#000000`).
+>      - Tag XML `w:numPr` pada *Heading 2* dan *Heading 3* template **WAJIB DIHAPUS** (`for np in st._element.xpath('.//w:numPr'): np.getparent().remove(np)`) agar penomoran manual (`1.1`, `2.1`, `3.1`) tidak bertabrakan atau dobel (misal `1.4 1.1 Latar Belakang`).
+> 
+>    - **DAFTAR ISI OTOMATIS NATIVE WORD (`<w:sdt>`)**:
+>      - Wajib menggunakan kontainer `<w:sdt>` bawaan template (*Automatic Table 1*).
+>      - Hapus elemen body setelah `<w:sdt>` saat membangun ulang dokumen, lalu jalankan sinkronisasi nomor halaman via Word COM (`doc.TablesOfContents(1).Update()`) atau `officecli refresh` tanpa memicu pop-up `Normal.dotm`.
+> 
+>    - **SELURUH SCREENSHOT MAHASISWA WAJIB DIPASANG 100%**:
+>      - Seluruh tangkapan layar praktikum lab mahasiswa wajib dipasang utuh di tengah (*center*), lebar `11.5cm` s.d. `13.5cm`.
+> 
+>    - **KONVENSI PENAMAAN FILE**:
+>      - Format wajib: `[NIM]_[Nama Lengkap]_LKM[Nomor Modul].docx` (Contoh: `24330030_Salim Hidayat_LKM3.docx`). DILARANG membuat PDF otomatis kecuali diminta secara eksplisit.
 
 ### 9.6 Varian "LHP Singkat" Umum (Tugas Praktikum Tanpa BAB)
 Beberapa praktikum menghendaki format "LHP Singkat" (hanya *Cover Page* lalu langsung isi penugasan tanpa BAB dan tanpa TOC). Jika pengguna meminta format ini ("halaman judul langsung tugas", "tidak pakai bab"):
