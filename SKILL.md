@@ -43,10 +43,12 @@ office-cli/
 │   ├── template_laporan_kerja_praktik.docx  # Master template Laporan KP / Magang Industri
 │   ├── template_laporan_praktikum.docx      # Master template Laporan Praktikum (Cover resmi Janabadra, Heading hitam, native SDT TOC)
 │   ├── template_lhp_singkat.docx            # Master template Laporan Praktikum Singkat (Hanya Cover, Tanpa Bab/TOC)
-│   └── template_lkm_metode_numerik.docx     # Master template Laporan Keseluruhan Modul (Monograf 5 Bab, TOC native)
+│   ├── template_lkm_metode_numerik.docx     # Master template Laporan Keseluruhan Modul (Monograf 5 Bab, TOC native)
+│   └── Template IASSSF.docx                 # Master template Artikel Jurnal Internasional IASSSF (Cambria, Single-Column, APA 7th)
 └── references/
     ├── pedoman_jurnal_sinta.md              # Panduan lengkap penulisan jurnal SINTA 1-6 (IMRaD baku)
     ├── pedoman_jurnal_scopus.md             # Panduan jurnal internasional bereputasi Scopus Q1-Q4
+    ├── pedoman_jurnal_iasssf.md             # Panduan naskah jurnal internasional IASSSF (Cambria, APA 7th >30 refs, CRediT, Anti-Sok Tau)
     ├── pedoman_skripsi_lengkap.md           # Pedoman penulisan Skripsi / Tesis 5 Bab standar nasional
     ├── pedoman_kerja_praktik.md             # Pedoman penyusunan Laporan Kerja Praktik & Magang
     ├── pedoman_laporan_praktikum.md         # Pedoman Laporan Praktikum (struktur bab, format cover)
@@ -296,6 +298,7 @@ Jika pengguna menyertakan pedoman khusus dari institusinya (misalnya format marg
 | :--- | :--- | :--- |
 | **Pedoman Jurnal SINTA** | Panduan lengkap IMRaD baku, kaidah Page 1 Fit, byline afiliasi, dan tabel APA 3 garis. | [`references/pedoman_jurnal_sinta.md`](references/pedoman_jurnal_sinta.md) |
 | **Pedoman Jurnal Scopus** | Panduan jurnal internasional Q1–Q4, *Extended IMRaD*, *Ablation Study*, ORCID, dan *Upgrading Pathway*. | [`references/pedoman_jurnal_scopus.md`](references/pedoman_jurnal_scopus.md) |
+| **Pedoman Jurnal IASSSF** | Panduan naskah artikel jurnal internasional IASSSF: format Cambria, 1 kolom, abstrak berstruktur 1 paragraf, CRediT, etika AI, APA 7th >30 sitasi, tabel biodata, dan protokol Anti-Sok Tau. | [`references/pedoman_jurnal_iasssf.md`](references/pedoman_jurnal_iasssf.md) |
 | **Pedoman Skripsi Lengkap** | Panduan penyusunan Skripsi/Tesis 5 Bab standar nasional, preliminary pages, hingga lampiran. | [`references/pedoman_skripsi_lengkap.md`](references/pedoman_skripsi_lengkap.md) |
 | **Pedoman Kerja Praktik** | Panduan penyusunan Laporan KP/Magang Industri (profil mitra, SOP, proyek, evaluasi mutu). | [`references/pedoman_kerja_praktik.md`](references/pedoman_kerja_praktik.md) |
 | **Pedoman Laporan Praktikum** | Panduan Laporan Praktikum baku (Cover luwes, native TOC, struktur wajib). | [`references/pedoman_laporan_praktikum.md`](references/pedoman_laporan_praktikum.md) |
@@ -305,6 +308,7 @@ Jika pengguna menyertakan pedoman khusus dari institusinya (misalnya format marg
 | **Master Template Laporan KP** | Berkas Word DOCX resmi Laporan Kerja Praktik/Magang Industri struktur perusahaan lengkap. | [`templates/template_laporan_kerja_praktik.docx`](templates/template_laporan_kerja_praktik.docx) |
 | **Master Template Laporan Praktikum**| Berkas Word DOCX resmi Laporan Praktikum. Dilarang generik, cover proporsional. | [`templates/template_laporan_praktikum.docx`](templates/template_laporan_praktikum.docx) |
 | **Master Template LHP Singkat**| Berkas Word DOCX resmi Laporan Praktikum khusus untuk penugasan singkat (hanya cover, tanpa BAB, tanpa TOC). | [`templates/template_lhp_singkat.docx`](templates/template_lhp_singkat.docx) |
+| **Master Template Jurnal IASSSF** | Berkas Word DOCX resmi naskah IASSSF (A4, margin 2-2.5-3-3 cm, banner/logo resmi, footer CC-BY 4.0, format Cambria murni). | [`templates/Template IASSSF.docx`](templates/Template%20IASSSF.docx) |
 
 ---
 
@@ -738,3 +742,17 @@ Setiap tugas yang membutuhkan iterasi berulang (seperti mencoba mengunduh puluha
   - **Pola Mahasiswa Logis di BAB IV (Anti-Yapping)**: Wajib ikuti alur mahasiswa: Soal & Matriks -> Kode & Output Konsol Scilab Langsung di Satu Box -> Komentar & Penjelasan di Bawahnya. Dilarang yapping/esai bertele-tele di depan dan dilarang membuat subbab 4.3 pembahasan terpisah yang redundan.
   - **Persamaan Matriks Native 2D (OMML XML)**: Matriks dan determinan wajib dirender sebagai persamaan matematika 2D native Word (kurung siku `[]` untuk matriks, garis tegak vertikal `||` untuk determinan).
   - **Zero PDF**: Berkas diserahkan dalam format DOCX mentah; dilarang otomatis membuat PDF kecuali diminta secara eksplisit.
+- Jika tugas melibatkan **Artikel Jurnal IASSSF (Institute for Advanced Social, Science, and Sustainable Future)**, **WAJIB MUTLAK** merujuk ke pedoman spesifik di [pedoman_jurnal_iasssf.md](file:///c:/Users/masdayat/.gemini/config/skills/office-cli/references/pedoman_jurnal_iasssf.md).
+  - **Master Template Wajib**: Gunakan [`templates/Template IASSSF.docx`](file:///c:/Users/masdayat/.gemini/config/skills/office-cli/templates/Template%20IASSSF.docx) sebagai basis dokumen resmi (A4, 1 kolom penuh, margin 2.0-2.5-3.0-3.0 cm, banner/logo resmi, footer CC-BY 4.0).
+  - **Tipografi 100% Cambria**: Seluruh teks menggunakan font Cambria (Judul 16pt Bold, Penulis 11pt Bold, Afiliasi 10pt Italic, Abstrak 9pt, Heading Utama 12pt Bold, Sub-heading 11pt Italic, Isi 11pt Justified, Keterangan 10pt, Running Header/Footer 8-10pt).
+  - **Abstrak Wajib 1 Paragraf Tunggal**: Abstrak ditulis dalam satu paragraf mengalir (Cambria 9pt Justified, 200–250 kata, bebas sitasi) dengan 5 label tebal inline: **Background:**, **Methods:**, **Findings:**, **Conclusion:**, dan **Novelty/Originality of this article:**. Format kata kunci: `KEYWORDS:` (12pt Bold) `: ` (9pt Bold) `keyword 1; keyword 2; keyword 3.` (11pt Regular).
+  - **Batas Kata & Kuantitas Referensi**:
+    - *Original Research Article*: 6.000–7.000 kata (di luar referensi), jumlah referensi **> 30**.
+    - *Review Article*: 7.000–9.000 kata (di luar referensi), jumlah referensi **>= 50**.
+    - Minimal 80% sumber primer jurnal Scopus/WoS 5–10 tahun terakhir (2016–2026), format APA 7th via Mendeley, tautan DOI aktif wajib.
+  - **Dua Larangan Mutlak Sitasi (Strictly Forbidden)**:
+    1. **HARAM** menyitasi artikel yang pernah terbit di jurnal IASSSF itu sendiri (*Zero IASSSF self-citation*).
+    2. **HARAM** melakukan sitasi-diri (*author self-citation*) tanpa justifikasi ceruk topik yang mendesak.
+  - **Bagian Belakang Wajib (*Mandatory Unnumbered Back Matter*)**: Acknowledgement, Author Contribution (CRediT formal), Funding, Ethical Review Board Statement, Informed Consent Statement, Data Availability Statement, Conflicts of Interest, Declaration of Generative AI Use, Open Access (CC-BY 4.0), References, dan Kotak Tabel `Biographies of Author(s)` (1 sel berbingkai, foto/narasi max 100 kata, Email, ORCID, WoS ID, Scopus ID, Homepage).
+  - **Pembersihan Bagian Panduan**: Teks `PAPER TEMPLATE` dan instruksi persiapan di akhir berkas template wajib dihapus saat menerbitkan naskah final.
+  - **🚨 PROTOKOL "ANTI-SOK TAU" (VERIFIKASI ASSET & METADATA)**: Agen **DILARANG KERAS MENGARANG ATAU BERHALUSINASI** terkait gambar eksperimen, data kuantitatif, nomor protokol etik, nomor kontrak hibah, ID peneliti (ORCID, Scopus, WoS), maupun link repositori data. Jika ada asset atau metadata yang belum tersedia, agen **WAJIB** menandai `[TODO: USER ACTION REQUIRED]` dan menyajikan rekap checklist kekurangan secara eksplisit agar pengguna dapat menyiapkannya.
