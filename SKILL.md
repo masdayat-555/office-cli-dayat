@@ -31,7 +31,7 @@ Skill ini merupakan ekosistem terpadu untuk penanganan dokumen digital bagi AI c
 > 2. **WAJIB NATIVE WORD EQUATION (`<m:oMath>`)**: Seluruh rumus display wajib berwujud objek matematika native Word dengan font *Cambria Math*, diletakkan di tengah (*centered*) menggunakan tabel borderless 2 kolom dengan penomoran `(Eq. X)` rata kanan. Variabel inline wajib Unicode murni italic tanpa backslash.
 
 > [!CAUTION]
-> > **KEWAJIBAN PENGKODEAN (STRICT UTF-8 ENCODING) & ANTI-MOJIBAKE:**
+> **KEWAJIBAN PENGKODEAN (STRICT UTF-8 ENCODING) & ANTI-MOJIBAKE:**
 > Dilarang keras menghasilkan karakter aneh / *mojibake* (seperti `ÔÇ£`, `Ã©`). 
 > 1. **WAJIB** menggunakan `encoding="utf-8"` pada **setiap** operasi baca/tulis file (I/O) di dalam script Python.
 > 2. **DILARANG** menyalurkan (*piping*) output JSON via terminal (misal: `officecli ... > file.json` atau `| Out-File`) karena PowerShell sering kali merusak *encoding* karakter. Gunakan `subprocess.run` di Python untuk menangkap `stdout` lalu simpan secara aman.
@@ -48,7 +48,12 @@ office-cli/
 ├── README.md                                # Dokumentasi publik repositori GitHub
 ├── .last_update_check                       # Marker timestamp sinkronisasi pembaruan 30 hari
 ├── scripts/
-│   └── check_update.py                      # Skrip auto-update berkala dari upstream GitHub
+│   ├── check_update.py                      # Skrip auto-update berkala dari upstream GitHub
+│   ├── clean_word_locks.py                  # Pembersih proses zombie WINWORD & Normal.dotm
+│   ├── zotero_clean_metadata.py             # Pipeline pembersih metadata kanonikal CrossRef & normalisasi Title Case
+│   ├── zotero_headless_sync.py              # Engine sinkronisasi headless Zotero Cloud via PyZotero (Anti-Halu)
+│   ├── mendeley_setup.py                    # Setup otentikasi Mendeley OAuth2
+│   └── mendeley_upload.py                   # Pengunggah metadata PDF ke Mendeley
 ├── templates/
 │   ├── template_jurnal_sinta.docx           # Master template OJS SINTA (A4, 1-inch, Page 1 Fit, APA Table)
 │   ├── template_laporan_tugas_akhir.docx    # Master template Skripsi / TA (A4, 4-3-3-3 cm, 5 Bab)
@@ -543,7 +548,7 @@ Beberapa praktikum menghendaki format "LHP Singkat" (hanya *Cover Page* lalu lan
 
 ---
 
-## 10. MANAJEMEN REFERENSI TERVALIDASI (MENDELEY + FOLDER REFERENSI)
+## 10. MANAJEMEN REFERENSI TERVALIDASI (ZOTERO HEADLESS + MENDELEY + FOLDER REFERENSI)
 
 > [!IMPORTANT]
 > Bagian ini berlaku untuk **semua proyek penulisan ilmiah (Jurnal SINTA, Skripsi, Tesis)**. Tujuannya adalah memastikan seluruh sitasi dalam naskah berasal dari sumber yang sudah diverifikasi identitasnya — bukan hanya dari ingatan atau copy-paste abstrak.
@@ -614,6 +619,59 @@ Jika klien membutuhkan daftar pustaka terintegrasi Mendeley secara otomatis, age
    *(Browser akan terbuka untuk meminta izin login Mendeley. Setelah sukses, token akan tersimpan aman).*
 
 *(Catatan untuk Agen: File `.env` dan token `*.json` sudah otomatis terlindungi oleh `.gitignore` sehingga tidak akan ikut ter-publish ke publik. Skrip integrasi ini dibangun murni menggunakan `urllib` bawaan Python (Zero-Dependency) untuk menembus proteksi Cloudflare Mendeley, sehingga agen **TIDAK PERLU** menyuruh klien melakukan `pip install` apapun. Setelah setup klien selesai, agen siap menggunakan skrip `mendeley_upload.py` untuk menginjeksi metadata PDF).*
+
+---
+
+### 10.1.6 Inisialisasi & Pipeline Zotero Headless (Pilihan Utama / Recommended)
+
+> [!IMPORTANT]
+> **STANDAR EMAS RISET: ZOTERO HEADLESS + KOREKSI METADATA KANONIKAL**  
+> Zotero adalah reference manager open-source berstandar universal (CSL-JSON). Dalam arsitektur headless, agen AI mengelola Zotero secara senyap di latar belakang menggunakan pustaka resmi `pyzotero` tanpa perlu membuka aplikasi GUI desktop.
+
+#### A. Konfigurasi Kredensial di `.env`
+Kredensial disimpan secara aman di berkas lokal `~/.gemini/config/skills/office-cli/.env`:
+```env
+# Zotero API Credentials (Headless Mode)
+# Diperoleh dari: https://www.zotero.org/settings/keys
+ZOTERO_USER_ID="12345678"
+ZOTERO_API_KEY="aBcDeFgHiJkLmNoPqRsTuVwX"
+```
+- **`ZOTERO_USER_ID`**: Angka 7–8 digit ID pengguna yang tertera di bagian atas halaman API settings.
+- **`ZOTERO_API_KEY`**: String rahasia hasil pembuatan kunci baru (*Create new key*) dengan hak akses baca/tulis library.
+
+#### B. Pipeline 3-Lapis Pembersihan & Koreksi Metadata (`zotero_clean_metadata.py`)
+Sebelum paper didaftarkan ke Zotero, seluruh metadata mentah wajib disaring melalui pipeline koreksi otomatis guna mencegah error saat disitir di Word:
+1. **Lapisan 1 (Canonical CrossRef Fetcher):**
+   - Jika paper memiliki DOI, sistem menembak CrossRef API resmi (`api.crossref.org/works/{doi}`).
+   - Menarik data primer penerbit: judul artikel murni, nama lengkap pengarang terpisah, nama resmi jurnal (bukan singkatan rusak), volume, nomor terbitan (*issue*), halaman, dan tahun pasti.
+2. **Lapisan 2 (Heuristic Title & Author Normalizer):**
+   - **Anti-ALL-CAPS**: Judul huruf besar semua (`DELVING DEEP INTO...`) dinormalisasi otomatis menjadi *Title Case / Sentence Case* akademik dengan tetap mengamankan akronim ilmiah (`CNN`, `ESP32`, `IoT`, `STFT`, `USV`, `AI`).
+   - **Pemisahan Penulis Majemuk**: Mengurai format string gabungan (`Chen, J., & Ran, X.`) menjadi entitas resmi Zotero: `[{'creatorType': 'author', 'firstName': 'Jiasi', 'lastName': 'Chen'}, ...]`. Mencegah bug fatal Zotero di mana multi-penulis dianggap satu nama panjang.
+   - **Normalisasi Tahun**: Memvalidasi 4 digit tahun kalender publikasi resmi.
+3. **Lapisan 3 (Deduplikasi Koleksi):**
+   - Mengecek apakah DOI atau judul yang sama sudah ada di koleksi Zotero Cloud pengguna untuk mencegah duplikasi item.
+
+#### C. Alur Sinkronisasi & Peta Item Key (`zotero_headless_sync.py`)
+1. Agen menjalankan skrip sinkronisasi headless:
+   ```bash
+   python ~/.gemini/config/skills/office-cli/scripts/zotero_headless_sync.py
+   ```
+2. Skrip otomatis membuat koleksi baru (misal: `"Pengusir Tikus Pintar"`), mengunggah item yang telah bersih, dan menerbitkan berkas `zotero_item_keys.json`.
+3. Berkas JSON ini berisi pemetaan ID nyata: `{"Chen & Ran, 2019": "K9J3X8AZ", ...}`.
+
+#### D. Injeksi Field Code Zotero ke Dokumen Word (`.docx`)
+Saat agen menyusun berkas Word, agen menyematkan struktur OpenXML Field Code resmi Zotero:
+```xml
+<w:r><w:fldChar w:fldCharType="begin"/></w:r>
+<w:r><w:instrText xml:space="preserve"> ADDIN ZOTERO_ITEM CSL_CITATION {"citationID":"...","citationItems":[{"id":123,"uris":["http://zotero.org/users/local/items/ITEM_KEY"]}]} </w:instrText></w:r>
+<w:r><w:fldChar w:fldCharType="separate"/></w:r>
+<w:r><w:t>(Chen &amp; Ran, 2019)</w:t></w:r>
+<w:r><w:fldChar w:fldCharType="end"/></w:r>
+```
+**Hasil Nyata:**
+- Dokumen Word yang dihasilkan terhubung 100% secara resmi ke database Zotero pengguna.
+- Ketika pengguna membuka Word di laptop yang terpasang Zotero, tab Zotero langsung aktif mengenali seluruh kutipan.
+- Pengguna dapat mengutip kembali paper yang sama langsung lewat jendela pencarian Zotero di Word tanpa perlu mengetik ulang data referensi.
 
 ---
 
