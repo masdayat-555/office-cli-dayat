@@ -21,9 +21,15 @@
 > 3. Mengarang lembaga donor atau nomor kontrak hibah (*Grant Number*).
 > 4. Mengarang nomor pengenal peneliti (ORCID iD, Scopus Author ID, Web of Science ResearcherID).
 > 5. Memasang gambar atau grafik sembarangan yang resolusinya rendah atau tidak relevan.
+> 6. **Mengarang tanggal editorial (*Received Date*, *Revised Date*, *Accepted Date*)**: Tanggal ini merupakan wewenang mutlak dewan redaksi jurnal setelah proses review formal; agen **WAJIB** mengosongkannya atau membiarkannya sebagai *placeholder* editorial (`Received Date:                      Revised Date:                      Accepted Date:`).
+> 7. **Menyisipkan sitasi eksternal atau fiktif (*Citation Hallucination*)**: Demi mengejar kuota minimal referensi IASSSF (>30 referensi), agen **DILARANG KERAS** berinisiatif menambahkan sitasi luar secara sepihak ke dalam batang tubuh teks (*body note*) atau daftar pustaka tanpa persetujuan eksplisit penulis. Naskah artikel **HANYA** boleh memuat referensi 100% riil dari draf asli/folder berkas PDF penulis.
+> 8. **Menuliskan rumus matematika sebagai teks raw LaTeX di Word**: Dilarang membiarkan sintaks LaTeX mentah (seperti `\sigma(z) = \frac{1}{1 + e^{-z}}`, `\mathcal{L}_{BCE}`, atau `$...$`) tercetak di dalam paragraf Word. Seluruh persamaan matematika display **WAJIB** berformat objek **Native Word Equation (`<m:oMath>`)** font *Cambria Math*.
 >
-> **TINDAKAN WAJIB AGEN JIKA DATA / ASSET BELUM LENGKAP:**  
-> Jika dalam pengerjaan naskah terdapat kebutuhan gambar/diagram ilmiah, data numerik, akun identitas penulis, atau izin etik yang belum disediakan oleh pengguna, agen **WAJIB** secara transparan menghentikan asumsi, menandai bagian tersebut dengan penanda jelas (`[TODO: USER ACTION REQUIRED]`), serta menyajikan **Daftar Kebutuhan Asset & Metadata** kepada pengguna agar pengguna mengetahui secara pasti apa yang harus disiapkan untuk melengkapinya.
+> **TINDAKAN WAJIB AGEN JIKA DATA / ASSET / REFERENSI BELUM LENGKAP:**  
+> Jika dalam pengerjaan naskah terdapat kebutuhan gambar/diagram ilmiah, data numerik, akun identitas penulis, izin etik, atau kuota referensi yang belum mencukupi standar jurnal (>30 judul), agen **WAJIB**:
+> 1. Secara transparan menghentikan asumsi dan melaporkannya dalam **Laporan Audit**.
+> 2. Menandai bagian yang belum lengkap dengan penanda jelas (`[TODO: USER ACTION REQUIRED]`).
+> 3. Untuk kekurangan referensi, agen menyajikan **Daftar Rekomendasi Jurnal Internasional Terindeks Bereputasi (dengan DOI nyata)** dan **MENGUNDUH BERKAS PDF OPEN ACCESS ASLINYA** ke dalam folder khusus (`referensi/rekomendasi_internasional/`) agar penulis dapat membaca dan memverifikasi keasliannya sebelum memutuskan untuk menyitirnya. JANGAN PERNAH menyisipkannya langsung ke naskah sebelum penulis menyetujuinya!
 
 ---
 
@@ -207,11 +213,15 @@ Conceptualization, A.A. and B.B.; Methodology, C.C.; Software, A.A.; Validation,
 
 ### 7.3 `Funding` (Pernyataan Pendanaan)
 Gunakan salah satu dari kalimat baku berikut:
-- Jika tidak didanai pihak luar:
+- Jika tidak didanai pihak luar / mandiri:
   ```text
   This research received no external funding.
   ```
-- Jika didanai lembaga/hibah:
+- Jika didanai internal perguruan tinggi / fakultas melalui skema penggantian biaya (*reimbursement* riset atau pembinaan kompetisi mahasiswa):
+  ```text
+  This research was funded by the Faculty of Engineering, Universitas Janabadra through the internal faculty research reimbursement and student competition development grant scheme. (Penelitian ini didanai oleh Fakultas Teknik Universitas Janabadra melalui skema penggantian biaya/reimbursement riset dan pembinaan kompetisi mahasiswa).
+  ```
+- Jika didanai lembaga/hibah kompetitif nasional/internasional:
   ```text
   [THE NAME OF FUNDER] funded this research, grant number [XXX].
   ```
@@ -330,10 +340,21 @@ Homepage: https://...
   - **DILARANG MENGGUNAKAN GARIS VERTIKAL** pemisah kolom.
 
 ### 9.3 Persamaan Matematika (*Formulae & Equations*)
-- Semua variabel matematika, lambang aljabar, dan besaran nilai wajib dicetak miring (*italic*).
-- Rumus diletakkan di **tengah halaman (*centered*)**.
-- Penomoran rumus diletakkan di **margin kanan** secara berurutan: `(Eq. 1)`, `(Eq. 2)`.
-- Jika penurunan rumus disingkat dalam naskah utama, penurunan matematis lengkap disarankan disiapkan dalam lembar terpisah (*supplementary sheet*) untuk membantu tim *reviewer*.
+> [!IMPORTANT]
+> **STANDAR MUTLAK NATIVE WORD EQUATION (OMML / CAMBRIA MATH):**  
+> Dilarang keras menuliskan persamaan matematika dalam Word sebagai string raw LaTeX (seperti `\sigma(z) = \frac{1}{1 + e^{-z}}`, `\hat{y}`, atau `\times`) atau tanda dollar `$...$`. Seluruh persamaan matematika display **WAJIB** berwujud objek matematika native Microsoft Word (`<m:oMath>` / `<m:oMathPara>`) dengan font *Cambria Math*.
+
+- **Tata Letak Rumus (Borderless 2-Column Table):**
+  Untuk memastikan rumus berada persis di tengah halaman (*centered*) dan nomor persamaan `(Eq. 1)` rata kanan (*right-aligned*) tanpa pergeseran tab yang rapuh di berbagai versi Word:
+  1. Buat tabel 1 baris, 2 kolom tanpa garis batas (*borderless*).
+  2. **Kolom Kiri (Lebar 5,1 inci / 13,0 cm):** Rata tengah (*Center*), disematkan objek matematika `<m:oMath>`.
+  3. **Kolom Kanan (Lebar 0,8 inci / 2,0 cm):** Rata kanan (*Right*), memuat nomor persamaan: `(Eq. 1)`, `(Eq. 2)`.
+  4. Hapus seluruh margin padding sel (`top=0, bottom=0, left=0, right=0`) dan kosongkan spasi sebelum/sesudah paragraf (`space_before=0, space_after=0`).
+- **Variabel Matematika dalam Teks (*Inline Math*):**
+  - **DILARANG MENGGUNAKAN BACKSLASH LATEX!**
+  - Gunakan karakter Unicode murni yang dicetak miring (*italic*): misal $f_s = 44{,}1\text{ kHz}$, $\hat{y} \ge 0{,}5$, $\sigma(z)$, $\mathcal{L}_{BCE}$.
+- **Penurunan Rumus:**
+  - Jika penurunan rumus disingkat dalam naskah utama, penurunan matematis lengkap disarankan disiapkan dalam lembar terpisah (*supplementary sheet*) untuk membantu tim *reviewer*.
 
 ---
 
@@ -368,6 +389,15 @@ Homepage: https://...
 - **Publikasi Ganda Penulis Sama:** `(Fowler et al., 2018a; Fowler et al., 2018b)`.
 - **Kompilasi Beberapa Sitasi:** Disusun menurut abjad dan dipisahkan titik-koma: `(Adams, 2018; Dexler, 2016; Joe et al., 2014)`.
 
+### 10.3 Protokol Penanganan Defisit Kuota Referensi (< 30) & Anti-Halusinasi
+Jika naskah draf penulis hanya memiliki kurang dari 30 referensi (misalnya 20–26 judul), agen **DILARANG KERAS** menyisipkan referensi eksternal secara mandiri ke dalam naskah Word.
+1. **Prinsip Kejujuran Empiris (Zero External Injections):** Naskah artikel harus tetap memuat 100% referensi riil asli penulis.
+2. **Laporan Audit:** Laporkan secara eksplisit dalam respons chat bahwa naskah masih kurang sejumlah $X$ referensi untuk mencapai batas aman IASSSF (> 30 referensi).
+3. **Penyusunan Rekomendasi Jurnal Bereputasi:** Sajikan daftar 6–8 artikel jurnal internasional primer (Scopus/WoS, 5–10 tahun terakhir) yang sangat relevan secara tematik, lengkap dengan nama penulis, tahun, judul, nama jurnal, dan tautan DOI aktif.
+4. **Unduh PDF Open Access ke Folder Khusus:** Agen mengunduh berkas PDF fisik artikel rekomendasi tersebut dan menyimpannya di:
+   `referensi/rekomendasi_internasional/`
+   Tujuannya agar penulis dapat membaca dan memverifikasi keasliannya secara langsung sebelum memberikan persetujuan untuk disitir dalam naskah.
+
 ---
 
 ## 11. DOKUMEN PENDUKUNG PENGAJUAN (*PRE-SUBMISSION CHECKLIST*)
@@ -397,4 +427,54 @@ Ketika agen diminta menyusun naskah IASSSF dari awal atau mengadaptasi naskah ya
    ```
 4. **Audit Kelengkapan Aset & Metadata Sebelum Finalisasi:**
    Jika naskah belum memiliki gambar tajam ($\ge 160\text{ mm}$), data nomor hibah, atau biodata lengkap, sampaikan secara transparan kepada pengguna apa saja poin yang harus dilengkapi.
+5. **Injeksi Persamaan OMML Native Word (`<m:oMath>`):**
+   Gunakan konversi MathML ke OMML dengan stylesheet XSLT Microsoft Office (`C:\Program Files\Microsoft Office\root\Office16\MML2OMML.XSL`) atau simpan snippet OMML yang valid:
+   ```python
+   from docx.oxml import parse_xml
+   from docx.oxml.ns import nsdecls
+
+   # Buat tabel 1 baris 2 kolom tanpa border untuk layout centered formula + right-aligned (Eq. X)
+   tbl = doc.add_table(rows=1, cols=2)
+   tbl.autofit = False
+   cell_eq, cell_num = tbl.rows[0].cells[0], tbl.rows[0].cells[1]
+   cell_eq.width = Inches(5.1)
+   cell_num.width = Inches(0.8)
+
+   # Injeksi elemen OMML ke cell_eq
+   omml_elem = parse_xml(omml_xml_string)
+   p_eq = cell_eq.paragraphs[0]
+   p_eq.alignment = WD_ALIGN_PARAGRAPH.CENTER
+   p_eq._element.append(omml_elem)
+
+   p_num = cell_num.paragraphs[0]
+   p_num.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+   r_num = p_num.add_run("(Eq. 1)")
+   r_num.font.name = "Cambria"
+   r_num.font.size = Pt(11)
+   ```
+6. **Resiliensi Penyimpanan Berkas & Penanganan Kunci File (`PermissionError`):**
+   Jika file Word sedang dibuka oleh pengguna, sistem operasi Windows akan mengunci berkas. Selalu gunakan penanganan eksepsi fallback:
+   ```python
+   target_filename = "Artikel_IASSSF.docx"
+   try:
+       doc.save(target_filename)
+       print(f"Naskah berhasil disimpan: {target_filename}")
+   except PermissionError:
+       fallback_filename = target_filename.replace(".docx", "_Rev1.docx")
+       doc.save(fallback_filename)
+       print(
+           f"PERINGATAN: Berkas {target_filename} sedang dibuka di Microsoft Word. Disimpan sebagai {fallback_filename}"
+       )
+   ```
+7. **Kepatuhan Encoding Konsol Windows:**
+   Tambahkan konfigurasi di baris teratas skrip untuk mencegah `UnicodeEncodeError`:
+   ```python
+   import sys
+
+   if sys.stdout.encoding.lower() != "utf-8":
+       try:
+           sys.stdout.reconfigure(encoding="utf-8")
+       except AttributeError:
+           pass
+   ```
 

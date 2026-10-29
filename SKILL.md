@@ -19,7 +19,19 @@ Skill ini merupakan ekosistem terpadu untuk penanganan dokumen digital bagi AI c
 > Pengecualian hanya berlaku untuk **pembacaan (read-only)**: `markitdown` adalah standar resmi yang diizinkan untuk membaca dokumen.
 
 > [!CAUTION]
-> **KEWAJIBAN PENGKODEAN (STRICT UTF-8 ENCODING) & ANTI-MOJIBAKE:**
+> [!CAUTION]
+> **INTEGRITAS SITASI ILMIAH & PROTOKOL "ANTI-HALU":**
+> 1. **DILARANG KERAS MENYISIPKAN SITASI FIKTIF ATAU EKSTERNAL SECARA SEPIHAK**: Demi mengejar kuota minimal referensi jurnal (misal >30 referensi), agen **TIDAK BOLEH** menyisipkan sitasi baru ke dalam naskah tanpa izin eksplisit pengguna ("takut kamu halu"). Referensi dalam naskah **HANYA** boleh yang 100% riil dari draf asli/folder `referensi/` pengguna.
+> 2. **PENANGANAN DEFISIT REFERENSI**: Laporkan kuota yang kurang dalam Laporan Audit, berikan daftar rekomendasi jurnal bereputasi ber-DOI nyata, dan unduh berkas PDF Open Access aslinya ke `referensi/rekomendasi_internasional/` agar pengguna dapat memverifikasinya sendiri.
+> 3. **DILARANG MENGARANG TANGGAL EDITORIAL**: `Received Date`, `Revised Date`, `Accepted Date` wajib dikosongkan sebagai *placeholder* editorial.
+
+> [!CAUTION]
+> **STANDAR PERSAMAAN MATEMATIKA NATIVE WORD EQUATION (OMML):**
+> 1. **DILARANG MEMBIARKAN RAW LATEX / BACKSLASH**: Persamaan matematika dalam Word **DILARANG** dicetak sebagai teks mentah LaTeX (`\sigma(z)`, `\frac{1}{...}`, `\mathcal{L}`) atau tanda dollar `$...$`.
+> 2. **WAJIB NATIVE WORD EQUATION (`<m:oMath>`)**: Seluruh rumus display wajib berwujud objek matematika native Word dengan font *Cambria Math*, diletakkan di tengah (*centered*) menggunakan tabel borderless 2 kolom dengan penomoran `(Eq. X)` rata kanan. Variabel inline wajib Unicode murni italic tanpa backslash.
+
+> [!CAUTION]
+> > **KEWAJIBAN PENGKODEAN (STRICT UTF-8 ENCODING) & ANTI-MOJIBAKE:**
 > Dilarang keras menghasilkan karakter aneh / *mojibake* (seperti `ÔÇ£`, `Ã©`). 
 > 1. **WAJIB** menggunakan `encoding="utf-8"` pada **setiap** operasi baca/tulis file (I/O) di dalam script Python.
 > 2. **DILARANG** menyalurkan (*piping*) output JSON via terminal (misal: `officecli ... > file.json` atau `| Out-File`) karena PowerShell sering kali merusak *encoding* karakter. Gunakan `subprocess.run` di Python untuk menangkap `stdout` lalu simpan secara aman.
@@ -276,6 +288,12 @@ Ketika mentransformasikan draf ke dalam naskah jurnal Word resmi, agen **WAJIB**
 | **Bab IV LKM (Tugas Praktikum & Matriks)** | Menambahkan border tabel biru `#0969DA`, callout web warna-warni, atau teks persamaan matriks yang di-justify hingga spasi merenggang. | Tampilan seperti *AI slop*, rumus aljabar linier rusak/sulit dibaca. | **Format monokrom hitam formal**, seluruh komputasi matriks dan aljabar linier **WAJIB RATA KIRI (`align=LEFT`)**, font kode monospace Consolas, bersih dari kotak aksen biru. |
 | **Pengaturan Posisi Cover** | Mengandalkan nilai `space_before` / `space_after` yang raksasa (mis. 150pt) untuk mendorong teks ke margin bawah. | Teks cover *overflow* ke halaman berikutnya, ukuran sulit diprediksi jika gambar berubah, layout kaku. | **Gunakan spasi (Enter / paragraf kosong)** untuk mendorong blok teks sampul, atau atur ruang sewajarnya tanpa pt ekstrem. |
 | **Efek Samping doc.add_page_break**| Memanggil `doc.add_page_break()` di `python-docx` di akhir elemen. | Menghasilkan paragraf kosong *siluman* di halaman sebelum break yang memakan ruang 1 baris vertikal. | Sisipkan break langsung di dalam run terakhir: `p.runs[-1].add_break(WD_BREAK.PAGE)` atau setel properti *Page break before*. |
+| **Persamaan Rumus Word (OMML vs LaTeX)** | Menulis rumus display sebagai teks mentah LaTeX (`\sigma(z) = \frac{1}{1 + e^{-z}}`) atau tanda dollar `$...$` di berkas Word. | Naskah terlihat seperti draf mentah AI (*AI slop*), ditolak editor jurnal karena tidak menggunakan Equation native Word. | **Wajib konversi ke Native Word Equation (`<m:oMath>` / Cambria Math)** melalui MathML & `MML2OMML.XSL`. Tempatkan dalam borderless table 2 kolom (`Inches(5.1)` center untuk formula + `Inches(0.8)` right untuk nomor `(Eq. X)`). Variabel inline wajib Unicode murni italic tanpa backslash. |
+| **Sitasi & Daftar Pustaka Anti-Halusinasi** | Menambahkan sitasi eksternal/baru secara sepihak ke dalam teks naskah dan daftar pustaka untuk mengejar kuota minimal jurnal (misal >30 referensi). | Integritas riset tercoreng, naskah memuat sitasi halusinasi yang tidak diakui penulis (*"takut kamu halu"*). | **Naskah Word HANYA memuat 100% referensi riil asli penulis**. Kekurangan kuota wajib disajikan dalam Laporan Audit, sodorkan rekomendasi ber-DOI valid, dan **unduh berkas PDF Open Access aslinya ke folder `referensi/rekomendasi_internasional/`** agar penulis dapat memeriksa keasliannya terlebih dahulu. |
+| **Tanggal Editorial Naskah Jurnal** | Mengisi tanggal pada baris `Received Date:`, `Revised Date:`, `Accepted Date:` dengan tanggal rekaan saat konversi naskah. | Pelanggaran etika editorial jurnal; tanggal tersebut merupakan wewenang mutlak dewan redaksi jurnal setelah proses telaah formal. | **Wajib mengosongkan tanggal editorial** atau membiarkannya sebagai *placeholder* resmi (`Received Date:                      Revised Date:                      Accepted Date:`). |
+| **Skema Pendanaan Kampus (Reimbursement)** | Menganggap penelitian mahasiswa/dosen tanpa hibah eksternal sebagai "tanpa dana" (*no external funding*) atau mengarang nomor kontrak hibah fiktif. | Menghilangkan pengakuan institusi kampus yang mendanai riset melalui skema penggantian biaya (*reimbursement*). | **Format pendanaan kampus internal secara jujur**: Cantumkan pendanaan Fakultas/Universitas melalui skema penggantian biaya (*reimbursement*) riset dan pembinaan kompetisi mahasiswa pada bagian *Funding* dan *Acknowledgment*. |
+| **Kunci Berkas Word (File Lock Resiliency)** | Menyimpan file `.docx` langsung tanpa penanganan eksepsi saat file sedang dibuka oleh pengguna di Microsoft Word. | Memicu `PermissionError: [Errno 13] Permission denied`, skrip kompilasi crash dan dokumen gagal tersimpan. | **Bungkus selalu `doc.save()` dalam try-except**: Jika terkena `PermissionError`, otomatis simpan ke nama berkas cadangan (`*_Rev1.docx`, `*_Rev2.docx`), lalu beri tahu pengguna bahwa dokumen utama sedang terkunci di Word. |
+| **Encoding Konsol Windows cp1252** | Mencetak karakter Unicode (seperti karakter Yunani `σ`, `ŷ`, atau tanda kutip tipografis) langsung ke konsol Windows cp1252. | Memicu `UnicodeEncodeError: 'charmap' codec can't encode character`, menggagalkan jalannya skrip otomatisasi. | Pasang `sys.stdout.reconfigure(encoding='utf-8')` di bagian atas seluruh skrip Python otomatisasi dokumen. |
 
 ---
 
@@ -530,6 +548,18 @@ Beberapa praktikum menghendaki format "LHP Singkat" (hanya *Cover Page* lalu lan
 > [!IMPORTANT]
 > Bagian ini berlaku untuk **semua proyek penulisan ilmiah (Jurnal SINTA, Skripsi, Tesis)**. Tujuannya adalah memastikan seluruh sitasi dalam naskah berasal dari sumber yang sudah diverifikasi identitasnya — bukan hanya dari ingatan atau copy-paste abstrak.
 
+### 10.1.1 Protokol Penanganan Defisit Referensi & Folder `rekomendasi_internasional`
+
+> [!IMPORTANT]
+> **PROTOKOL MUTLAK ANTI-HALU SITASI:**
+> Jika sebuah jurnal (seperti IASSSF) mensyaratkan jumlah referensi minimal (misal: **> 30 referensi**), namun naskah asli penulis saat ini hanya memiliki referensi yang lebih sedikit (misalnya 26 judul):
+> 1. **DILARANG KERAS MENYISIPKAN SITASI BARU KE DALAM NASKAH WORD**: Naskah artikel dan daftar pustakanya **WAJIB 100% BERSIH** hanya memuat sumber yang telah diverifikasi dari naskah asli penulis dan folder `REFERENSI/`.
+> 2. **SAJIKAN KEKURANGAN SEBAGAI TEMUAN AUDIT**: Tuliskan dalam laporan analisis bahwa naskah masih memerlukan $X$ referensi tambahan untuk memenuhi kuota desk review jurnal.
+> 3. **SEDIAKAN DAFTAR REKOMENDASI TERVERIFIKASI DENGAN DOI NYATA**: Berikan daftar 6–8 artikel jurnal internasional primer (Scopus/WoS, 5–10 tahun terakhir) yang sangat relevan dengan topik naskah.
+> 4. **UNDUH BERKAS PDF OPEN ACCESS KE FOLDER KHUSUS**: Buat subfolder:
+>    `REFERENSI/rekomendasi_internasional/`
+>    Unduh berkas PDF Open Access asli dari artikel yang direkomendasikan ke folder tersebut. Hal ini membuktikan bahwa artikel tersebut nyata, dapat diakses, dan memungkinkan penulis membaca serta memeriksa metodologi di dalamnya sebelum menyetujui pemakaiannya.
+
 ### 10.1 Prinsip Dasar: Folder `REFERENSI` sebagai Sumber Kebenaran Tunggal
 
 Setiap proyek penulisan ilmiah **WAJIB** memiliki satu folder `REFERENSI/` di root workspace proyek.
@@ -750,6 +780,9 @@ Setiap tugas yang membutuhkan iterasi berulang (seperti mencoba mengunduh puluha
     - *Original Research Article*: 6.000–7.000 kata (di luar referensi), jumlah referensi **> 30**.
     - *Review Article*: 7.000–9.000 kata (di luar referensi), jumlah referensi **>= 50**.
     - Minimal 80% sumber primer jurnal Scopus/WoS 5–10 tahun terakhir (2016–2026), format APA 7th via Mendeley, tautan DOI aktif wajib.
+  - **Standar Persamaan Native OMML**: Rumus matematika display wajib berupa Native Word Equation (`<m:oMath>` / Cambria Math) dalam borderless 2-column table (`Inches(5.1)` center untuk formula, `Inches(0.8)` right untuk `(Eq. X)`). Dilarang teks raw LaTeX!
+  - **Larangan Mengarang Tanggal Editorial**: Baris `Received Date:`, `Revised Date:`, `Accepted Date:` wajib dikosongkan sebagai placeholder editorial.
+  - **Integritas Referensi 100% Real (Anti-Halu)**: Dilarang menyisipkan referensi eksternal secara sepihak untuk memenuhi kuota >30 refs. Sajikan sebagai audit, sodorkan rekomendasi ber-DOI, dan unduh PDF Open Access ke `referensi/rekomendasi_internasional/`.
   - **Dua Larangan Mutlak Sitasi (Strictly Forbidden)**:
     1. **HARAM** menyitasi artikel yang pernah terbit di jurnal IASSSF itu sendiri (*Zero IASSSF self-citation*).
     2. **HARAM** melakukan sitasi-diri (*author self-citation*) tanpa justifikasi ceruk topik yang mendesak.

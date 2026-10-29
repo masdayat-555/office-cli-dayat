@@ -779,3 +779,161 @@ def prepare_image_anti_burik(input_image_path: str, output_image_path: str, targ
 
 
 
+
+---
+
+## 15. RESEP 14: PERSAMAAN MATEMATIKA NATIVE WORD EQUATION (OMML / CAMBRIA MATH)
+
+> [!IMPORTANT]
+> **Larangan Mutlak LaTeX Mentah:** Dilarang mencetak string LaTeX seperti `\sigma(z) = \frac{1}{1 + e^{-z}}` atau `$...$` sebagai teks biasa di berkas Word. Seluruh persamaan display wajib berwujud objek Native Word Equation (`<m:oMath>`) dalam font *Cambria Math*.
+
+### 15.1 Pola Injeksi OMML Menggunakan Tabel 2 Kolom Borderless
+Tata letak persamaan yang paling kokoh di semua platform dan versi Microsoft Word adalah menggunakan tabel 1 baris, 2 kolom tanpa garis batas (*borderless*):
+- **Kolom 1 (Lebar ~5.1 inci / 13.0 cm):** Rata tengah (*Center*), memuat elemen matematika `<m:oMath>`.
+- **Kolom 2 (Lebar ~0.8 inci / 2.0 cm):** Rata kanan (*Right-aligned*), memuat nomor persamaan `(Eq. 1)`.
+
+```python
+import os
+from docx import Document
+from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.oxml import parse_xml
+from docx.oxml.ns import nsdecls
+from docx.shared import Inches, Pt
+
+# Peta string OMML murni (bisa dihasilkan via MathML + XSLT MML2OMML.XSL)
+OMML_SIGMOID = (
+    '<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">'
+    '<m:r><m:t>σ</m:t></m:r>'
+    '<m:d><m:dPr><m:begChr m:val="(" /><m:endChr m:val=")" /></m:dPr>'
+    '<m:e><m:r><m:t>z</m:t></m:r></m:e></m:d>'
+    '<m:r><m:t> = </m:t></m:r>'
+    '<m:f><m:num><m:r><m:t>1</m:t></m:r></m:num>'
+    '<m:den><m:r><m:t>1 + </m:t></m:r><m:sSup><m:e><m:r><m:t>e</m:t></m:r></m:e>'
+    '<m:sup><m:r><m:t>-z</m:t></m:r></m:sup></m:sSup></m:den></m:f>'
+    '</m:oMath>'
+)
+
+def add_native_equation(doc, omml_xml_string, eq_number_str="(Eq. 1)"):
+    """
+    Menambahkan persamaan matematika native Word OMML di tengah halaman
+    dengan nomor persamaan rata kanan menggunakan tabel borderless 2 kolom.
+    """
+    tbl = doc.add_table(rows=1, cols=2)
+    tbl.autofit = False
+    
+    # Hilangkan seluruh border tabel
+    tblPr = tbl._element.xpath('w:tblPr')
+    if tblPr:
+        borders = parse_xml(f'<w:tblBorders {nsdecls("w")}><w:top w:val="none"/><w:left w:val="none"/><w:bottom w:val="none"/><w:right w:val="none"/><w:insideH w:val="none"/><w:insideV w:val="none"/></w:tblBorders>')
+        tblPr[0].append(borders)
+        
+    cell_eq, cell_num = tbl.rows[0].cells[0], tbl.rows[0].cells[1]
+    cell_eq.width = Inches(5.1)
+    cell_num.width = Inches(0.8)
+    
+    # Hapus padding sel agar presisi
+    for c in [cell_eq, cell_num]:
+        tcPr = c._element.get_or_add_tcPr()
+        tcMar = parse_xml(f'<w:tcMar {nsdecls("w")}><w:top w:w="0" w:type="dxa"/><w:bottom w:w="0" w:type="dxa"/><w:left w:w="0" w:type="dxa"/><w:right w:w="0" w:type="dxa"/></w:tcMar>')
+        tcPr.append(tcMar)
+        
+    # Injeksi OMML ke kolom kiri (Center)
+    p_eq = cell_eq.paragraphs[0]
+    p_eq.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p_eq.paragraph_format.space_before = Pt(4)
+    p_eq.paragraph_format.space_after = Pt(4)
+    p_eq._element.append(parse_xml(omml_xml_string))
+    
+    # Nomor persamaan ke kolom kanan (Right)
+    p_num = cell_num.paragraphs[0]
+    p_num.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+    p_num.paragraph_format.space_before = Pt(4)
+    p_num.paragraph_format.space_after = Pt(4)
+    r_num = p_num.add_run(eq_number_str)
+    r_num.font.name = 'Cambria'
+    r_num.font.size = Pt(11)
+```
+
+---
+
+## 16. RESEP 15: PROTOKOL SITASI ANTI-HALUSINASI & PENGUNDUHAN REFERENSI TERVERIFIKASI
+
+> [!CAUTION]
+> **Prinsip Kejujuran Sitasi Mutlak:**
+> 1. Dilarang menyisipkan sitasi fiktif atau karya orang lain secara sepihak ke naskah Word saat jumlah referensi penulis masih kurang dari batas kuota jurnal (misal < 30 judul).
+> 2. Seluruh sitasi di naskah wajib 100% nyata dari dokumen/folder asli penulis.
+> 3. Kekurangan referensi disajikan sebagai temuan audit, dan naskah rekomendasi diunduh PDF fisiknya ke folder `referensi/rekomendasi_internasional/`.
+
+```python
+import os
+import requests
+
+def download_verified_recommendations(target_folder, papers_dict):
+    """
+    Mengunduh berkas PDF Open Access dari daftar rekomendasi jurnal ilmiah
+    ke folder lokal agar penulis dapat membaca dan memverifikasi isinya.
+    """
+    os.makedirs(target_folder, exist_ok=True)
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+    }
+    
+    for filename, url in papers_dict.items():
+        fpath = os.path.join(target_folder, filename)
+        if os.path.exists(fpath):
+            print(f"[SKIP] Berkas sudah ada: {filename}")
+            continue
+            
+        try:
+            print(f"[DOWNLOADING] {filename}...")
+            r = requests.get(url, headers=headers, timeout=25)
+            # Pastikan header berkas adalah PDF valid (%PDF) dan berukuran wajar (>10 KB)
+            if r.status_code == 200 and r.content[:4] == b'%PDF' and len(r.content) > 10240:
+                with open(fpath, 'wb') as f:
+                    f.write(r.content)
+                print(f"[SUCCESS] Tersimpan: {filename} ({len(r.content)/1024:.1f} KB)")
+            else:
+                print(f"[FAILED] Gagal mengunduh {filename}: status {r.status_code}")
+        except Exception as e:
+            print(f"[ERROR] Kendala jaringan saat mengunduh {filename}: {e}")
+```
+
+---
+
+## 17. RESEP 16: RESILIENSI KUNCI BERKAS & PENANGANAN `PermissionError` (SAFE SAVE FALLBACK)
+
+Saat pengguna sedang membuka berkas dokumen Word di komputernya, Windows mengunci file tersebut secara eksklusif. Skrip otomatisasi yang mencoba menimpa berkas akan melempar `PermissionError: [Errno 13] Permission denied`.
+
+```python
+import sys
+import os
+
+# 1. Konfigurasi UTF-8 pada konsol Windows untuk mencegah UnicodeEncodeError cp1252
+if sys.stdout.encoding and sys.stdout.encoding.lower() != 'utf-8':
+    try:
+        sys.stdout.reconfigure(encoding='utf-8')
+    except AttributeError:
+        pass
+
+def safe_save_docx(doc, output_path):
+    """
+    Menyimpan dokumen Word dengan fallback versioning otomatis jika berkas utama sedang terkunci.
+    """
+    try:
+        doc.save(output_path)
+        print(f"[SAVED] Dokumen berhasil disimpan: {output_path}")
+        return output_path
+    except PermissionError:
+        base, ext = os.path.splitext(output_path)
+        fallback_path = f"{base}_Rev1{ext}"
+        try:
+            doc.save(fallback_path)
+            print(f"[WARNING] Berkas {output_path} sedang dibuka di Microsoft Word!")
+            print(f"[SAVED FALLBACK] Dokumen berhasil disimpan sebagai alternatif: {fallback_path}")
+            return fallback_path
+        except PermissionError:
+            fallback_path2 = f"{base}_Rev2{ext}"
+            doc.save(fallback_path2)
+            print(f"[SAVED FALLBACK] Dokumen berhasil disimpan sebagai alternatif: {fallback_path2}")
+            return fallback_path2
+```
