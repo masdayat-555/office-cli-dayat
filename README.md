@@ -3,11 +3,11 @@
 # 📄 Unified Office & Document Suite for AI Agents
 
 **Skill Pembuatan & Kecerdasan Dokumen Terlengkap untuk AI Coding Assistant.**  
-*Menyusun dokumen Word siap publikasi (SINTA, Scopus, Skripsi, Kerja Praktik) dan mengekstrak dokumen multi-format (PDF, Excel, Word, PPT) dengan format 100% presisi.*
+*Menyusun dokumen Word siap publikasi (SINTA, Scopus, IASSSF, Skripsi, Kerja Praktik) dan mengekstrak dokumen multi-format (PDF, Excel, Word, PPT) dengan format 100% presisi.*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/masdayat-555/office-cli-dayat)
-[![Standard](https://img.shields.io/badge/Standard-SINTA%201--6%20%7C%20Scopus%20Q1--Q4%20%7C%20APA%207th-purple.svg)]()
+[![Standard](https://img.shields.io/badge/Standard-SINTA%201--6%20%7C%20Scopus%20Q1--Q4%20%7C%20IASSSF%20%7C%20APA%207th-purple.svg)]()
 
 [🇮🇩 Bahasa Indonesia](#-bahasa-indonesia) • [🇬🇧 English](#-english-version)
 
@@ -23,8 +23,10 @@ Skill ini membekali asisten koding AI Anda (Antigravity, Cursor, Claude Code, Wi
 
 * 🎓 **Jurnal Terakreditasi SINTA 1–6:** Struktur IMRaD baku, garansi *Page 1 Fit* (seluruh abstrak bilingual tuntas di halaman 1), alur kontinu tanpa jeda halaman palsu, dan tabel ilmiah APA 3 garis horizontal.
 * 🌐 **Jurnal Internasional Bereputasi Scopus Q1–Q4 & WoS:** Extended IMRaD, matriks perbandingan penelitian terdahulu (*State-of-the-Art*), validasi statistik, integrasi ORCID, serta pernyataan etika data.
+* 🌿 **Jurnal Ilmiah Internasional IASSSF:** Format 1 kolom penuh (*single-column*), tipografi Cambria murni, abstrak berstruktur 1 alinea (5 label tebal: *Background, Methods, Findings, Conclusion, Novelty*), pembagian peran CRediT, kepatuhan etika & AI Generatif, referensi APA 7th Edition (>30 sitasi tanpa sitasi-diri), tabel biodata penulis (*author biographies*), serta protokol verifikasi data & aset "Anti-Sok Tau".
 * 📚 **Skripsi & Tugas Akhir Standar Perguruan Tinggi:** Format margin 4-4-3-3 cm dan variasi teknik 4-3-3-3 cm, spasi 1.25x / 1.5x, penomoran formal BAB (Heading 1-3), daftar isi otomatis (*dynamic TOC*), Intisari 3 alinea presisi, dan daftar pustaka *hanging indent*.
 * 💼 **Laporan Kerja Praktik (KP), PKL, & Magang Industri:** Profil & struktur organisasi mitra, uraian SOP kerja, pelaksanaan fitur sistem, pengendalian mutu (*quality control*), dan logbook mingguan.
+* 🔬 **Laporan Praktikum & LKM (Lembar Kegiatan Mahasiswa):** Format monograf praktikum lengkap, cover resmi, penomoran desimal rapi, rumus matriks 2D native, serta pemisahan tegas antara laporan umum, LHP singkat, dan LKM modul numerik.
 * 📑 **Ekstraksi Dokumen Multi-Format:** Mengonversi PDF, DOCX, XLSX, dan PPTX menjadi Markdown terstruktur untuk penalaran AI via Microsoft MarkItDown.
 * 🖼️ **Ekstraksi Aset Gambar & Bagan:** Mengambil seluruh gambar asli dari Word (DOCX), slide PowerPoint (PPTX), tabel Excel (XLSX), dan PDF dalam resolusi 100% asli tanpa kompresi.
 * 🎯 **Garansi Output Word Asli (`.docx`):** Menghasilkan deliverable berkas Word murni menggunakan OfficeCLI secara rapi, bukan sekadar file teks Markdown.
@@ -60,6 +62,10 @@ Setelah terpasang, Anda tidak perlu menghafal perintah yang rumit. Cukup berikan
 ```
 
 ```text
+"Susun naskah artikel jurnal internasional untuk template IASSSF dengan abstrak terstruktur 5 label dan tabel biodata penulis..."
+```
+
+```text
 "Format dokumen skripsi ini ke standar baku (margin 4-3-3-3 cm, Times New Roman 12 pt, 1.25 spasi)..."
 ```
 
@@ -80,7 +86,7 @@ AI Agent akan otomatis mengaktifkan skill ini, mengonfirmasi preferensi template
 ---
 
 ### ⚙️ Kebutuhan Sistem (Prasyarat)
-Skill ini memanfaatkan dua mesin *open-source* yang terpasang di terminal sistem Anda:
+Skill ini memanfaatkan mesin *open-source* yang terpasang di terminal sistem Anda:
 
 1. **Microsoft MarkItDown (Mesin Pembaca Dokumen):**
    ```bash
@@ -123,23 +129,32 @@ git pull --rebase --autostash origin main
 
 ```text
 office-cli/
-├── SKILL.md                                 # Instruksi utama & pedoman agen AI
+├── SKILL.md                                 # Instruksi utama & pedoman operasional agen AI
 ├── README.md                                # Dokumentasi publik dwibahasa
 ├── scripts/
-│   └── check_update.py                      # Skrip pemeriksaan pembaruan otomatis 30 hari
+│   ├── check_update.py                      # Skrip pemeriksaan pembaruan otomatis 30 hari
+│   ├── clean_word_locks.py                  # Pembersih file lock sementara (~$*.docx) Microsoft Word
+│   ├── mendeley_setup.py                    # Otentikasi & inisialisasi API Mendeley Desktop
+│   └── mendeley_upload.py                   # Engine sinkronisasi metadata sitasi & PDF ke Mendeley
 ├── templates/
 │   ├── template_jurnal_sinta.docx           # Master template universal Jurnal OJS SINTA
-│   ├── template_laporan_tugas_akhir.docx    # Master template universal Skripsi / Tugas Akhir
-│   ├── template_laporan_kerja_praktik.docx  # Master template universal Kerja Praktik / Magang
-│   └── template_laporan_praktikum.docx      # Master template Laporan Praktikum
+│   ├── Template IASSSF.docx                 # Master template resmi Jurnal Internasional IASSSF (Cambria, 1-Kolom)
+│   ├── template_laporan_tugas_akhir.docx    # Master template universal Skripsi / Tugas Akhir (5 Bab)
+│   ├── template_laporan_kerja_praktik.docx  # Master template universal Kerja Praktik / Magang Industri
+│   ├── template_laporan_praktikum.docx      # Master template Laporan Praktikum (Cover resmi Janabadra)
+│   ├── template_lhp_singkat.docx            # Master template Laporan Praktikum Singkat (Hanya cover tugas)
+│   └── template_lkm_metode_numerik.docx     # Master template Monograf LKM Metode Numerik (5 Bab, TOC native)
 └── references/
-    ├── pedoman_jurnal_sinta.md              # Panduan publikasi jurnal SINTA 1–6
-    ├── pedoman_jurnal_scopus.md             # Panduan publikasi jurnal Scopus Q1–Q4
-    ├── pedoman_skripsi_lengkap.md           # Panduan lengkap skripsi & tugas akhir 5 bab
-    ├── pedoman_kerja_praktik.md             # Panduan laporan kerja praktik & magang industri
+    ├── pedoman_jurnal_sinta.md              # Panduan publikasi jurnal terakreditasi SINTA 1–6 (IMRaD baku)
+    ├── pedoman_jurnal_scopus.md             # Panduan publikasi jurnal bereputasi Scopus Q1–Q4 & WoS
+    ├── pedoman_jurnal_iasssf.md             # Panduan naskah jurnal internasional IASSSF & protokol Anti-Sok Tau
+    ├── pedoman_skripsi_lengkap.md           # Panduan lengkap skripsi & tugas akhir 5 bab standar nasional
+    ├── pedoman_kerja_praktik.md             # Panduan laporan kerja praktik & magang industri lengkap
     ├── pedoman_laporan_praktikum.md         # Pedoman Laporan Praktikum (struktur bab, format cover)
+    ├── pedoman_lkm_metode_numerik.md        # Pedoman LKM Metode Numerik (monograf & kode Scilab)
+    ├── pedoman_surat_insentif.md            # Pedoman penyusunan surat permohonan insentif resmi
     ├── resep_officecli_dokumen_ilmiah.md    # Resep batch JSON teknis OfficeCLI (Resep 1–12)
-    └── aturan_adaptif_pedoman_kampus.md     # Mesin adaptasi & matriks komparatif dokumen
+    └── aturan_adaptif_pedoman_kampus.md     # Mesin adaptasi & matriks komparatif dokumen institusi
 ```
 
 ---
@@ -151,8 +166,10 @@ office-cli/
 **Unified Office & Document Suite** empowers your AI coding assistants (Antigravity, Cursor, Claude Code, Windsurf, VS Code, Roo Code, etc.) with native capabilities to **ingest**, **extract**, and **author** professional office documents:
 
 * 🎓 **SINTA 1–6 & Scopus Journals:** Fully compliant IMRaD workflows, Page 1 Fit abstracts, continuous flow sections, and APA 3-line tables.
+* 🌿 **IASSSF International Journals:** Single-column layout in pure Cambria typography, strict 1-paragraph structured abstract (5 inline bold labels), CRediT taxonomy, Generative AI & ethics compliance, APA 7th bibliographies (>30 refs, zero IASSSF self-citation), author biographies box, and empirical "Anti-Hallucination" asset verification protocol.
 * 📚 **Undergraduate Theses & Dissertations (Skripsi):** 4-4-3-3 cm and 4-3-3-3 cm margins, formal chapter hierarchy, automated Table of Contents (TOC), and hanging indent bibliographies.
 * 💼 **Internship & Industrial Reports (Kerja Praktik / PKL):** Organizational hierarchies, SOPs, system implementation, and weekly activity records.
+* 🔬 **Lab Practicum & Module Workbooks (LKM):** Comprehensive academic monographs, official cover pages, native 2D equation matrices, and strict separation between brief reports and full module workbooks.
 * 📑 **Deep Multi-Format Document Ingestion:** Extracts text, tables, and structure from PDF, DOCX, XLSX, and PPTX via Microsoft MarkItDown.
 * 🖼️ **Asset Extraction:** Losslessly extracts embedded images and diagrams from Word, PowerPoint, Excel, and PDF files.
 * 🎯 **Guaranteed Word (`.docx`) Deliverables:** Compiles pristine OpenXML Word documents directly without manual formatting overhead.
@@ -172,6 +189,17 @@ git clone https://github.com/masdayat-555/office-cli-dayat.git ~/.agents/skills/
 #### 💻 Option 2: Terminal Command
 ```bash
 git clone https://github.com/masdayat-555/office-cli-dayat.git ~/.agents/skills/office-cli
+```
+
+---
+
+### 💡 Example Prompts
+```text
+"Draft an international manuscript for the IASSSF journal template with a 5-label structured abstract and author biography boxes..."
+```
+
+```text
+"Format this thesis document to university standards (4-3-3-3 cm margin, Times New Roman 12 pt, 1.25 line spacing)..."
 ```
 
 ---
