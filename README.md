@@ -2,8 +2,8 @@
 
 # 📄 Unified Office & Document Suite for AI Agents
 
-**Skill Pembuatan & Kecerdasan Dokumen Terlengkap untuk AI Coding Assistant.**  
-*Menyusun dokumen Word siap publikasi (SINTA, Scopus, IASSSF, Skripsi, Kerja Praktik) dan mengekstrak dokumen multi-format (PDF, Excel, Word, PPT) dengan format 100% presisi.*
+**Skill Pembuatan & Pengolahan Dokumen untuk AI Coding Assistant.**  
+*Membantu penyusunan dokumen Word sesuai pedoman (SINTA, Scopus, IASSSF, Skripsi, Kerja Praktik) serta ekstraksi dokumen multi-format (PDF, Excel, Word, PPT).*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/masdayat-555/office-cli-dayat)
@@ -24,7 +24,7 @@ Skill ini membekali asisten koding AI Anda (Antigravity, Cursor, Claude Code, Wi
 * 🎓 **Jurnal Terakreditasi SINTA 1–6:** Penyusunan naskah IMRaD baku, abstrak bilingual rapi, serta tabel ilmiah standar APA.
 * 🌐 **Jurnal Bereputasi Scopus Q1–Q4 & WoS:** Struktur extended IMRaD, analisis perbandingan state-of-the-art, dan kepatuhan standar publikasi global.
 * 🌿 **Jurnal Internasional IASSSF:** Format naskah resmi 1 kolom (Cambria), abstrak berstruktur, taksonomi peran CRediT, serta kelengkapan etika publikasi.
-* 📚 **Skripsi & Tugas Akhir:** Hierarki 5 bab standar perguruan tinggi, daftar isi otomatis, serta format tipografi dan sitasi presisi.
+* 📚 **Skripsi & Tugas Akhir:** Hierarki 5 bab standar perguruan tinggi, daftar isi otomatis, serta penataan tipografi dan sitasi yang konsisten.
 * 💼 **Laporan Kerja Praktik & Magang:** Format komprehensif profil mitra, alur kerja/SOP, logbook aktivitas mingguan, dan laporan teknis.
 * 🔬 **Laporan Praktikum & LKM:** Laporan kegiatan laboratorium, monograf modul praktikum, dan penyajian data eksperimen terstruktur.
 * 📑 **Ekstraksi Multi-Format:** Konversi cerdas berkas PDF, DOCX, XLSX, dan PPTX menjadi Markdown via Microsoft MarkItDown.
@@ -35,7 +35,7 @@ Skill ini membekali asisten koding AI Anda (Antigravity, Cursor, Claude Code, Wi
 
 ### 🚀 Cara Pemasangan (Instalasi)
 
-#### 💬 Opsi 1: Salin & Tempel Prompt ke AI Agent Anda (Paling Mudah)
+#### 💬 Opsi 1: Salin & Tempel Prompt ke AI Agent Anda (Praktis)
 Cukup salin dan tempel prompt di bawah ini langsung ke obrolan AI Assistant Anda (Antigravity, Cursor, Claude Code, Windsurf, dll.):
 
 ```text
@@ -147,7 +147,7 @@ office-cli/
 └── references/
     ├── pedoman_jurnal_sinta.md              # Panduan publikasi jurnal terakreditasi SINTA 1–6 (IMRaD baku)
     ├── pedoman_jurnal_scopus.md             # Panduan publikasi jurnal bereputasi Scopus Q1–Q4 & WoS
-    ├── pedoman_jurnal_iasssf.md             # Panduan naskah jurnal internasional IASSSF & protokol Anti-Sok Tau
+    ├── pedoman_jurnal_iasssf.md             # Panduan naskah jurnal internasional IASSSF & verifikasi data
     ├── pedoman_skripsi_lengkap.md           # Panduan lengkap skripsi & tugas akhir 5 bab standar nasional
     ├── pedoman_kerja_praktik.md             # Panduan laporan kerja praktik & magang industri lengkap
     ├── pedoman_laporan_praktikum.md         # Pedoman Laporan Praktikum (struktur bab, format cover)
@@ -168,7 +168,7 @@ office-cli/
 * 🎓 **SINTA 1–6 Accredited Journals:** Standard IMRaD structure, polished bilingual abstracts, and APA-compliant scientific tables.
 * 🌐 **Scopus Q1–Q4 & WoS Journals:** Extended IMRaD workflows, comparative state-of-the-art analysis, and international publication standards.
 * 🌿 **IASSSF International Journals:** Official single-column layout (Cambria), structured abstracts, CRediT author roles, and complete publication ethics declarations.
-* 📚 **Theses & Academic Dissertations:** Standard university chapter hierarchy, automated dynamic TOC, and precision typography & citations.
+* 📚 **Theses & Academic Dissertations:** Standard university chapter hierarchy, automated dynamic TOC, and consistent typography & citation formatting.
 * 💼 **Internship & Industrial Reports:** Comprehensive partner profiles, standard operating procedures, weekly logs, and technical outcomes.
 * 🔬 **Lab Reports & Practicum Modules:** Structured laboratory reports, academic module workbooks, and scientific data presentation.
 * 📑 **Multi-Format Document Ingestion:** Intelligent extraction of PDF, DOCX, XLSX, and PPTX to structured Markdown via Microsoft MarkItDown.
@@ -179,7 +179,7 @@ office-cli/
 
 ### 🚀 Installation
 
-#### 💬 Option 1: Copy-Paste Prompt to Your AI Agent (Easiest)
+#### 💬 Option 1: Copy-Paste Prompt to Your AI Agent (Quick)
 Paste this prompt into your AI Assistant chat:
 
 ```text
@@ -196,7 +196,7 @@ git clone https://github.com/masdayat-555/office-cli-dayat.git ~/.agents/skills/
 
 ### 💡 Example Prompts
 ```text
-"Draft an international manuscript for the IASSSF journal template with a 5-label structured abstract and author biography boxes..."
+"Draft an international manuscript for the IASSSF journal template with a structured abstract and author biography boxes..."
 ```
 
 ```text
