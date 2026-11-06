@@ -21,15 +21,15 @@
 ### ✨ Fitur Utama
 Skill ini membekali asisten koding AI Anda (Antigravity, Cursor, Claude Code, Windsurf, VS Code, Roo Code, dll.) dengan kapabilitas native untuk **membaca**, **mengekstrak**, dan **menyusun** dokumen perkantoran profesional:
 
-* 🎓 **Jurnal Terakreditasi SINTA 1–6:** Struktur IMRaD baku, garansi *Page 1 Fit* (seluruh abstrak bilingual tuntas di halaman 1), alur kontinu tanpa jeda halaman palsu, dan tabel ilmiah APA 3 garis horizontal.
-* 🌐 **Jurnal Internasional Bereputasi Scopus Q1–Q4 & WoS:** Extended IMRaD, matriks perbandingan penelitian terdahulu (*State-of-the-Art*), validasi statistik, integrasi ORCID, serta pernyataan etika data.
-* 🌿 **Jurnal Ilmiah Internasional IASSSF:** Format 1 kolom penuh (*single-column*), tipografi Cambria murni, abstrak berstruktur 1 alinea (5 label tebal: *Background, Methods, Findings, Conclusion, Novelty*), pembagian peran CRediT, kepatuhan etika & AI Generatif, referensi APA 7th Edition (>30 sitasi tanpa sitasi-diri), tabel biodata penulis (*author biographies*), serta protokol verifikasi data & aset "Anti-Sok Tau".
-* 📚 **Skripsi & Tugas Akhir Standar Perguruan Tinggi:** Format margin 4-4-3-3 cm dan variasi teknik 4-3-3-3 cm, spasi 1.25x / 1.5x, penomoran formal BAB (Heading 1-3), daftar isi otomatis (*dynamic TOC*), Intisari 3 alinea presisi, dan daftar pustaka *hanging indent*.
-* 💼 **Laporan Kerja Praktik (KP), PKL, & Magang Industri:** Profil & struktur organisasi mitra, uraian SOP kerja, pelaksanaan fitur sistem, pengendalian mutu (*quality control*), dan logbook mingguan.
-* 🔬 **Laporan Praktikum & LKM (Lembar Kegiatan Mahasiswa):** Format monograf praktikum lengkap, cover resmi, penomoran desimal rapi, rumus matriks 2D native, serta pemisahan tegas antara laporan umum, LHP singkat, dan LKM modul numerik.
-* 📑 **Ekstraksi Dokumen Multi-Format:** Mengonversi PDF, DOCX, XLSX, dan PPTX menjadi Markdown terstruktur untuk penalaran AI via Microsoft MarkItDown.
-* 🖼️ **Ekstraksi Aset Gambar & Bagan:** Mengambil seluruh gambar asli dari Word (DOCX), slide PowerPoint (PPTX), tabel Excel (XLSX), dan PDF dalam resolusi 100% asli tanpa kompresi.
-* 🎯 **Garansi Output Word Asli (`.docx`):** Menghasilkan deliverable berkas Word murni menggunakan OfficeCLI secara rapi, bukan sekadar file teks Markdown.
+* 🎓 **Jurnal Terakreditasi SINTA 1–6:** Penyusunan naskah IMRaD baku, abstrak bilingual rapi, serta tabel ilmiah standar APA.
+* 🌐 **Jurnal Bereputasi Scopus Q1–Q4 & WoS:** Struktur extended IMRaD, analisis perbandingan state-of-the-art, dan kepatuhan standar publikasi global.
+* 🌿 **Jurnal Internasional IASSSF:** Format naskah resmi 1 kolom (Cambria), abstrak berstruktur, taksonomi peran CRediT, serta kelengkapan etika publikasi.
+* 📚 **Skripsi & Tugas Akhir:** Hierarki 5 bab standar perguruan tinggi, daftar isi otomatis, serta format tipografi dan sitasi presisi.
+* 💼 **Laporan Kerja Praktik & Magang:** Format komprehensif profil mitra, alur kerja/SOP, logbook aktivitas mingguan, dan laporan teknis.
+* 🔬 **Laporan Praktikum & LKM:** Laporan kegiatan laboratorium, monograf modul praktikum, dan penyajian data eksperimen terstruktur.
+* 📑 **Ekstraksi Multi-Format:** Konversi cerdas berkas PDF, DOCX, XLSX, dan PPTX menjadi Markdown via Microsoft MarkItDown.
+* 🖼️ **Ekstraksi Aset Visual:** Pengambilan gambar, bagan, dan diagram asli dari berbagai format dokumen dalam resolusi penuh.
+* 🎯 **Output Word Asli (`.docx`):** Pembuatan dokumen OpenXML murni yang rapi dan siap pakai menggunakan OfficeCLI.
 
 ---
 
@@ -62,7 +62,7 @@ Setelah terpasang, Anda tidak perlu menghafal perintah yang rumit. Cukup berikan
 ```
 
 ```text
-"Susun naskah artikel jurnal internasional untuk template IASSSF dengan abstrak terstruktur 5 label dan tabel biodata penulis..."
+"Susun draf naskah artikel jurnal internasional untuk template IASSSF lengkap dengan abstrak berstruktur dan tabel biodata penulis..."
 ```
 
 ```text
@@ -165,14 +165,15 @@ office-cli/
 ### ✨ Overview
 **Unified Office & Document Suite** empowers your AI coding assistants (Antigravity, Cursor, Claude Code, Windsurf, VS Code, Roo Code, etc.) with native capabilities to **ingest**, **extract**, and **author** professional office documents:
 
-* 🎓 **SINTA 1–6 & Scopus Journals:** Fully compliant IMRaD workflows, Page 1 Fit abstracts, continuous flow sections, and APA 3-line tables.
-* 🌿 **IASSSF International Journals:** Single-column layout in pure Cambria typography, strict 1-paragraph structured abstract (5 inline bold labels), CRediT taxonomy, Generative AI & ethics compliance, APA 7th bibliographies (>30 refs, zero IASSSF self-citation), author biographies box, and empirical "Anti-Hallucination" asset verification protocol.
-* 📚 **Undergraduate Theses & Dissertations (Skripsi):** 4-4-3-3 cm and 4-3-3-3 cm margins, formal chapter hierarchy, automated Table of Contents (TOC), and hanging indent bibliographies.
-* 💼 **Internship & Industrial Reports (Kerja Praktik / PKL):** Organizational hierarchies, SOPs, system implementation, and weekly activity records.
-* 🔬 **Lab Practicum & Module Workbooks (LKM):** Comprehensive academic monographs, official cover pages, native 2D equation matrices, and strict separation between brief reports and full module workbooks.
-* 📑 **Deep Multi-Format Document Ingestion:** Extracts text, tables, and structure from PDF, DOCX, XLSX, and PPTX via Microsoft MarkItDown.
-* 🖼️ **Asset Extraction:** Losslessly extracts embedded images and diagrams from Word, PowerPoint, Excel, and PDF files.
-* 🎯 **Guaranteed Word (`.docx`) Deliverables:** Compiles pristine OpenXML Word documents directly without manual formatting overhead.
+* 🎓 **SINTA 1–6 Accredited Journals:** Standard IMRaD structure, polished bilingual abstracts, and APA-compliant scientific tables.
+* 🌐 **Scopus Q1–Q4 & WoS Journals:** Extended IMRaD workflows, comparative state-of-the-art analysis, and international publication standards.
+* 🌿 **IASSSF International Journals:** Official single-column layout (Cambria), structured abstracts, CRediT author roles, and complete publication ethics declarations.
+* 📚 **Theses & Academic Dissertations:** Standard university chapter hierarchy, automated dynamic TOC, and precision typography & citations.
+* 💼 **Internship & Industrial Reports:** Comprehensive partner profiles, standard operating procedures, weekly logs, and technical outcomes.
+* 🔬 **Lab Reports & Practicum Modules:** Structured laboratory reports, academic module workbooks, and scientific data presentation.
+* 📑 **Multi-Format Document Ingestion:** Intelligent extraction of PDF, DOCX, XLSX, and PPTX to structured Markdown via Microsoft MarkItDown.
+* 🖼️ **Visual Asset Extraction:** Lossless extraction of embedded diagrams, figures, and charts across document formats in full resolution.
+* 🎯 **Native Word (`.docx`) Generation:** Clean, production-ready OpenXML document compilation powered by OfficeCLI.
 
 ---
 
