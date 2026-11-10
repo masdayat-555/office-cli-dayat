@@ -32,6 +32,8 @@ Skill ini membekali asisten koding AI Anda (Antigravity, Cursor, Claude Code, Wi
 * 📑 **Ekstraksi Multi-Format:** Konversi cerdas berkas PDF, DOCX, XLSX, dan PPTX menjadi Markdown via Microsoft MarkItDown.
 * 🖼️ **Ekstraksi Aset Visual:** Pengambilan gambar, bagan, dan diagram asli dari berbagai format dokumen dalam resolusi penuh.
 * 🏷️ **Zotero Headless (Tool Sitasi & Referensi Otomatis):** Manajemen referensi dan sitasi otomatis secara senyap (*headless*) menggunakan pustaka `pyzotero`, verifikasi metadata kanonikal CrossRef, pengunggahan berkas PDF fisik ke cloud library, serta injeksi *field code* Word native (`ADDIN ZOTERO_ITEM` dan `ADDIN ZOTERO_BIBL`) tanpa membuka GUI Zotero.
+* 🌐 **Academic Translation & Rewriting Engine (Scopus Q1 & EYD V):** Doktrin *Translation as Rewriting* untuk artikel jurnal dan buku teks akademik. Mengintegrasikan 18 modul fungsional *Manchester Academic Phrasebank*, pemotongan semantik buku panjang (1.500–2.500 kata & `GLOSSARY.json`), eliminasi kata klise bot AI (*delve*, *pivotal*, *tapestry*, dll.), serta linter deterministik otomatis (`linter_akademis_en.py` & `linter_tata_bahasa_id.py`).
+* 🛡️ **DOCX OpenXML & Zotero Guard:** Skrip verifikasi zero-dependency (`docx_zotero_guard.py`) yang menjamin keutuhan 100% field code sitasi Zotero/Mendeley (`ADDIN ZOTERO_ITEM`) dan rumus native Word Equation (`<m:oMath>`) saat teks dialihbahasakan atau disunting.
 * 🎯 **Output Word Asli (`.docx`):** Pembuatan dokumen OpenXML murni yang rapi dan siap pakai menggunakan OfficeCLI.
 
 ---
@@ -155,7 +157,10 @@ office-cli/
 │   ├── zotero_headless_sync.py              # CLI & Engine sinkronisasi Zotero Cloud Headless & field code Word
 │   ├── zotero_clean_metadata.py             # Pipeline pembersihan metadata CrossRef kanonikal & normalisasi
 │   ├── mendeley_setup.py                    # Otentikasi & inisialisasi API Mendeley Desktop
-│   └── mendeley_upload.py                   # Engine sinkronisasi metadata sitasi & PDF ke Mendeley
+│   ├── mendeley_upload.py                   # Engine sinkronisasi metadata sitasi & PDF ke Mendeley
+│   ├── linter_akademis_en.py                # Linter deterministik bahasa Inggris ilmiah & eliminasi AI slop (delve, etc.)
+│   ├── linter_tata_bahasa_id.py             # Linter deterministik tata bahasa Indonesia baku EYD V & pleonasme
+│   └── docx_zotero_guard.py                 # Pelindung tokenisasi field codes Zotero & OMML formula pada DOCX
 ├── templates/
 │   ├── template_jurnal_sinta.docx           # Master template universal Jurnal OJS SINTA
 │   ├── Template IASSSF.docx                 # Master template resmi Jurnal Internasional IASSSF (Cambria, 1-Kolom)
@@ -175,7 +180,12 @@ office-cli/
     ├── pedoman_surat_insentif.md            # Pedoman penyusunan surat permohonan insentif resmi
     ├── panduan_integrasi_zotero_headless.md # Panduan setup API Zotero, .env, CLI satu baris, dan injeksi Word
     ├── resep_officecli_dokumen_ilmiah.md    # Resep batch JSON teknis OfficeCLI (Resep 1–12)
-    └── aturan_adaptif_pedoman_kampus.md     # Mesin adaptasi & matriks komparatif dokumen institusi
+    ├── aturan_adaptif_pedoman_kampus.md     # Mesin adaptasi & matriks komparatif dokumen institusi
+    ├── pedoman_bahasa_indonesia.md          # Dokumen induk EYD V, kalimat efektif, eliminasi kata mubazir/slop ID
+    ├── pedoman_bahasa_inggris.md            # Dokumen induk Scopus Q1 register, tenses IMRaD, blacklist AI buzzwords
+    ├── phrasebank_manchester.md             # Rangkuman indeks & panduan navigasi 18 modul Manchester Phrasebank
+    ├── phrasebank/                          # Direktori 18 modul frasa fungsional lengkap Manchester Academic Phrasebank
+    └── metodologi_penerjemahan.md           # Doktrin Translation as Rewriting, chunking buku, dan glossary locking
 ```
 
 ---
@@ -195,6 +205,8 @@ office-cli/
 * 📑 **Multi-Format Document Ingestion:** Intelligent extraction of PDF, DOCX, XLSX, and PPTX to structured Markdown via Microsoft MarkItDown.
 * 🖼️ **Visual Asset Extraction:** Lossless extraction of embedded diagrams, figures, and charts across document formats in full resolution.
 * 🏷️ **Zotero Headless Citation Engine:** Automated, background reference and citation management via `pyzotero`, canonical CrossRef metadata normalization, cloud PDF attachment uploads, and native Word OpenXML field code injection (`ADDIN ZOTERO_ITEM` and `ADDIN ZOTERO_BIBL`) without opening the Zotero GUI.
+* 🌐 **Academic Translation & Rewriting Engine (Scopus Q1 & EYD V):** "Translation as Rewriting" doctrine for academic papers and textbooks. Integrates 18 functional modules from the *Manchester Academic Phrasebank*, book-length semantic chunking (1,500–2,500 words with persistent `GLOSSARY.json`), strict AI buzzword elimination (*delve*, *pivotal*, *tapestry*, *realm*), and automated deterministic linters (`linter_akademis_en.py` & `linter_tata_bahasa_id.py`).
+* 🛡️ **DOCX OpenXML & Zotero Asset Guard:** Zero-dependency OpenXML inspector and verifier (`docx_zotero_guard.py`) ensuring 100% preservation of active Zotero/Mendeley citation field codes (`ADDIN ZOTERO_ITEM`) and native Word OMML math equations (`<m:oMath>`) during editing and translation.
 * 🎯 **Native Word (`.docx`) Generation:** Clean, production-ready OpenXML document compilation powered by OfficeCLI.
 
 ---

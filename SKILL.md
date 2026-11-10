@@ -1,6 +1,6 @@
 ---
 name: office-cli
-description: Unified Document Suite for AI Agents. Fast multi-format extraction to Markdown via Microsoft MarkItDown, programmatic authoring/manipulation of Microsoft Office documents (Word, Excel, PowerPoint) via OfficeCLI, and validated automated reference management via Zotero Headless (pyzotero, canonical CrossRef, native Word field codes) and Mendeley Desktop with PDF identity pre-check protocol.
+description: Unified Document & Academic Suite for AI Agents. Fast multi-format extraction via Microsoft MarkItDown, programmatic authoring/manipulation via OfficeCLI, validated automated reference management via Zotero Headless & Mendeley, and Scopus/EYD-compliant Academic Translation & Rewriting Engine (Manchester Phrasebank, Anti-AI Slop, Book Chunking, and OpenXML citation protection).
 ---
 
 # Unified Office & Document Suite (MarkItDown + OfficeCLI + Zotero Headless + Mendeley)
@@ -53,7 +53,10 @@ office-cli/
 │   ├── zotero_clean_metadata.py             # Pipeline pembersih metadata kanonikal CrossRef & normalisasi Title Case
 │   ├── zotero_headless_sync.py              # Engine sinkronisasi headless Zotero Cloud via PyZotero (Anti-Halu)
 │   ├── mendeley_setup.py                    # Setup otentikasi Mendeley OAuth2
-│   └── mendeley_upload.py                   # Pengunggah metadata PDF ke Mendeley
+│   ├── mendeley_upload.py                   # Pengunggah metadata PDF ke Mendeley
+│   ├── linter_akademis_en.py                # Linter deterministik bahasa Inggris ilmiah & eliminasi AI slop (delve, etc.)
+│   ├── linter_tata_bahasa_id.py             # Linter deterministik tata bahasa Indonesia baku EYD V & pleonasme
+│   └── docx_zotero_guard.py                 # Pelindung tokenisasi field codes Zotero & OMML formula pada DOCX
 ├── templates/
 │   ├── template_jurnal_sinta.docx           # Master template OJS SINTA (A4, 1-inch, Page 1 Fit, APA Table)
 │   ├── template_laporan_tugas_akhir.docx    # Master template Skripsi / TA (A4, 4-3-3-3 cm, 5 Bab)
@@ -71,7 +74,12 @@ office-cli/
     ├── pedoman_laporan_praktikum.md         # Pedoman Laporan Praktikum (struktur bab, format cover)
     ├── pedoman_lkm_metode_numerik.md        # Pedoman LKM Metode Numerik (monograf 5 bab, pola mahasiswa BAB IV)
     ├── resep_officecli_dokumen_ilmiah.md    # Resep batch JSON OfficeCLI siap pakai
-    └── aturan_adaptif_pedoman_kampus.md     # Protokol adaptif penyesuaian aturan lokal institusi
+    ├── aturan_adaptif_pedoman_kampus.md     # Protokol adaptif penyesuaian aturan lokal institusi
+    ├── pedoman_bahasa_indonesia.md          # Dokumen induk EYD V, kalimat efektif, eliminasi kata mubazir/slop ID
+    ├── pedoman_bahasa_inggris.md            # Dokumen induk Scopus Q1 register, tenses IMRaD, blacklist AI buzzwords
+    ├── phrasebank_manchester.md             # Rangkuman indeks & panduan navigasi 18 modul Manchester Phrasebank
+    ├── phrasebank/                          # Direktori 18 modul frasa fungsional lengkap Manchester Academic Phrasebank
+    └── metodologi_penerjemahan.md           # Doktrin Translation as Rewriting, chunking buku, dan glossary locking
 ```
 
 ---
@@ -913,3 +921,83 @@ Setiap tugas yang membutuhkan iterasi berulang (seperti mencoba mengunduh puluha
        - Integrasi Zotero/Mendeley: wajib menggunakan field kode aktif Word (`ADDIN ZOTERO_ITEM` dan `ADDIN ZOTERO_BIBL`) dengan hanging indent 567 twips.
     16. **Bagian Belakang Wajib (*Unnumbered Back Matter*)**: Acknowledgement, Author Contribution (CRediT), Funding, Ethical Review Board Statement, Informed Consent Statement, Data Availability Statement, Conflicts of Interest, Declaration of Generative AI Use, Open Access (CC-BY 4.0), References, dan Biographies of Author(s) (kotak tabel 1 sel berbingkai, foto + narasi maks 100 kata, Email, ORCID, WoS ID, Scopus ID, Homepage).
     17. **🚨 PROTOKOL "ANTI-SOK TAU" & VERIFIKASI ASSET**: Dilarang mengarang data, tanggal editorial, nomor etik, hibah, ID peneliti, atau sitasi luar secara sepihak. Kekurangan asset/metadata wajib ditandai `[TODO: USER ACTION REQUIRED]` dan disajikan dalam laporan audit transparan.
+
+---
+
+## 11. ENGINE PENERJEMAHAN & PENULISAN AKADEMIK INTERNASIONAL (SCOPUS & EYD V)
+
+Selain menangani struktur biner dan otomasi dokumen Office, skill ini dilengkapi dengan engine linguistik akademik komprehensif untuk menyusun, menyunting, dan menerjemahkan naskah ilmiah (Paper Jurnal Scopus/SINTA, Tesis, dan Buku Akademik) dengan standar kebahasaan tertinggi.
+
+```mermaid
+flowchart TD
+    A["Naskah Draf Sumber (ID / EN)"] --> B["Tahap 1: Lead Academic Rewriter<br/>(Bongkar klausa majemuk, nominalisasi padat, bebas translationese)"]
+    B --> C["Tahap 2: Critical Peer Reviewer<br/>(Audit tenses IMRaD, periksa makna empiris, basmi AI slop)"]
+    C --> D["Tahap 3: Polish & Manchester Phrasebank<br/>(Perhalus transisi, cadence alami, rujukan modul Phrasebank)"]
+    D --> E["Tahap 4: Verifikasi Deterministik Non-LLM<br/>(Eksekusi linter_akademis_en.py / linter_tata_bahasa_id.py)"]
+    E --> F["Naskah Akhir Siap Submit Jurnal / Terbit Buku"]
+```
+
+### 11.1 Doktrin Utama: "Translation as Academic Rewriting"
+Penerjemahan karya ilmiah dan buku akademik **BUKAN** alih-kata harfiah (*word-by-word*). Terjemahan harfiah selalu melahirkan teks kaku (*translationese*) yang mempertahankan pola pikir bahasa asal.
+- **Pola Bahasa Indonesia:** Cenderung kontekstual, sirkular, verbal (*"Untuk mengetahui pengaruh..."*), dan dipenuhi anak kalimat bertingkat dengan koma berulang.
+- **Pola Bahasa Inggris Akademik:** Wajib linier, deduktif, langsung ke sasaran (*direct & concise*), padat nomina (*"To evaluate the influence of..."*), dan membatasi klausa majemuk maksimal 2 tingkat per kalimat.
+
+### 11.2 Alur Kerja 3-Tahap Multi-Peran (Multi-Role Pipeline)
+Setiap tugas penerjemahan naskah ilmiah **WAJIB** melalui tiga tahap evaluasi:
+1. **Tahap 1: Lead Academic Rewriter:**
+   - Menangkap esensi argumen, metodologi, dan data kuantitatif.
+   - Membongkar kalimat panjang majemuk (>30 kata) menjadi 2–3 kalimat mandiri yang padat dan tegas.
+   - Mengubah kata kerja bertingkat menjadi struktur nominalisasi akademik yang elegan.
+2. **Tahap 2: Critical Peer Reviewer:**
+   - Memverifikasi kepatuhan tenses IMRaD: *Past Simple Passive* untuk Metode dan Hasil, *Present Simple* untuk teori mapan dan interpretasi Diskusi.
+   - Mengeliminasi seluruh kata klise bot AI (*AI vocabulary blacklist*: `delve`, `pivotal`, `tapestry`, `realm`, `foster`, `underscore`, `leverage`, `seamless`).
+   - Memeriksa keutuhan angka, desimal (titik bukan koma), dan penulisan satuan metrik SI.
+3. **Tahap 3: Polish Editor & Manchester Phrasebank Integration:**
+   - Menyelaraskan sambungan kalimat dengan frasa resmi Manchester Academic Phrasebank.
+   - Memastikan ritme kalimat (*cadence*) mengalir alami tanpa ada kesan hasil terjemahan mesin.
+
+### 11.3 Peta Routing Referensi Cerdas (Progressive Disclosure)
+Agen **DILARANG** memuat seluruh aturan sekaligus ke dalam context window. Panggil modul spesifik yang dibutuhkan via `read_file`:
+- **Jika Menulis/Menyunting Bahasa Indonesia:** Baca [`pedoman_bahasa_indonesia.md`](file:///C:/Users/masdayat/.gemini/config/skills/office-cli/references/pedoman_bahasa_indonesia.md) untuk rujukan EYD V, eliminasi kalke (*di mana, yang mana, memainkan peran penting*), penghapusan pleonasme, dan glosarium baku KBBI.
+- **Jika Menulis/Menerjemahkan ke Bahasa Inggris:** Baca [`pedoman_bahasa_inggris.md`](file:///C:/Users/masdayat/.gemini/config/skills/office-cli/references/pedoman_bahasa_inggris.md) untuk standar Scopus Q1, anatomi IMRaD tenses, dan larangan pronomina personal.
+- **Jika Membutuhkan Frasa Retorika Akademis:** Baca indeks [`phrasebank_manchester.md`](file:///C:/Users/masdayat/.gemini/config/skills/office-cli/references/phrasebank_manchester.md), lalu buka modul spesifik di folder [`phrasebank/`](file:///C:/Users/masdayat/.gemini/config/skills/office-cli/references/phrasebank/) (misal: `phrasebank/describing-methods.md`, `phrasebank/discussing-findings.md`, atau `phrasebank/using-cautious-language.md`).
+- **Jika Menangani Naskah Buku Utuh / Dokumen Panjang:** Baca [`metodologi_penerjemahan.md`](file:///C:/Users/masdayat/.gemini/config/skills/office-cli/references/metodologi_penerjemahan.md).
+
+### 11.4 Protokol Penerjemahan Dokumen Panjang & Buku (`translate-book`)
+1. **Pemotongan Semantik (*Semantic Chunking*):**
+   - Naskah buku atau monograf wajib dipotong menjadi segmen berukuran **1.500 hingga 2.500 kata**.
+   - Dilarang keras memotong di tengah paragraf, baris tabel, atau formula matematika. Pemotongan wajib pada batas sub-bab (*Heading 2 / Heading 3*).
+2. **Penguncian Glosarium (`GLOSSARY.json`):**
+   - Sebelum memproses Bab 1, agen wajib membuat atau meminta konfirmasi berkas kamus istilah kunci `GLOSSARY.json`.
+   - Istilah yang sudah dipetakan di Bab 1 dilarang dialihbahasakan dengan sinonim berbeda di bab-bab berikutnya guna menjaga konsistensi naskah.
+
+### 11.5 Proteksi Integritas Sitasi Zotero & Persamaan OMML (`docx_zotero_guard.py`)
+> [!CAUTION]
+> **DILARANG KERAS MENYUNTING/MENERJEMAHKAN FIELD CODE ZOTERO SECARA MENTAH!**
+> Naskah Word memuat field code biner (`ADDIN ZOTERO_ITEM`) dan persamaan matematika native (`<m:oMath>`). Menerjemahkan teks mentah tanpa proteksi akan menghapus sitasi Word.
+
+1. **Inspeksi Awal:**
+   ```powershell
+   python scripts/docx_zotero_guard.py --inspect "naskah.docx"
+   ```
+2. **Penyuntingan Aman:**
+   Gunakan placeholder token `[[ZOTERO_REF_xxx]]` dan `[[MATH_EQ_xxx]]` saat melakukan restrukturisasi teks, lalu pulihkan struktur OpenXML aslinya via OfficeCLI.
+3. **Verifikasi Akhir Integritas:**
+   ```powershell
+   python scripts/docx_zotero_guard.py --verify "naskah_sumber.docx" "naskah_hasil.docx"
+   ```
+   *Jika verifikasi gagal (sitasi atau rumus berkurang), proses revisi wajib diulang hingga 100% cocok.*
+
+### 11.6 Validasi Otomatis via Linter Deterministik
+Sebelum menyerahkan naskah akhir kepada pengguna, agen **WAJIB** mengeksekusi skrip linter deterministik:
+- **Untuk Naskah Bahasa Inggris:**
+  ```powershell
+  python scripts/linter_akademis_en.py --file "scratch/naskah_terjemahan.md"
+  ```
+  *(Memastikan 0 kata klise AI, tidak ada koma desimal, dan tidak ada pelanggaran personal pronoun).*
+- **Untuk Naskah Bahasa Indonesia:**
+  ```powershell
+  python scripts/linter_tata_bahasa_id.py --file "scratch/naskah_indonesia.md"
+  ```
+  *(Memastikan 0 kata tidak baku EYD V, 0 pleonasme, dan 0 pembuka robotik AI).*
+
