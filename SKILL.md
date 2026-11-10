@@ -1,11 +1,11 @@
 ---
 name: office-cli
-description: Unified Document Suite for AI Agents. Fast multi-format extraction to Markdown via Microsoft MarkItDown, programmatic authoring/manipulation of Microsoft Office documents (Word, Excel, PowerPoint) via OfficeCLI, and validated reference management via Mendeley Desktop with PDF identity pre-check protocol.
+description: Unified Document Suite for AI Agents. Fast multi-format extraction to Markdown via Microsoft MarkItDown, programmatic authoring/manipulation of Microsoft Office documents (Word, Excel, PowerPoint) via OfficeCLI, and validated automated reference management via Zotero Headless (pyzotero, canonical CrossRef, native Word field codes) and Mendeley Desktop with PDF identity pre-check protocol.
 ---
 
-# Unified Office & Document Suite (MarkItDown + OfficeCLI + Mendeley)
+# Unified Office & Document Suite (MarkItDown + OfficeCLI + Zotero Headless + Mendeley)
 
-Skill ini merupakan ekosistem terpadu untuk penanganan dokumen digital bagi AI coding agent. Mengintegrasikan kemampuan **ekstraksi cerdas multi-format ke Markdown** menggunakan **Microsoft MarkItDown**, **pembuatan/manipulasi dokumen Office native** menggunakan **OfficeCLI**, serta **manajemen referensi tervalidasi** menggunakan **Mendeley Desktop**, dengan kepatuhan penuh terhadap standar publikasi ilmiah nasional terakreditasi **SINTA (SINTA 1–6)**, jurnal internasional **Scopus (Q1–Q4)**, serta laporan akademik formal (Skripsi, Tesis, Kerja Praktik).
+Skill ini merupakan ekosistem terpadu untuk penanganan dokumen digital bagi AI coding agent. Mengintegrasikan kemampuan **ekstraksi cerdas multi-format ke Markdown** menggunakan **Microsoft MarkItDown**, **pembuatan/manipulasi dokumen Office native** menggunakan **OfficeCLI**, serta **manajemen referensi tervalidasi otomatis** menggunakan **Zotero Headless** (pustaka `pyzotero`, penormalan metadata CrossRef, dan injeksi field code Word native) serta **Mendeley Desktop**, dengan kepatuhan penuh terhadap standar publikasi ilmiah nasional terakreditasi **SINTA (SINTA 1–6)**, jurnal internasional **Scopus (Q1–Q4)**, serta laporan akademik formal (Skripsi, Tesis, Kerja Praktik).
 
 ---
 
@@ -109,6 +109,7 @@ Untuk mencegah degradasi tata letak dan konflik fungsional, skill ini membagi ta
 | **Microsoft MarkItDown** | [microsoft/markitdown](https://github.com/microsoft/markitdown) | `markitdown --version`<br>atau `python -m markitdown --version` | `pip install markitdown`<br>*(opsional: `pip install markitdown[all]`)* |
 | **OfficeCLI** | [officecli.ai](https://officecli.ai) / [github.com/officecli](https://github.com/officecli) | `officecli --version` | **Windows PowerShell:**<br>`irm https://d.officecli.ai/install.ps1 \| iex`<br>**Linux / macOS (Bash):**<br>`curl -fsSL https://d.officecli.ai/install.sh \| bash` |
 | **PyMuPDF (`pymupdf`)** | [pymupdf/PyMuPDF](https://github.com/pymupdf/PyMuPDF) | `python -c "import pymupdf; print(pymupdf.__version__)"` | `pip install pymupdf` *(engine utama rendering PDF & ekstraksi gambar hi-res)* |
+| **PyZotero (`pyzotero`)** | [urschrei/pyzotero](https://github.com/urschrei/pyzotero) | `python -c "import pyzotero; print(pyzotero.__version__)"` | `pip install pyzotero` *(engine utama manajemen referensi Zotero Headless)* |
 | **pypdf** *(On-Demand)* | [py-pdf/pypdf](https://github.com/py-pdf/pypdf) | `python -c "import pypdf; print(pypdf.__version__)"` | `pip install pypdf` *(fallback ekstraksi gambar PDF)* |
 | **docx2pdf** *(LMS Export)*| [AlJohri/docx2pdf](https://github.com/AlJohri/docx2pdf) | `python -c "import docx2pdf"` | `pip install docx2pdf` *(khusus konversi akhir DOCX ke PDF)* |
 
@@ -299,6 +300,12 @@ Ketika mentransformasikan draf ke dalam naskah jurnal Word resmi, agen **WAJIB**
 | **Skema Pendanaan Kampus (Reimbursement)** | Menganggap penelitian mahasiswa/dosen tanpa hibah eksternal sebagai "tanpa dana" (*no external funding*) atau mengarang nomor kontrak hibah fiktif. | Menghilangkan pengakuan institusi kampus yang mendanai riset melalui skema penggantian biaya (*reimbursement*). | **Format pendanaan kampus internal secara jujur**: Cantumkan pendanaan Fakultas/Universitas melalui skema penggantian biaya (*reimbursement*) riset dan pembinaan kompetisi mahasiswa pada bagian *Funding* dan *Acknowledgment*. |
 | **Kunci Berkas Word (File Lock Resiliency)** | Menyimpan file `.docx` langsung tanpa penanganan eksepsi saat file sedang dibuka oleh pengguna di Microsoft Word. | Memicu `PermissionError: [Errno 13] Permission denied`, skrip kompilasi crash dan dokumen gagal tersimpan. | **Bungkus selalu `doc.save()` dalam try-except**: Jika terkena `PermissionError`, otomatis simpan ke nama berkas cadangan (`*_Rev1.docx`, `*_Rev2.docx`), lalu beri tahu pengguna bahwa dokumen utama sedang terkunci di Word. |
 | **Encoding Konsol Windows cp1252** | Mencetak karakter Unicode (seperti karakter Yunani `σ`, `ŷ`, atau tanda kutip tipografis) langsung ke konsol Windows cp1252. | Memicu `UnicodeEncodeError: 'charmap' codec can't encode character`, menggagalkan jalannya skrip otomatisasi. | Pasang `sys.stdout.reconfigure(encoding='utf-8')` di bagian atas seluruh skrip Python otomatisasi dokumen. |
+| **Metodologi Riset Rekayasa (DSRM vs SDLC/Borg&Gall)** | Menggunakan metodologi software development (Waterfall, Agile, SDLC) atau R&D pendidikan (Borg & Gall, Sugiyono, ADDIE, 4D) pada paper keteknikan/rekayasa perangkat keras/sistem cerdas AI. | Dinilai "salah kamar" / klise skripsi S1 lokal, memicu penolakan desk review / reviewer Scopus & SINTA 1–3 karena tidak memiliki kontribusi epistemologis ilmiah. | **Gunakan Design Science Research Methodology (DSRM - Peffers et al., 2007)** sebagai pakem baku internasional perancangan artifak rekayasa/sistem cerdas (atau standar ISO/IEC/IEEE 15288). Petakan secara eksplisit 6 tahapan: (1) Problem identification & motivation, (2) Objectives of a solution, (3) Design & development, (4) Demonstration, (5) Evaluation, dan (6) Communication. |
+| **Protokol Citra Asli (Anti-Kompresi Ganda)** | Mengekstrak gambar dari PDF draf lama atau dokumen yang sudah mengalami kompresi lossy berulang (*downsampling*). | Gambar diagram, skema hardware, dan plot kurva menjadi buram/pecah (teks tidak terbaca), memicu penolakan reviewer jurnal bereputasi. | **Wajib telusuri master asset asli di repositori**: Ambil berkas ekspor master asli (PNG/SVG 2000–5000 px, matplotlib DPI $\ge 300$, draw.io mentah) di subfolder proyek sebelum disisipkan ke Word. Pertahankan aspect ratio dan injeksikan High-Fidelity XML (`w14:defaultImageDpi=0`, `doNotCompressPNG`). |
+| **Pencocokan Gambar Tepat Sasaran (Anti-Off-by-One)** | Menamai berkas gambar atau memetakan slot gambar hanya berdasarkan perkiraan urutan nomor tanpa validasi visual konten. | Gambar tertukar (*off-by-one error*), misal diagram blok tertukar dengan foto instalasi lapangan atau plot evaluasi. | **Wajib verifikasi visual dan buat matriks pemetaan nomor figur**: Cocokkan nomor figur (`Fig. X`) $\leftrightarrow$ konten visual gambar $\leftrightarrow$ caption teks di naskah sebelum dikompilasi. |
+| **Kaidah Aspek Rasio Gambar Tata Letak 1 Kolom** | Menyeragamkan lebar semua gambar (misal semua `width=Inches(5.0)`) tanpa memedulikan rasio aspek tinggi-lebar gambar. | Gambar alur vertikal yang tinggi menjadi raksasa (tinggi > 8 inci) dan memaksa pemborosan halaman kosong (*blank orphan page*), sedangkan grafik horizontal menjadi kekecilan. | **Terapkan aturan proporsional sesuai rasio aspek (W/H)**: Gambar vertikal ramping (W/H 0.45–0.60) batasi lebar ke 2.1–2.7 in (tinggi 4.5–5.3 in); gambar horizontal lebar (W/H 1.6–1.8) gunakan lebar 4.5–5.2 in (tinggi 2.8–3.0 in); gambar seimbang/persegi gunakan lebar 3.2–4.0 in. |
+| **Sinkronisasi Zotero Headless Cepat (Single-Command)** | Mengharuskan pengguna mengoperasikan GUI Zotero manual atau membuat skrip kustom berulang setiap kali ada referensi baru. | Otomatisasi lambat, referensi tidak tersinkronisasi ke Cloud Zotero, dan field code Word terputus. | **Panggil langsung skrip headless bawaan skill**: Jalankan `python ~/.gemini/config/skills/office-cli/scripts/zotero_headless_sync.py --upload-pdf "<path>" --doi "<doi>" --collection "<nama>"`. Skrip otomatis menarik CrossRef kanonikal, membuat item, mengunggah PDF attachment, memperbarui `zotero_item_keys.json`, dan mencetak XML field code native. |
+| **Lokasi Bodynote & Pembaruan Daftar Pustaka Sinkron** | Menyisipkan sitasi metodologi baru tanpa bodynote eksplisit di batang tubuh atau lupa memperbarui daftar pustaka di halaman belakang. | Naskah tidak konsisten antara teks dan bibliografi, sitasi tampak seperti tempelan tanpa dasar tekstual. | **Sematkan bodynote langsung di kalimat pembuka seksi Metode** (seperti Section 2 Methods), cantumkan 6 fase DSRM, dan perbarui daftar pustaka secara alfabetis (A–Z) APA 7th dengan hyperlink biru aktif DOI. |
 
 ---
 
@@ -672,6 +679,46 @@ Saat agen menyusun berkas Word, agen menyematkan struktur OpenXML Field Code res
 - Dokumen Word yang dihasilkan terhubung 100% secara resmi ke database Zotero pengguna.
 - Ketika pengguna membuka Word di laptop yang terpasang Zotero, tab Zotero langsung aktif mengenali seluruh kutipan.
 - Pengguna dapat mengutip kembali paper yang sama langsung lewat jendela pencarian Zotero di Word tanpa perlu mengetik ulang data referensi.
+
+#### E. Perintah Cepat Registrasi Sitasi & Lampiran PDF Baru (One-Line CLI)
+Jika naskah membutuhkan referensi baru tambahan (misal hasil unduhan PDF dari folder `referensi/rekomendasi_internasional/`), agen **TIDAK PERLU** meracik skrip manual dari nol. Jalankan perintah cepat satu baris berikut:
+
+```bash
+python ~/.gemini/config/skills/office-cli/scripts/zotero_headless_sync.py \
+  --upload-pdf "referensi/rekomendasi_internasional/Peffers_2007_JMIS_DSRM.pdf" \
+  --doi "10.2753/MIS0742-1222240302" \
+  --collection "Nama Koleksi Naskah" \
+  --keys-file "zotero_item_keys.json"
+```
+
+**Hasil Eksekusi Otomatis:**
+1. Otomatis menarik metadata resmi CrossRef API berdasarkan DOI.
+2. Memeriksa deduplikasi di koleksi Zotero Cloud pengguna.
+3. Mengunggah entri jurnal ilmiah ke Zotero Cloud dan melampirkan berkas PDF fisiknya.
+4. Memperbarui kamus `zotero_item_keys.json` lokal proyek.
+5. Mencetak ringkasan Item Key dan cuplikan field code OpenXML siap pakai.
+
+#### F. Standar Metodologi Riset Rekayasa: DSRM vs Waterfall vs Borg & Gall
+Dalam penulisan naskah jurnal ilmiah keteknikan/informatika (SINTA 1–3 dan Scopus), dewan penelaah (*peer-reviewers*) sangat sensitif terhadap metodologi penelitian. Pahami klasifikasi baku berikut:
+
+1. **Anti-Pola: Metodologi Software Development (Waterfall / SDLC / Agile / Scrum)**
+   - *Karakteristik*: Analisis $\rightarrow$ Desain $\rightarrow$ Implementasi $\rightarrow$ Pengujian $\rightarrow$ Pemeliharaan.
+   - *Status*: Merupakan siklus hidup pengembangan produk perangkat lunak industri (*industry engineering workflow*), **BUKAN metodologi riset ilmiah**. Penggunaan Waterfall pada naskah jurnal sering dinilai klise atau setara proyek praktikum biasa tanpa kontribusi epistemologis ilmiah.
+2. **Anti-Pola: Model R&D Pendidikan (Borg & Gall / Sugiyono / ADDIE / 4D)**
+   - *Karakteristik*: 10 langkah Borg & Gall atau ADDIE (Analysis, Design, Development, Implementation, Evaluation) yang dirancang untuk riset produk pedagogik / bahan ajar / media pembelajaran.
+   - *Status*: **"Salah kamar"** jika diterapkan pada riset rekayasa perangkat keras, IoT, atau kecerdasan buatan (*AI/Machine Learning*). Reviewer jurnal teknik akan mempertanyakan keabsahan rujukan metodologi tersebut.
+3. **Pakem Baku Internasional Artifak Rekayasa & AI: Design Science Research Methodology (DSRM)**
+   - *Rujukan Standar Emas*: **Peffers, K., Tuunanen, T., Rothenberger, M. A., & Chatterjee, S. (2007)**. *A Design Science Research Methodology for Information Systems Research*. Journal of Management Information Systems, 24(3), 45–77. https://doi.org/10.2753/MIS0742-1222240302
+   - *Cakupan*: Menjadi kerangka kerja epistemologis baku internasional untuk riset yang merancang dan mengevaluasi artifak keteknikan (algoritma, model AI, arsitektur sistem IoT, perangkat keras tertanam).
+   - *Pemetaan 6 Tahapan DSRM*:
+     - **Tahap 1: Problem Identification and Motivation**: Merumuskan masalah spesifik dan urgensi nilai solusi.
+     - **Tahap 2: Objectives of a Solution**: Menetapkan target kuantitatif/kualitatif solusi artifak.
+     - **Tahap 3: Design and Development**: Mengembangkan arsitektur artifak (skema sirkuit, pipeline STFT, model CNN, firmware).
+     - **Tahap 4: Demonstration**: Menguji keberfungsian operasional artifak dalam konteks nyata.
+     - **Tahap 5: Evaluation**: Mengukur performa empiris artifak menggunakan metrik formal (akurasi, latensi, konsumsi daya, perbandingan baseline).
+     - **Tahap 6: Communication**: Mempublikasikan kontribusi keilmuan dan struktur artifak dalam artikel jurnal ilmiah.
+4. **Standar Alternatif untuk Rekayasa Sistem Perangkat Keras: ISO/IEC/IEEE 15288**
+   - Mengatur siklus hidup rekayasa sistem (*Systems and software engineering — System life cycle processes*) dari konseptualisasi hingga verifikasi dan validasi teknis.
 
 ---
 

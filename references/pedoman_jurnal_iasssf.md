@@ -194,6 +194,18 @@ Background: [Uraikan konteks penelitian, latar belakang permasalahan, dan tujuan
 
 ### 7.2 `2. Methods` (Metode Penelitian) — Proporsi: Maksimum 20%
 - Uraian metodologis harus sangat rinci agar penelitian dapat direplikasi secara presisi oleh peneliti lain (*reproducible*), namun tetap padat (maksimum 20% dari total naskah).
+- **7.2.1 Kerangka Kerja Metodologi Riset Rekayasa (DSRM vs SDLC/Borg&Gall)**:
+  - **Larangan Metodologi SDLC / Waterfall**: Dilarang menggunakan Waterfall, Agile, atau SDLC sebagai metodologi penelitian naskah jurnal rekayasa. SDLC adalah alur kerja industri, bukan metodologi riset ilmiah yang memvalidasi kontribusi keilmuan.
+  - **Larangan R&D Pendidikan (Borg & Gall / Sugiyono)**: Dilarang menggunakan model Borg & Gall 10 langkah atau ADDIE/Sugiyono untuk riset rekayasa perangkat keras, IoT, atau AI. Model tersebut adalah metodologi riset pendidikan/pedagogik dan dinilai "salah kamar" oleh reviewer Scopus/SINTA.
+  - **Standar Emas Wajib: Design Science Research Methodology (DSRM - Peffers et al., 2007)**:
+    - Seluruh artikel yang merancang artifak rekayasa (sistem cerdas, perangkat keras IoT, arsitektur AI, algoritma) **WAJIB** merujuk pada pakem DSRM (*Peffers et al., 2007, Journal of Management Information Systems*, https://doi.org/10.2753/MIS0742-1222240302).
+    - Batang tubuh metode wajib memetakan secara eksplisit 6 fase DSRM:
+      1. *Problem Identification and Motivation*: Menjelaskan rumusan masalah spesifik dan urgensi solusi.
+      2. *Objectives of a Solution*: Menetapkan tolok ukur kuantitatif (akurasi, konsumsi daya, latensi).
+      3. *Design and Development*: Perancangan arsitektur artifak (skema sirkuit, pipeline audio, model CNN).
+      4. *Demonstration*: Demonstrasi operasional artifak dalam pengujian fungsional terintegrasi.
+      5. *Evaluation*: Pengujian empiris kuantitatif komparatif (confusion matrix, throughput, perbandingan literatur).
+      6. *Communication*: Diseminasi kebaruan dan kontribusi ilmiah melalui publikasi naskah jurnal ini.
 - **Pedoman Peta Lokasi Penelitian (Comment 16)**:
   - Peta wilayah/negara wajib terhubung dengan peta fokus dalam warna penuh (*full color*).
   - **Tangkapan layar Google Maps atau citra satelit DILARANG KERAS**.
@@ -234,7 +246,18 @@ Seluruh subbab bagian belakang menggunakan judul tingkat 1 **tanpa penomoran ang
 
 ### 9.1 Standar Gambar (*Figures*)
 - **Perataan:** Rata tengah (*Center*).
-- **Dimensi:** Lebar minimal gambar adalah **160 mm** ($16\text{ cm}$).
+- **Dimensi:** Lebar minimal gambar standar adalah **160 mm** ($16\text{ cm}$), namun disesuaikan dengan rasio aspek gambar.
+- **Kaidah Aspek Rasio & Dimensi Gambar 1 Kolom (Anti-Blank Page)**:
+  - Jangan memaksakan lebar 16 cm jika gambar berupa diagram alur vertikal yang tinggi, karena tingginya akan melebihi 25 cm dan memaksa Word membuat halaman kosong tak sedap dipandang (*blank orphan page*).
+  - **Aturan Dimensi Berdasarkan Rasio Aspek (W/H)**:
+    - *Diagram vertikal ramping* (W/H ~ 0.45–0.60): batasi lebar ke **2.1–2.7 inci (5.3–6.8 cm)**, dengan tinggi sekitar **4.5–5.3 inci (11.5–13.5 cm)**.
+    - *Plot / grafik horizontal lebar* (W/H ~ 1.6–1.8): gunakan lebar **4.5–5.2 inci (11.5–13.2 cm)**, tinggi sekitar **2.8–3.0 inci (7.0–7.6 cm)**.
+    - *Diagram seimbang / bujursangkar* (W/H ~ 0.9–1.2): gunakan lebar **3.2–4.0 inci (8.0–10.0 cm)**.
+- **Protokol Citra Asli (Anti-Kompresi Ganda)**:
+  - **Wajib menelusuri berkas master gambar asli di repositori**: Gunakan file master beresolusi tinggi (PNG/SVG 2000–5000 px, ekspor matplotlib DPI $\ge 300$, diagram draw.io murni) dari subfolder aset.
+  - **Dilarang keras mengekstrak gambar dari PDF draf lama** yang sudah mengalami kompresi lossy berulang (*downsampling*).
+- **Pencocokan Gambar Anti-Off-by-One**:
+  - Sebelum memasukkan gambar ke dokumen, lakukan *visual inspection* dan susun matriks pemetaan nomor figur (`Fig. 1..n` $\leftrightarrow$ nama berkas asli $\leftrightarrow$ deskripsi visual). Mencegah bug fatal di mana diagram tertukar dengan foto atau plot evaluasi.
 - **Kualitas:** Grafik Office diserahkan asli; ilustrasi garis wajib beresolusi minimal **600 DPI**.
 - **Keterangan (*Caption*):** Diletakkan di **bawah ilustrasi**, rata tengah, Cambria 10 pt Sentence case: `Fig. 1. Blok diagram arsitektur...`.
 - **Sumber:** Diletakkan di bawah keterangan gambar, rata tengah, Cambria 10 pt: `(Penulis, 2026)` atau `(Hanson et al., 2015)`.
@@ -274,3 +297,16 @@ Seluruh subbab bagian belakang menggunakan judul tingkat 1 **tanpa penomoran ang
 4. **Tautan Aktif Berwarna Biru (Comment 23):** Setiap referensi wajib memiliki tautan permanen aktif berformat `https://doi.org/...` berwarna font **Biru (`#0000FF`)**.
 5. **Indensitas Menggantung (*Hanging Indent*):** Format paragraf daftar pustaka menggunakan hanging indent presisi sebesar **567 twips (28,35 pt)**.
 6. **Integrasi Zotero Headless Cloud:** Seluruh sitasi wajib ditanam menggunakan field kode resmi Zotero (`ADDIN ZOTERO_ITEM`) dan kontainer otomatis daftar pustaka (`ADDIN ZOTERO_BIBL`).
+7. **Perintah Cepat Registrasi Sitasi Baru (One-Line CLI):**
+   - Jika menambah referensi baru yang telah diverifikasi (misal PDF dari `referensi/rekomendasi_internasional/`), jalankan:
+     ```bash
+     python ~/.gemini/config/skills/office-cli/scripts/zotero_headless_sync.py \
+       --upload-pdf "referensi/rekomendasi_internasional/Peffers_2007_JMIS_DSRM.pdf" \
+       --doi "10.2753/MIS0742-1222240302" \
+       --collection "Pengusir Tikus Pintar" \
+       --keys-file "zotero_item_keys.json"
+     ```
+   - Skrip otomatis menarik CrossRef kanonikal, mengunggah item & PDF ke Zotero Cloud, memperbarui pemetaan item keys, dan menghasilkan XML field code Word native.
+8. **Penempatan Bodynote & Pembaruan Bibliografi Sinkron:**
+   - Bodynote metodologi (seperti DSRM Peffers et al., 2007) wajib disematkan langsung di kalimat pembuka seksi `2. Methods`.
+   - Entri bibliografi di bagian `References` wajib diperbarui secara alfabetis (A–Z) APA 7th Edition dengan tautan aktif biru (`#0000FF`) ke DOI resmi.
