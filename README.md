@@ -1,12 +1,14 @@
 <div align="center">
 
 # 📄 Unified Office & Document Suite for AI Agents
+### (MarkItDown + OfficeCLI + Zotero Headless)
 
 **Skill Pembuatan & Pengolahan Dokumen untuk AI Coding Assistant.**  
-*Membantu penyusunan dokumen Word sesuai pedoman (SINTA, Scopus, IASSSF, Skripsi, Kerja Praktik) serta ekstraksi dokumen multi-format (PDF, Excel, Word, PPT).*
+*Membantu penyusunan dokumen Word sesuai pedoman (SINTA, Scopus, IASSSF, Skripsi, Kerja Praktik), ekstraksi dokumen multi-format (PDF, Excel, Word, PPT), serta manajemen sitasi ilmiah otomatis via Zotero Headless.*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/masdayat-555/office-cli-dayat)
+[![Zotero: Headless](https://img.shields.io/badge/Zotero-Headless%20API-red.svg)](https://www.zotero.org/)
 [![Standard](https://img.shields.io/badge/Standard-SINTA%201--6%20%7C%20Scopus%20Q1--Q4%20%7C%20IASSSF%20%7C%20APA%207th-purple.svg)]()
 
 [🇮🇩 Bahasa Indonesia](#-bahasa-indonesia) • [🇬🇧 English](#-english-version)
@@ -29,6 +31,7 @@ Skill ini membekali asisten koding AI Anda (Antigravity, Cursor, Claude Code, Wi
 * 🔬 **Laporan Praktikum & LKM:** Laporan kegiatan laboratorium, monograf modul praktikum, dan penyajian data eksperimen terstruktur.
 * 📑 **Ekstraksi Multi-Format:** Konversi cerdas berkas PDF, DOCX, XLSX, dan PPTX menjadi Markdown via Microsoft MarkItDown.
 * 🖼️ **Ekstraksi Aset Visual:** Pengambilan gambar, bagan, dan diagram asli dari berbagai format dokumen dalam resolusi penuh.
+* 🏷️ **Zotero Headless (Tool Sitasi & Referensi Otomatis):** Manajemen referensi dan sitasi otomatis secara senyap (*headless*) menggunakan pustaka `pyzotero`, verifikasi metadata kanonikal CrossRef, pengunggahan berkas PDF fisik ke cloud library, serta injeksi *field code* Word native (`ADDIN ZOTERO_ITEM` dan `ADDIN ZOTERO_BIBL`) tanpa membuka GUI Zotero.
 * 🎯 **Output Word Asli (`.docx`):** Pembuatan dokumen OpenXML murni yang rapi dan siap pakai menggunakan OfficeCLI.
 
 ---
@@ -81,6 +84,10 @@ Setelah terpasang, Anda tidak perlu menghafal perintah yang rumit. Cukup berikan
 "Ekstrak dan analisis tabel data dari laporan.pdf ini..."
 ```
 
+```text
+"Sinkronkan daftar referensi dan berkas PDF ke Zotero Cloud, lalu susun naskah dengan sitasi native Word..."
+```
+
 AI Agent akan otomatis mengaktifkan skill ini, mengonfirmasi preferensi template Anda, dan menghasilkan berkas `.docx` resmi.
 
 ---
@@ -105,7 +112,18 @@ Skill ini memanfaatkan mesin *open-source* yang terpasang di terminal sistem And
      curl -fsSL https://d.officecli.ai/install.sh | bash
      ```
 
-3. **docx2pdf (Ekspor Akhir ke LMS):**
+3. **PyZotero & Requests (Tool Manajemen Referensi & Sitasi Zotero Headless):**
+   ```bash
+   pip install pyzotero requests
+   ```
+   *Konfigurasi Kredensial Zotero (`.env`)*: Buat berkas `.env` di direktori skill (`office-cli/.env`) dan cantumkan:
+   ```env
+   ZOTERO_USER_ID="12345678"
+   ZOTERO_API_KEY="kunci_rahasia_api_zotero_anda"
+   ```
+   *(Kunci API dapat diperoleh gratis melalui [zotero.org/settings/keys](https://www.zotero.org/settings/keys))*.
+
+4. **docx2pdf (Ekspor Akhir ke LMS):**
    ```bash
    pip install docx2pdf
    ```
@@ -134,6 +152,8 @@ office-cli/
 ├── scripts/
 │   ├── check_update.py                      # Skrip pemeriksaan pembaruan otomatis 30 hari
 │   ├── clean_word_locks.py                  # Pembersih file lock sementara (~$*.docx) Microsoft Word
+│   ├── zotero_headless_sync.py              # CLI & Engine sinkronisasi Zotero Cloud Headless & field code Word
+│   ├── zotero_clean_metadata.py             # Pipeline pembersihan metadata CrossRef kanonikal & normalisasi
 │   ├── mendeley_setup.py                    # Otentikasi & inisialisasi API Mendeley Desktop
 │   └── mendeley_upload.py                   # Engine sinkronisasi metadata sitasi & PDF ke Mendeley
 ├── templates/
@@ -173,6 +193,7 @@ office-cli/
 * 🔬 **Lab Reports & Practicum Modules:** Structured laboratory reports, academic module workbooks, and scientific data presentation.
 * 📑 **Multi-Format Document Ingestion:** Intelligent extraction of PDF, DOCX, XLSX, and PPTX to structured Markdown via Microsoft MarkItDown.
 * 🖼️ **Visual Asset Extraction:** Lossless extraction of embedded diagrams, figures, and charts across document formats in full resolution.
+* 🏷️ **Zotero Headless Citation Engine:** Automated, background reference and citation management via `pyzotero`, canonical CrossRef metadata normalization, cloud PDF attachment uploads, and native Word OpenXML field code injection (`ADDIN ZOTERO_ITEM` and `ADDIN ZOTERO_BIBL`) without opening the Zotero GUI.
 * 🎯 **Native Word (`.docx`) Generation:** Clean, production-ready OpenXML document compilation powered by OfficeCLI.
 
 ---
@@ -203,6 +224,10 @@ git clone https://github.com/masdayat-555/office-cli-dayat.git ~/.agents/skills/
 "Format this thesis document to university standards (4-3-3-3 cm margin, Times New Roman 12 pt, 1.25 line spacing)..."
 ```
 
+```text
+"Sync reference PDFs in this directory to Zotero Cloud and format the manuscript with active Word citations..."
+```
+
 ---
 
 ### ⚙️ Prerequisites
@@ -210,7 +235,16 @@ git clone https://github.com/masdayat-555/office-cli-dayat.git ~/.agents/skills/
 2. **OfficeCLI:**
    - Windows: `irm https://d.officecli.ai/install.ps1 | iex`
    - Linux/macOS: `curl -fsSL https://d.officecli.ai/install.sh | bash`
-3. **docx2pdf:** `pip install docx2pdf`
+3. **PyZotero & Requests (Zotero Headless Reference Engine):**
+   ```bash
+   pip install pyzotero requests
+   ```
+   *Credential Configuration (`.env`)*: Create `.env` in the skill folder (`office-cli/.env`) with:
+   ```env
+   ZOTERO_USER_ID="12345678"
+   ZOTERO_API_KEY="your_zotero_api_key"
+   ```
+4. **docx2pdf:** `pip install docx2pdf`
 
 ---
 
@@ -221,6 +255,7 @@ Skill ini dilisensikan di bawah [MIT License](LICENSE).
 ### Perangkat Lunak Pihak Ketiga (Third-Party Notices)
 * **[Microsoft MarkItDown](https://github.com/microsoft/markitdown):** Dilisensikan di bawah **MIT License** oleh Microsoft Corporation. Hak Cipta (c) Microsoft Corporation.
 * **[OfficeCLI](https://officecli.ai):** OpenXML CLI engine. Hak Cipta (c) OfficeCLI Contributors.
+* **[PyZotero](https://github.com/urschrei/pyzotero):** Zotero API client by Stephan Speicher and contributors.
 
 ### Penafian Merek Dagang (Trademark Disclaimer)
 *Microsoft, Microsoft Office, Word, Excel, PowerPoint, dan MarkItDown adalah merek dagang atau merek dagang terdaftar milik Microsoft Corporation di Amerika Serikat dan/atau negara lainnya.*  
