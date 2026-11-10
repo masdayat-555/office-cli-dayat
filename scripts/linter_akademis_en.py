@@ -91,7 +91,7 @@ PERSONAL_PRONOUNS = {
 TYPO_PATTERNS = [
     (r"\b\d+,\d+\s*%", "Koma desimal pada persentase (Gunakan titik desimal, misal '96.8%')"),
     (r"\b\d+,\d+\b(?!\s*%)", "Kemungkinan koma desimal bahasa Indonesia (Gunakan titik desimal dalam bahasa Inggris)"),
-    (r"(?<![,\.\d])\b\d+\s*%", "Spasi sebelum simbol persentase (Tulis rapat: '95%')"),
+    (r"(?<![,\.\d])\b\d+\s+%", "Spasi sebelum simbol persentase (Tulis rapat: '95%')"),
     (r"\b\d+(?:kHz|MHz|GHz|ms|min|h|cm|mm|kg|g|V|mA|W|dB)\b", "Kurang spasi antara angka dan satuan SI (misal '44.1 kHz', '5 V')"),
     (r"-\d+\s*(?:dB|°C|C|V|mA)", "Tanda minus keyboard '-' digunakan untuk nilai negatif (Gunakan Unicode minus '−' U+2212)"),
 ]
