@@ -81,7 +81,7 @@ AI_BUZZWORDS = {
 PERSONAL_PRONOUNS = {
     r"\bwe\b": "Pronomina personal 'we' (Gunakan pasif orang ketiga atau 'This study...')",
     r"\bour\b": "Pronomina kepemilikan 'our' (Gunakan 'the proposed...', 'this...')",
-    r"\bi\b": "Pronomina personal 'I' (Dilarang keras dalam naskah ilmiah)",
+    r"(?<![A-Za-z\.])\bI\b(?!\.)": "Pronomina personal 'I' (Dilarang keras dalam naskah ilmiah)",
     r"\bmy\b": "Pronomina kepemilikan 'my' (Dilarang)",
     r"\bus\b": "Pronomina personal 'us'",
     r"\byou\b|\byour\b": "Pronomina orang kedua 'you/your' (Dilarang bernada mengajak bicara)",
