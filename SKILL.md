@@ -332,6 +332,7 @@ Jika pengguna menyertakan pedoman khusus dari institusinya (misalnya format marg
 | **Pedoman Skripsi Lengkap** | Panduan penyusunan Skripsi/Tesis 5 Bab standar nasional, preliminary pages, hingga lampiran. | [`references/pedoman_skripsi_lengkap.md`](references/pedoman_skripsi_lengkap.md) |
 | **Pedoman Kerja Praktik** | Panduan penyusunan Laporan KP/Magang Industri (profil mitra, SOP, proyek, evaluasi mutu). | [`references/pedoman_kerja_praktik.md`](references/pedoman_kerja_praktik.md) |
 | **Pedoman Laporan Praktikum** | Panduan Laporan Praktikum baku (Cover luwes, native TOC, struktur wajib). | [`references/pedoman_laporan_praktikum.md`](references/pedoman_laporan_praktikum.md) |
+| **Panduan Zotero Headless** | Panduan lengkap integrasi Zotero API, konfigurasi .env, penarikan CrossRef kanonikal, upload PDF cloud, dan injeksi OpenXML Field Code Word. | [`references/panduan_integrasi_zotero_headless.md`](references/panduan_integrasi_zotero_headless.md) |
 | **Resep Batch OfficeCLI** | Koleksi batch JSON siap pakai untuk heading 1-3, TOC otomatis, tabel APA, gambar, dan hanging indent. | [`references/resep_officecli_dokumen_ilmiah.md`](references/resep_officecli_dokumen_ilmiah.md) |
 | **Master Template Jurnal SINTA** | Berkas Word DOCX resmi OJS SINTA (A4, 2,54 cm simetris, Page 1 Fit, tabel APA, bebas mojibake/JEL). | [`templates/template_jurnal_sinta.docx`](templates/template_jurnal_sinta.docx) |
 | **Master Template Skripsi 5 Bab** | Berkas Word DOCX resmi Skripsi/TA (A4, 4-3-3-3 cm, TNR 12 pt spasi 1.25x, preliminary Romawi). | [`templates/template_laporan_tugas_akhir.docx`](templates/template_laporan_tugas_akhir.docx) |
@@ -633,7 +634,8 @@ Jika klien membutuhkan daftar pustaka terintegrasi Mendeley secara otomatis, age
 
 > [!IMPORTANT]
 > **STANDAR EMAS RISET: ZOTERO HEADLESS + KOREKSI METADATA KANONIKAL**  
-> Zotero adalah reference manager open-source berstandar universal (CSL-JSON). Dalam arsitektur headless, agen AI mengelola Zotero secara senyap di latar belakang menggunakan pustaka resmi `pyzotero` tanpa perlu membuka aplikasi GUI desktop.
+> Zotero adalah reference manager open-source berstandar universal (CSL-JSON). Dalam arsitektur headless, agen AI mengelola Zotero secara senyap di latar belakang menggunakan pustaka resmi `pyzotero` tanpa perlu membuka aplikasi GUI desktop.  
+> 📖 **Panduan Lengkap Pengguna & AI**: Untuk tata cara registrasi kunci API di web zotero.org, setup izin library, hingga pemecahan masalah, rujuk ke: [`references/panduan_integrasi_zotero_headless.md`](references/panduan_integrasi_zotero_headless.md).
 
 #### A. Konfigurasi Kredensial di `.env`
 Kredensial disimpan secara aman di berkas lokal `~/.gemini/config/skills/office-cli/.env`:

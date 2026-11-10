@@ -173,6 +173,7 @@ office-cli/
     ├── pedoman_laporan_praktikum.md         # Pedoman Laporan Praktikum (struktur bab, format cover)
     ├── pedoman_lkm_metode_numerik.md        # Pedoman LKM Metode Numerik (monograf & kode Scilab)
     ├── pedoman_surat_insentif.md            # Pedoman penyusunan surat permohonan insentif resmi
+    ├── panduan_integrasi_zotero_headless.md # Panduan setup API Zotero, .env, CLI satu baris, dan injeksi Word
     ├── resep_officecli_dokumen_ilmiah.md    # Resep batch JSON teknis OfficeCLI (Resep 1–12)
     └── aturan_adaptif_pedoman_kampus.md     # Mesin adaptasi & matriks komparatif dokumen institusi
 ```
