@@ -152,7 +152,7 @@ def lint_text(text: str, check_pronouns: bool = True):
 
 def format_report_text(findings, total_lines):
     if not findings:
-        return "[PASS] Luar biasa! Tidak ditemukan kata klise AI, pronomina personal, atau kesalahan tipografi umum."
+        return "[PASS] Bersih. Tidak terdeteksi kata klise AI dalam daftar pantauan, pronomina personal, atau kesalahan tipografi umum."
     
     report = []
     report.append(f"=== LAPORAN LINTER AKADEMIS BAHASA INGGRIS ({len(findings)} TEMUAN DARI {total_lines} BARIS) ===")

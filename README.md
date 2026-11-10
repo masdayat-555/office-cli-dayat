@@ -35,7 +35,7 @@ Skill ini membekali asisten koding AI Anda (Antigravity, Cursor, Claude Code, Wi
 * 🖼️ **Ekstraksi Aset Visual:** Pengambilan gambar, bagan, dan diagram asli dari berbagai format dokumen dalam resolusi penuh.
 * 🏷️ **Zotero Headless (Tool Sitasi & Referensi Otomatis):** Manajemen referensi dan sitasi otomatis secara senyap (*headless*) menggunakan pustaka `pyzotero`, verifikasi metadata kanonikal CrossRef, pengunggahan berkas PDF fisik ke cloud library, serta injeksi *field code* Word native (`ADDIN ZOTERO_ITEM` dan `ADDIN ZOTERO_BIBL`) tanpa membuka GUI Zotero.
 * 🌐 **Academic Translation & Rewriting Engine (Scopus Q1 & EYD V):** Doktrin *Translation as Rewriting* untuk artikel jurnal dan buku teks akademik. Mengintegrasikan 18 modul fungsional *Manchester Academic Phrasebank*, pemotongan semantik buku panjang (1.500–2.500 kata & `GLOSSARY.json`), eliminasi kata klise bot AI (*delve*, *pivotal*, *tapestry*, dll.), serta linter deterministik otomatis (`linter_akademis_en.py` & `linter_tata_bahasa_id.py`).
-* 🛡️ **DOCX OpenXML & Zotero Guard:** Skrip verifikasi zero-dependency (`docx_zotero_guard.py`) yang menjamin keutuhan 100% field code sitasi Zotero/Mendeley (`ADDIN ZOTERO_ITEM`) dan rumus native Word Equation (`<m:oMath>`) saat teks dialihbahasakan atau disunting.
+* 🛡️ **DOCX OpenXML & Zotero Guard:** Skrip verifikasi zero-dependency (`docx_zotero_guard.py`) untuk menginspeksi dan memverifikasi keutuhan field code sitasi Zotero/Mendeley (`ADDIN ZOTERO_ITEM`) serta rumus native Word Equation (`<m:oMath>`) saat teks dialihbahasakan atau disunting.
 * 🎯 **Output Word Asli (`.docx`):** Pembuatan dokumen OpenXML murni yang rapi dan siap pakai menggunakan OfficeCLI.
 
 ---
@@ -45,10 +45,10 @@ Skill ini membekali asisten koding AI Anda (Antigravity, Cursor, Claude Code, Wi
 Skill ini menghadirkan engine penerjemahan dan penulisan ulang akademik berbasis doktrin **"Translation as Academic Rewriting"**:
 * ✍️ **Bukan Alih-Kata Harfiah:** Mencegah *"translationese"* (bahasa Inggris rasa struktur Indonesia) dengan mendekonstruksi anak kalimat bertingkat menjadi alur penalaran linier deduktif dengan kepadatan leksikal tinggi.
 * 🏛️ **Manchester Academic Phrasebank:** Mengintegrasikan 18 modul fungsional resmi The University of Manchester untuk manuver retorika ilmiah (*Introducing Work, Describing Methods, Reporting Results, Discussing Findings, Cautious Language/Hedging*, dll.).
-* 🛡️ **Proteksi Aset OpenXML (`docx_zotero_guard.py`):** Isolasi token otomatis sebelum teks dialihbahasakan sehingga field code Zotero (`ADDIN ZOTERO_ITEM`) dan rumus native Word Equation (`<m:oMath>`) **dijamin 100% utuh tanpa rusak/korup**.
+* 🛡️ **Proteksi Aset OpenXML (`docx_zotero_guard.py`):** Isolasi token dan verifikasi terstruktur sebelum dan sesudah penyuntingan untuk menjaga keutuhan field code sitasi Zotero/Mendeley (`ADDIN ZOTERO_ITEM`) serta formula matematika native Word Equation (`<m:oMath>`).
 * 📖 **Penerjemahan Dokumen Panjang & Buku (`translate-book`):** Didukung protokol pemotongan semantik (*semantic chunking* 1.500–2.500 kata) tepat pada batas sub-bab dan penguncian istilah teknis lintas bab via `GLOSSARY.json`.
 * 🤖 **Linter Deterministik Non-LLM:**
-  * `linter_akademis_en.py`: Memindai naskah bahasa Inggris secara kaku untuk membasmi kata klise AI (*delve, pivotal, tapestry, realm, foster, underscore, leverage*), personal pronouns (*we/our*), dan kesalahan koma desimal (*95,5%*).
+  * `linter_akademis_en.py`: Memindai naskah bahasa Inggris secara deterministik untuk mendeteksi dan menandai kata klise AI (*delve, pivotal, tapestry, realm, foster, underscore, leverage*), personal pronouns (*we/our*), dan kesalahan koma desimal (*95,5%*).
   * `linter_tata_bahasa_id.py`: Memindai naskah bahasa Indonesia dari kata tidak baku KBBI (*merubah, analisa, sistim, efektifitas*), pleonasme, kalke kaku (*di mana, yang mana*), dan basa-basi robotik AI.
 
 ---
@@ -237,7 +237,7 @@ office-cli/
 * 🖼️ **Visual Asset Extraction:** Lossless extraction of embedded diagrams, figures, and charts across document formats in full resolution.
 * 🏷️ **Zotero Headless Citation Engine:** Automated, background reference and citation management via `pyzotero`, canonical CrossRef metadata normalization, cloud PDF attachment uploads, and native Word OpenXML field code injection (`ADDIN ZOTERO_ITEM` and `ADDIN ZOTERO_BIBL`) without opening the Zotero GUI.
 * 🌐 **Academic Translation & Rewriting Engine (Scopus Q1 & EYD V):** "Translation as Rewriting" doctrine for academic papers and textbooks. Integrates 18 functional modules from the *Manchester Academic Phrasebank*, book-length semantic chunking (1,500–2,500 words with persistent `GLOSSARY.json`), strict AI buzzword elimination (*delve*, *pivotal*, *tapestry*, *realm*), and automated deterministic linters (`linter_akademis_en.py` & `linter_tata_bahasa_id.py`).
-* 🛡️ **DOCX OpenXML & Zotero Asset Guard:** Zero-dependency OpenXML inspector and verifier (`docx_zotero_guard.py`) ensuring 100% preservation of active Zotero/Mendeley citation field codes (`ADDIN ZOTERO_ITEM`) and native Word OMML math equations (`<m:oMath>`) during editing and translation.
+* 🛡️ **DOCX OpenXML & Zotero Asset Guard:** Zero-dependency OpenXML inspector and verifier (`docx_zotero_guard.py`) designed to protect active Zotero/Mendeley citation field codes (`ADDIN ZOTERO_ITEM`) and native Word OMML math equations (`<m:oMath>`) during editing and translation.
 * 🎯 **Native Word (`.docx`) Generation:** Clean, production-ready OpenXML document compilation powered by OfficeCLI.
 
 ---
@@ -247,10 +247,10 @@ office-cli/
 Built-in scholarly translation and stylistic refinement based on the **"Translation as Academic Rewriting"** doctrine:
 * ✍️ **Beyond Word-for-Word Translation:** Eliminates "translationese" by deconstructing complex compound sentences into deductive, linear paragraphs with high lexical density and precise academic cadence.
 * 🏛️ **Manchester Academic Phrasebank:** Integrates 18 official functional rhetorical modules (*Introducing Work, Referring to Sources, Describing Methods, Reporting Results, Discussing Findings, Cautious Language/Hedging*, etc.).
-* 🛡️ **DOCX OpenXML & Zotero Guard (`docx_zotero_guard.py`):** Automated pre-translation tokenization ensuring 100% integrity of active Zotero/Mendeley citations (`ADDIN ZOTERO_ITEM`) and native Word equations (`<m:oMath>`) with zero corruption.
+* 🛡️ **DOCX OpenXML & Zotero Guard (`docx_zotero_guard.py`):** Pre-translation tokenization and dual-file integrity verification to protect active Zotero/Mendeley citations (`ADDIN ZOTERO_ITEM`) and native Word equations (`<m:oMath>`) from unintended text overwrites.
 * 📖 **Book-Length Translation Architecture (`translate-book`):** Semantic chunking (1,500–2,500 words) strictly aligned to heading boundaries with cross-chapter terminology locking via `GLOSSARY.json`.
 * 🤖 **Deterministic Non-LLM Linters:**
-  * `linter_akademis_en.py`: Hardcoded regex scanner to detect and eradicate AI buzzwords (*delve, pivotal, tapestry, realm, foster, underscore, leverage*), personal pronouns (*we/our*), and decimal formatting errors.
+  * `linter_akademis_en.py`: Hardcoded regex scanner to detect and flag AI buzzwords (*delve, pivotal, tapestry, realm, foster, underscore, leverage*), personal pronouns (*we/our*), and decimal formatting errors.
   * `linter_tata_bahasa_id.py`: Scans Indonesian manuscripts for non-standard KBBI spelling, pleonasms, English calques (*di mana, yang mana*), and robotic AI openings.
 
 ---

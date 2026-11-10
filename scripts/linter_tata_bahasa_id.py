@@ -156,7 +156,7 @@ def lint_text(text: str):
 
 def format_report_text(findings, total_lines):
     if not findings:
-        return "[PASS] Bersih! Tidak ditemukan kata tidak baku EYD V, pleonasme, kalke, atau AI slop bahasa Indonesia."
+        return "[PASS] Bersih. Tidak terdeteksi kata tidak baku dalam daftar pantauan KBBI/EYD V, pleonasme, kalke, atau pola klise bahasa Indonesia."
     
     report = []
     report.append(f"=== LAPORAN LINTER TATA BAHASA INDONESIA AKADEMIK ({len(findings)} TEMUAN DARI {total_lines} BARIS) ===")
@@ -220,3 +220,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

@@ -187,7 +187,7 @@ def verify_documents(original_docx: str, target_docx: str):
         print("\n[PERINGATAN KRITIS]: Jumlah persamaan matematika tidak cocok! Pastikan rumus OMML tidak tertimpa teks polos.")
 
     if cit_ok and eq_ok:
-        print("\n[HASIL AKHIR: PASS 100%] Integritas seluruh field code Zotero dan formula OMML terjaga sempurna!")
+        print("\n[HASIL AKHIR: PASS] Seluruh field code Zotero dan formula OMML terverifikasi identik antara naskah asal dan target.")
         sys.exit(0)
     else:
         print("\n[HASIL AKHIR: FAIL] Integritas dokumen terdegradasi.")
@@ -214,3 +214,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

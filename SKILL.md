@@ -926,15 +926,15 @@ Setiap tugas yang membutuhkan iterasi berulang (seperti mencoba mengunduh puluha
 
 ## 11. ENGINE PENERJEMAHAN & PENULISAN AKADEMIK INTERNASIONAL (SCOPUS & EYD V)
 
-Selain menangani struktur biner dan otomasi dokumen Office, skill ini dilengkapi dengan engine linguistik akademik komprehensif untuk menyusun, menyunting, dan menerjemahkan naskah ilmiah (Paper Jurnal Scopus/SINTA, Tesis, dan Buku Akademik) dengan standar kebahasaan tertinggi.
+Selain menangani struktur biner dan otomasi dokumen Office, skill ini dilengkapi dengan engine linguistik akademik untuk menyusun, menyunting, dan menerjemahkan naskah ilmiah (Paper Jurnal Scopus/SINTA, Tesis, dan Buku Akademik) dengan kepatuhan terhadap kaidah kebahasaan Scopus Q1 dan EYD Edisi V.
 
 ```mermaid
 flowchart TD
     A["Naskah Draf Sumber (ID / EN)"] --> B["Tahap 1: Lead Academic Rewriter<br/>(Bongkar klausa majemuk, nominalisasi padat, bebas translationese)"]
-    B --> C["Tahap 2: Critical Peer Reviewer<br/>(Audit tenses IMRaD, periksa makna empiris, basmi AI slop)"]
+    B --> C["Tahap 2: Critical Peer Reviewer<br/>(Audit tenses IMRaD, periksa makna empiris, eliminasi kata klise AI)"]
     C --> D["Tahap 3: Polish & Manchester Phrasebank<br/>(Perhalus transisi, cadence alami, rujukan modul Phrasebank)"]
     D --> E["Tahap 4: Verifikasi Deterministik Non-LLM<br/>(Eksekusi linter_akademis_en.py / linter_tata_bahasa_id.py)"]
-    E --> F["Naskah Akhir Siap Submit Jurnal / Terbit Buku"]
+    E --> F["Naskah Terverifikasi Siap Telaah / Finalisasi"]
 ```
 
 ### 11.1 Doktrin Utama: "Translation as Academic Rewriting"
@@ -986,7 +986,7 @@ Agen **DILARANG** memuat seluruh aturan sekaligus ke dalam context window. Pangg
    ```powershell
    python scripts/docx_zotero_guard.py --verify "naskah_sumber.docx" "naskah_hasil.docx"
    ```
-   *Jika verifikasi gagal (sitasi atau rumus berkurang), proses revisi wajib diulang hingga 100% cocok.*
+   *Jika verifikasi gagal (terdapat sitasi atau formula yang hilang), proses revisi wajib diulang hingga jumlah dan instruksi sitasi serta rumus terverifikasi identik.*
 
 ### 11.6 Validasi Otomatis via Linter Deterministik
 Sebelum menyerahkan naskah akhir kepada pengguna, agen **WAJIB** mengeksekusi skrip linter deterministik:
@@ -994,10 +994,10 @@ Sebelum menyerahkan naskah akhir kepada pengguna, agen **WAJIB** mengeksekusi sk
   ```powershell
   python scripts/linter_akademis_en.py --file "scratch/naskah_terjemahan.md"
   ```
-  *(Memastikan 0 kata klise AI, tidak ada koma desimal, dan tidak ada pelanggaran personal pronoun).*
+  *(Memverifikasi ketiadaan kata klise AI dalam daftar pantauan, kesesuaian desimal titik, dan gaya penulisan impersonal).*
 - **Untuk Naskah Bahasa Indonesia:**
   ```powershell
   python scripts/linter_tata_bahasa_id.py --file "scratch/naskah_indonesia.md"
   ```
-  *(Memastikan 0 kata tidak baku EYD V, 0 pleonasme, dan 0 pembuka robotik AI).*
+  *(Memverifikasi ketiadaan kata tidak baku KBBI dalam daftar pantauan, pleonasme, dan pembuka klise).*
 
