@@ -1,14 +1,16 @@
 <div align="center">
 
-# 📄 Unified Office & Document Suite for AI Agents
-### (MarkItDown + OfficeCLI + Zotero Headless)
+# 📄 Unified Document, Academic & Translation Suite for AI Agents
+### (MarkItDown + OfficeCLI + Zotero Headless + Academic Translation Engine)
 
-**Skill Pembuatan & Pengolahan Dokumen untuk AI Coding Assistant.**  
-*Membantu penyusunan dokumen Word sesuai pedoman (SINTA, Scopus, IASSSF, Skripsi, Kerja Praktik), ekstraksi dokumen multi-format (PDF, Excel, Word, PPT), serta manajemen sitasi ilmiah otomatis via Zotero Headless.*
+**Skill Pembuatan Dokumen, Manajemen Sitasi, & Penerjemahan Akademik Standar Scopus/EYD V untuk AI Coding Assistant.**  
+*Membantu ekstraksi multi-format (PDF, DOCX, XLSX, PPTX), penyusunan dokumen Word sesuai pedoman (SINTA, Scopus, IASSSF, Skripsi, KP), integrasi sitasi otomatis via Zotero Headless, serta penerjemahan & penulisan ulang akademik Scopus Q1 bebas AI slop.*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/masdayat-555/office-cli-dayat)
 [![Zotero: Headless](https://img.shields.io/badge/Zotero-Headless%20API-red.svg)](https://www.zotero.org/)
+[![Translation: Academic Rewriting](https://img.shields.io/badge/Translation-Scopus%20%7C%20EYD%20V-green.svg)]()
+[![Manchester Phrasebank](https://img.shields.io/badge/Phrasebank-Manchester%2018%20Modules-blue.svg)]()
 [![Standard](https://img.shields.io/badge/Standard-SINTA%201--6%20%7C%20Scopus%20Q1--Q4%20%7C%20IASSSF%20%7C%20APA%207th-purple.svg)]()
 
 [🇮🇩 Bahasa Indonesia](#-bahasa-indonesia) • [🇬🇧 English](#-english-version)
@@ -35,6 +37,19 @@ Skill ini membekali asisten koding AI Anda (Antigravity, Cursor, Claude Code, Wi
 * 🌐 **Academic Translation & Rewriting Engine (Scopus Q1 & EYD V):** Doktrin *Translation as Rewriting* untuk artikel jurnal dan buku teks akademik. Mengintegrasikan 18 modul fungsional *Manchester Academic Phrasebank*, pemotongan semantik buku panjang (1.500–2.500 kata & `GLOSSARY.json`), eliminasi kata klise bot AI (*delve*, *pivotal*, *tapestry*, dll.), serta linter deterministik otomatis (`linter_akademis_en.py` & `linter_tata_bahasa_id.py`).
 * 🛡️ **DOCX OpenXML & Zotero Guard:** Skrip verifikasi zero-dependency (`docx_zotero_guard.py`) yang menjamin keutuhan 100% field code sitasi Zotero/Mendeley (`ADDIN ZOTERO_ITEM`) dan rumus native Word Equation (`<m:oMath>`) saat teks dialihbahasakan atau disunting.
 * 🎯 **Output Word Asli (`.docx`):** Pembuatan dokumen OpenXML murni yang rapi dan siap pakai menggunakan OfficeCLI.
+
+---
+
+### 🌐 Academic Translation & Rewriting Engine (Scopus Q1 & EYD V)
+
+Skill ini menghadirkan engine penerjemahan dan penulisan ulang akademik berbasis doktrin **"Translation as Academic Rewriting"**:
+* ✍️ **Bukan Alih-Kata Harfiah:** Mencegah *"translationese"* (bahasa Inggris rasa struktur Indonesia) dengan mendekonstruksi anak kalimat bertingkat menjadi alur penalaran linier deduktif dengan kepadatan leksikal tinggi.
+* 🏛️ **Manchester Academic Phrasebank:** Mengintegrasikan 18 modul fungsional resmi The University of Manchester untuk manuver retorika ilmiah (*Introducing Work, Describing Methods, Reporting Results, Discussing Findings, Cautious Language/Hedging*, dll.).
+* 🛡️ **Proteksi Aset OpenXML (`docx_zotero_guard.py`):** Isolasi token otomatis sebelum teks dialihbahasakan sehingga field code Zotero (`ADDIN ZOTERO_ITEM`) dan rumus native Word Equation (`<m:oMath>`) **dijamin 100% utuh tanpa rusak/korup**.
+* 📖 **Penerjemahan Dokumen Panjang & Buku (`translate-book`):** Didukung protokol pemotongan semantik (*semantic chunking* 1.500–2.500 kata) tepat pada batas sub-bab dan penguncian istilah teknis lintas bab via `GLOSSARY.json`.
+* 🤖 **Linter Deterministik Non-LLM:**
+  * `linter_akademis_en.py`: Memindai naskah bahasa Inggris secara kaku untuk membasmi kata klise AI (*delve, pivotal, tapestry, realm, foster, underscore, leverage*), personal pronouns (*we/our*), dan kesalahan koma desimal (*95,5%*).
+  * `linter_tata_bahasa_id.py`: Memindai naskah bahasa Indonesia dari kata tidak baku KBBI (*merubah, analisa, sistim, efektifitas*), pleonasme, kalke kaku (*di mana, yang mana*), dan basa-basi robotik AI.
 
 ---
 
@@ -88,6 +103,22 @@ Setelah terpasang, Anda tidak perlu menghafal perintah yang rumit. Cukup berikan
 
 ```text
 "Sinkronkan daftar referensi dan berkas PDF ke Zotero Cloud, lalu susun naskah dengan sitasi native Word..."
+```
+
+```text
+"Terjemahkan naskah artikel_indonesia.docx ke bahasa Inggris ilmiah standar Scopus Q1, hilangkan kata klise AI, terapkan kaidah tenses IMRaD, dan pastikan seluruh field code sitasi Zotero serta rumus OMML tetap utuh..."
+```
+
+```text
+"Audit dan bersihkan naskah draf skripsi ini dari kesalahan ejaan EYD V, kata tidak baku KBBI, dan kalke bahasa Inggris..."
+```
+
+```text
+"Terjemahkan draf buku akademik ini bab demi bab dengan semantic chunking (2.000 kata per segmen) dan buatkan berkas GLOSSARY.json untuk mengunci padanan istilah teknis..."
+```
+
+```text
+"Jalankan linter akademis otomatis pada naskah bahasa Inggris ini untuk memastikan tidak ada kata terlarang AI seperti delve, pivotal, atau tapestry..."
 ```
 
 AI Agent akan otomatis mengaktifkan skill ini, mengonfirmasi preferensi template Anda, dan menghasilkan berkas `.docx` resmi.
@@ -211,6 +242,19 @@ office-cli/
 
 ---
 
+### 🌐 Academic Translation & Rewriting Engine (Scopus Q1 & Indonesian EYD V)
+
+Built-in scholarly translation and stylistic refinement based on the **"Translation as Academic Rewriting"** doctrine:
+* ✍️ **Beyond Word-for-Word Translation:** Eliminates "translationese" by deconstructing complex compound sentences into deductive, linear paragraphs with high lexical density and precise academic cadence.
+* 🏛️ **Manchester Academic Phrasebank:** Integrates 18 official functional rhetorical modules (*Introducing Work, Referring to Sources, Describing Methods, Reporting Results, Discussing Findings, Cautious Language/Hedging*, etc.).
+* 🛡️ **DOCX OpenXML & Zotero Guard (`docx_zotero_guard.py`):** Automated pre-translation tokenization ensuring 100% integrity of active Zotero/Mendeley citations (`ADDIN ZOTERO_ITEM`) and native Word equations (`<m:oMath>`) with zero corruption.
+* 📖 **Book-Length Translation Architecture (`translate-book`):** Semantic chunking (1,500–2,500 words) strictly aligned to heading boundaries with cross-chapter terminology locking via `GLOSSARY.json`.
+* 🤖 **Deterministic Non-LLM Linters:**
+  * `linter_akademis_en.py`: Hardcoded regex scanner to detect and eradicate AI buzzwords (*delve, pivotal, tapestry, realm, foster, underscore, leverage*), personal pronouns (*we/our*), and decimal formatting errors.
+  * `linter_tata_bahasa_id.py`: Scans Indonesian manuscripts for non-standard KBBI spelling, pleonasms, English calques (*di mana, yang mana*), and robotic AI openings.
+
+---
+
 ### 🚀 Installation
 
 #### 💬 Option 1: Copy-Paste Prompt to Your AI Agent (Quick)
@@ -239,6 +283,22 @@ git clone https://github.com/masdayat-555/office-cli-dayat.git ~/.agents/skills/
 
 ```text
 "Sync reference PDFs in this directory to Zotero Cloud and format the manuscript with active Word citations..."
+```
+
+```text
+"Translate this Indonesian research paper to Scopus Q1 academic English using the 'Translation as Rewriting' doctrine, eliminate AI clichés, and preserve all active Zotero citations and OMML formulas..."
+```
+
+```text
+"Audit my translated manuscript using the deterministic linter to ensure zero AI buzzwords (delve, pivotal, tapestry) and verified IMRaD tenses..."
+```
+
+```text
+"Translate this academic textbook chapter by chapter with semantic chunking (2,000 words per chunk) and maintain consistent terminology via GLOSSARY.json..."
+```
+
+```text
+"Audit this Indonesian thesis draft against EYD V spelling rules and clean all pleonasms and robotic AI filler..."
 ```
 
 ---
